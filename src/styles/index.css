@@ -1,0 +1,24 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Define your CSS styles here */
+#modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #fafaff;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#modalContent {
+  background-color: #f4f4ff;
+  height: "60vh";
+  padding: 20px;
+  border-radius: 5px;
+}
