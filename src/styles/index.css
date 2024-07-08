@@ -7,7 +7,12 @@
     --primary: 240, 100%, 28%;
     --primary-light: 240, 100%, 98%;
 
+    --success: 151, 58%, 46%;
+
     --common: 60, 4%, 43%;
+
+    --grey: 218, 15%, 65%;
+    --grey-500: 217, 24%, 27%;
 
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
@@ -19,34 +24,18 @@
   animation: text-underline-animation 300ms linear forwards;
 }
 
-#main {
-  grid-area: main;
-  block-size: 100%;
-  overflow: hidden;
-  gap: 0.5rem;
-  display: flex;
-  background-color: yellow;
-}
-/* .tab-button.active {
-  color: blue;
-} */
-
-.content {
-  display: none;
-  block-size: 100%;
-}
-
-.content.active {
-  display: block;
-}
-
 @layer base {
   /* utils */
   .container-center {
     @apply flex items-center justify-center;
   }
+
   .container-between {
     @apply flex items-center justify-between;
+  }
+
+  .align-center {
+    @apply flex items-center;
   }
 
   .payment-options {
@@ -58,7 +47,7 @@
   }
 
   .tab-button {
-    @apply py-3 px-5 grow text-center text-[#3D3844] flex items-center  hover:bg-primary hover:rounded-xl hover:text-white;
+    @apply py-3 px-5 grow text-center text-[#3D3844] flex items-center hover:bg-primary hover:rounded-xl hover:text-white;
   }
 
   .tab-button.active {
@@ -66,7 +55,43 @@
   }
 
   .tab-button span {
-    @apply justify-start flex shrink-0 font-semibold my-1 ;
+    @apply justify-start flex shrink-0 font-semibold my-1;
+  }
+
+  .main {
+    @apply md:py-8 px-4 md:px-6 w-[calc(100%-250px)];
+  }
+
+  .header-container {
+    @apply bg-primary text-white py-10 px-4 md:py-5 md:px-9 rounded-xl;
+  }
+
+  .content {
+    @apply py-4 px-[18.4px] hidden;
+  }
+
+  .content.active {
+    @apply block;
+  }
+
+  .header-chip {
+    @apply py-0 px-1 bg-success text-white rounded-[0.25rem] h-[1.4375rem] text-xs whitespace-nowrap flex items-center justify-center;
+  }
+
+  .tooltip {
+    @apply absolute left-0 flex-col items-center hidden mb-5 group-hover:flex w-[320px] top-[20px];
+  }
+
+  .tooltip-textbox {
+    @apply relative rounded-lg z-10 py-4 px-5 text-xs bg-white shadow-lg;
+  }
+
+  .tooltip-title {
+    @apply font-medium text-grey-500 text-[13px] leading-[17.4px] mb-1;
+  }
+
+  .tooltip-text {
+    @apply text-grey text-[13px] leading-[17.4px] tracking-wide;
   }
 
   /* .tab-button path {

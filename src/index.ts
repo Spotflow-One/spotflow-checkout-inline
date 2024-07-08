@@ -1,5 +1,5 @@
 import "./styles/index.css";
-import template from "./views/checkoutTransfer.html?raw";
+import template from "./views/checkout.html?raw";
 import cardDetailsForm from "./views/card/cardDetailsForm.html?raw";
 import transferDetails from "./views/transfer/transferDetails.html?raw";
 import selectBanks from "./views/ussd/selectbanks.html?raw";
