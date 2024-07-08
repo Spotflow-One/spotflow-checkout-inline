@@ -9,9 +9,17 @@
   </head>
   <body>
     <div class="flex justify-center items-center">
-      <button type="button" id="checkout-button" onclick="SpotflowCheckout.showModal(`123922i2`)">Make Payment</button>
+      <button type="button" id="checkout-button" onclick="openCheckout()">
+        Make Payment
+      </button>
     </div>
     <div id="checkout-container"></div>
     <script src="./dist/checkout-inline.umd.cjs"></script>
+    <script>
+      const openCheckout = () => {
+        const checkout = new SpotflowCheckout();
+        checkout.setup();
+      };
+    </script>
   </body>
 </html>
