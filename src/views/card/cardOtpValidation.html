@@ -1,65 +1,35 @@
-<!-- <div class="box w-[85%] mx-auto">
+<div id="checkoutcardotp">
+  <div class="box-container w-4/5 mx-auto py-16">
+    <div>
+      <h5 class="otp-text">Kindly enter the OTP sent to 234249***3875</h5>
 
- <div>
-    <p
-    class="text-sm font-semibold text-center text-[#55515B]"
-    >
-        Enter the OTP sent to your phone number associated with your card"
-      </p>
-    <div
-    class="mt-5 grid grid-cols-3"
-    >
-      <div class="col-span-2 relative"
-       
-      >
-        <TextField
-          sx={{
-            borderRadius: pxToRem(8),
-            "& .MuiInputBase-root": {
-              padding: "0 !important",
-              "&.Mui-focused": {
-                border: "none",
-              },
-            },
-            "& #card-otp": {
-              border: "1px solid #CECDD0",
-              borderRadius: pxToRem(8),
-              backgroundColor: "#ffffff",
-              paddingY: pxToRem(15),
-            },
-            "& #card-otp:focus": {
-              border: `1px solid ${theme.palette.primary.main}`,
-            },
-          }}
-          type="tel"
-          id="card-otp"
-        />
+      <div class="mt-8">
+        <div class="relative w-full grid grid-cols-3 gap-5">
+          <div class="col-span-2">
+            <input
+              class="otp-input"
+              type="tel"
+              id="card-otp"
+              name="otp"
+              required
+            />
+          </div>
+
+          <div>
+            <button class="otp-button" disabled="true">Authorize</button>
+          </div>
         </div>
-      <Box sx={{}}>
-        <Button
-          data-app-disabled={!otp}
-     fullWidth
-          size="large"
-          color="success"
-          type="submit"
-          disabled={!otp}
-          sx={{
-            color: "white",
-            height: "100%",
-            borderRadius: pxToRem(8),
-            "&[data-app-disabled='true']": {
-              backgroundColor: theme.palette.success.light,
-              color: "white",
-            },
-            "&[data-app-focus='true']": {
-              display: "none",
-            },
-          }}
-          onClick={submitCardOtp}
-        >
-          Authorize
-        </Button>
-      </Box>
+
+        <div class="py-5">
+          <p class="otp-subtext">
+            A token should be sent to you  within 6 minutes
+          </p>
+        </div>
+
+        <div class="container-center">
+          <button class="pin-cancel">Cancel</button>
+        </div>
+      </div>
     </div>
- </div>
-</div> -->
+  </div>
+</div>

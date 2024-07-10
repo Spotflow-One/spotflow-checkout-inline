@@ -262,9 +262,7 @@ class CheckoutForm {
       }
     });
     this.displayTabLayout();
-
-
-
+    this.displayPaymentWarningText();
     // ----------------------------
     // Event listeners for modal actions
     const closeBtn = document.getElementById("closeBtn");
@@ -273,6 +271,28 @@ class CheckoutForm {
       closeBtn.addEventListener("click", () => {
         document.body.removeChild(this.modalContainer);
       });
+    }
+  }
+
+  private displayPaymentWarningText() {
+    const paymentWarning = document.querySelector("#paymentWarning");
+    const warningText = paymentWarning?.querySelector("#payment-warning-text");
+
+    const text = (): string => {
+      switch (this.currentPaymentMethod) {
+        case 0:
+          return "Incorrect otp. please retry with the correct otp";
+        case 1:
+          return "Account expired";
+        case 2:
+          return "Please dial the ussd shortcode";
+        default:
+          return "";
+      }
+    };
+
+    if (warningText) {
+      warningText.innerHTML = text();
     }
   }
 }

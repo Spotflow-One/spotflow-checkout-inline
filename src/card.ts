@@ -1,5 +1,9 @@
 import cardDetailsForm from "./views/card/cardDetailsForm.html?raw";
 import cardPinForm from "./views/card/cardPinForm.html?raw";
+import cardOtpForm from "./views/card/cardOtpValidation.html?raw";
+import paymentWarning from "./views/shared/paymentWarning.html?raw";
+import paymentSuccess from "./views/shared/paymentSuccess.html?raw";
+
 
 class Card {
   private cardDetailsValues: { number: string; expiry: string; cvv: string };
@@ -158,13 +162,13 @@ class Card {
         content = this.cardPinForm();
         break;
       case 3:
-        content = this.cardDetailsForm();
+        content = this.cardOtpForm();
         break;
       case 4:
-        content = this.cardDetailsForm();
+        content = this.paymentWarning();
         break;
       case 5:
-        content = this.cardDetailsForm();
+        content = this.paymentSuccess();
         break;
       default:
         content = this.cardDetailsForm();
@@ -183,6 +187,18 @@ class Card {
 
   cardPinForm(): string {
     return cardPinForm;
+  }
+
+  cardOtpForm(): string {
+    return cardOtpForm;
+  }
+
+  paymentWarning(): string {
+    return paymentWarning;
+  }
+
+  paymentSuccess(): string {
+    return paymentSuccess;
   }
 }
 export default Card;

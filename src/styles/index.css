@@ -19,6 +19,8 @@
     --grey-400: 264, 6%, 34%;
     --grey-500: 217, 24%, 27%;
     --grey-600: 265, 10%, 24%;
+    --grey-700: 260, 4%, 43%;
+    --grey-800: 265, 21%, 76%;
 
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
@@ -31,6 +33,9 @@
 }
 
 @layer base {
+  button {
+    @apply focus:outline-none;
+  }
   /* utils */
   .container-center {
     @apply flex items-center justify-center;
@@ -112,19 +117,47 @@
     @apply w-full p-4 inline-flex justify-center rounded-lg text-sm font-semibold text-white focus:outline-none bg-primary disabled:text-primary-light disabled:bg-primary-lighter;
   }
 
-  .otp-container {
+  .pin-container {
     @apply flex justify-between mx-auto;
   }
 
-  .otp-text {
-    @apply text-sm font-semibold text-center text-grey-400 w-[80%] mx-auto;
+  .pin-text {
+    @apply text-sm font-semibold text-center text-grey-400 w-4/5 mx-auto;
   }
 
-  .otp-input {
+  .pin-input {
     @apply w-20 h-14 text-center text-lg border border-grey-300 rounded-lg focus:outline-none focus:border-primary;
   }
 
-  .otp-cancel {
+  .pin-cancel {
     @apply text-sm text-grey-600 font-semibold text-center hover:underline;
+  }
+
+  .otp-input {
+    @apply focus:outline-none rounded-lg bg-white border border-[#CECDD0] w-full px-3 py-4 placeholder:text-grey-200;
+  }
+
+  .otp-button {
+    @apply bg-success text-white rounded-lg h-full px-6 font-semibold;
+  }
+
+  .otp-text {
+    @apply text-sm font-semibold text-center text-grey-400 w-3/5 mx-auto;
+  }
+
+  .otp-subtext {
+    @apply text-sm text-grey-700 w-3/5 mx-auto text-center;
+  }
+
+  .warning-text, .success-text {
+    @apply text-center my-4 mx-auto text-grey-400 font-semibold;
+  }
+
+  .warning-list {
+    @apply mt-12 mx-auto;
+  }
+
+  .warning-button , .success-button {
+    @apply w-full border border-grey-800 mb-4 text-grey-400 rounded-lg p-4 text-center text-sm font-semibold;
   }
 }
