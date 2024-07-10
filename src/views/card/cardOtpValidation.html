@@ -1,0 +1,65 @@
+<!-- <div class="box w-[85%] mx-auto">
+
+ <div>
+    <p
+    class="text-sm font-semibold text-center text-[#55515B]"
+    >
+        Enter the OTP sent to your phone number associated with your card"
+      </p>
+    <div
+    class="mt-5 grid grid-cols-3"
+    >
+      <div class="col-span-2 relative"
+       
+      >
+        <TextField
+          sx={{
+            borderRadius: pxToRem(8),
+            "& .MuiInputBase-root": {
+              padding: "0 !important",
+              "&.Mui-focused": {
+                border: "none",
+              },
+            },
+            "& #card-otp": {
+              border: "1px solid #CECDD0",
+              borderRadius: pxToRem(8),
+              backgroundColor: "#ffffff",
+              paddingY: pxToRem(15),
+            },
+            "& #card-otp:focus": {
+              border: `1px solid ${theme.palette.primary.main}`,
+            },
+          }}
+          type="tel"
+          id="card-otp"
+        />
+        </div>
+      <Box sx={{}}>
+        <Button
+          data-app-disabled={!otp}
+     fullWidth
+          size="large"
+          color="success"
+          type="submit"
+          disabled={!otp}
+          sx={{
+            color: "white",
+            height: "100%",
+            borderRadius: pxToRem(8),
+            "&[data-app-disabled='true']": {
+              backgroundColor: theme.palette.success.light,
+              color: "white",
+            },
+            "&[data-app-focus='true']": {
+              display: "none",
+            },
+          }}
+          onClick={submitCardOtp}
+        >
+          Authorize
+        </Button>
+      </Box>
+    </div>
+ </div>
+</div> -->

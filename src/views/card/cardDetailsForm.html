@@ -1,22 +1,39 @@
-<form id="checkoutcard">
-  <div class="px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
-    <div class="sm:flex sm:items-start">
-      <div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
-        <label for="name">Card Number3:</label>
-        <input type="text" id="name" name="name" required /><br /><br />
-        <label for="email text-center">Email:</label>
-        <input type="email" id="email" name="email" required /><br /><br />
+<form id="checkoutcard" >
+  <div class="box-container">
+    <h5 class="text-center text-grey-400 text-xl font-semibold">
+      Enter your card details to pay
+    </h5>
+    <div class="mt-8">
+      <div class="relative mx-6 mb-4">
+        <span class="absolute text-xs left-0 top-1 text-grey-100 pt-1 pb-1 px-3 tracking-[0.5px]">CARD NUMBER</span>
+        <div>
+          <input class="details-input-container" type="tel" id="card-number" name="number"
+            placeholder="0000 0000 0000 0000" required />
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 gap-4 my-4 mx-6">
+        <div class="relative w-full">
+          <span class="absolute text-xs left-0 top-1 text-grey-100 pt-1 pb-1 px-3 tracking-[0.5px]">CARD EXPIRY</span>
+          <div>
+            <input class="details-input-container" type="tel" id="card-expiry" name="expiry" placeholder="MM / YY"
+              required />
+          </div>
+        </div>
+
+        <div class="relative w-full">
+          <span class="absolute text-xs left-0 top-1 text-grey-100 pt-1 pb-1 px-3 tracking-[0.5px]">CVV</span>
+          <div>
+            <input class="details-input-container" type="tel" id="card-cvv" name="cvv" placeholder="123" required />
+          </div>
+        </div>
+      </div>
+
+      <div class="mx-6 my-8">
+        <button type="submit" disabled="true"  class="details-form-button">
+          Pay USD 14.99
+        </button>
       </div>
     </div>
-  </div>
-  <div class="px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
-    
-    <button
-      type="button"
-      class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
-      id="closeBtn"
-    >
-      Cancel
-    </button>
   </div>
 </form>

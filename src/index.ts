@@ -1,24 +1,89 @@
 import "./styles/index.css";
 import template from "./views/checkout.html?raw";
 import cardDetailsForm from "./views/card/cardDetailsForm.html?raw";
+import cardPinForm from "./views/card/cardPinForm.html?raw";
+
 import transferDetails from "./views/transfer/transferDetails.html?raw";
 import selectBanks from "./views/ussd/selectbanks.html?raw";
 import nbaLogo from "./assets/nba-logo.png";
+import Card from "./card";
 
 class CheckoutForm {
   modalContainer: HTMLDivElement;
   currentPaymentMethod: number;
-
+  currentStep: number;
+  container: HTMLDivElement;
+  card: Card;
   constructor() {
     this.modalContainer = document.createElement("div");
     this.modalContainer.innerHTML = template;
     document.body.appendChild(this.modalContainer);
     this.currentPaymentMethod = 0;
+    this.currentStep = 2;
+    this.container = document.querySelectorAll(".content")[0] as HTMLDivElement;
+    this.card = new Card();
+    this.attachInputListeners();
+  }
+
+  attachInputListeners() {
+    // Add event listeners to the card input fields
+    const cardNumberInput = this.modalContainer.querySelector(
+      'input[name="number"]'
+    ) as HTMLInputElement;
+    const cardExpiryInput = this.modalContainer.querySelector(
+      'input[name="expiry"]'
+    ) as HTMLInputElement;
+    const cardCvvInput = this.modalContainer.querySelector(
+      'input[name="cvv"]'
+    ) as HTMLInputElement;
+    const button = this.modalContainer.querySelector(
+      ".details-form-button"
+    ) as HTMLButtonElement;
+    const formCard = document.querySelector("#checkoutcard");
+
+    const pinInputs = Array.from(
+      this.modalContainer.querySelectorAll(".otp-input")
+    ) as HTMLInputElement[];
+
+    // CARD DETAIL EVENTS //
+    if (cardNumberInput) {
+      cardNumberInput.addEventListener("input", (e) =>
+        this.card.handleInputChange(e, button)
+      );
+    }
+
+    if (cardExpiryInput) {
+      cardExpiryInput.addEventListener("input", (e) =>
+        this.card.handleInputChange(e, button)
+      );
+    }
+
+    if (cardCvvInput) {
+      cardCvvInput.addEventListener("input", (e) =>
+        this.card.handleInputChange(e, button)
+      );
+    }
+
+    if (formCard) {
+      formCard.addEventListener("submit", (e) =>
+        this.card.handleSubmit(e, this.currentStep)
+      );
+    }
+
+    // CARD PIN EVENTS //
+    pinInputs.forEach((input, index) => {
+      input.addEventListener("input", (event) =>
+        this.card.handlePinInputChange(event, index, pinInputs)
+      );
+      input.addEventListener("paste", (event) =>
+        this.card.handlePinPaste(event, pinInputs)
+      );
+    });
   }
 
   displayTabLayout() {
     const tabs = document.querySelectorAll(".tab-button");
-    const container = document.getElementById("main");
+    const container = document.querySelector(".box-container-method");
 
     if (tabs && container) {
       tabs.forEach((button) => {
@@ -27,11 +92,15 @@ class CheckoutForm {
             if (e.currentTarget.dataset.tab) {
               const tabIndex = parseInt(e.currentTarget.dataset.tab);
               this.setCurrentPaymentMethod(tabIndex);
+              container.innerHTML = this.renderPaymentMethodContent();
+              this.attachInputListeners(); // Reattach listeners after rendering
             }
           }
         });
       });
     }
+    container!.innerHTML = this.renderPaymentMethodContent();
+    this.attachInputListeners();
     this.setCurrentPaymentMethod(this.currentPaymentMethod);
   }
 
@@ -39,53 +108,53 @@ class CheckoutForm {
     const renderContent = () => {
       switch (this.currentPaymentMethod) {
         case 0:
-          return renderCardContent(1);
+          return this.card.renderCardContent(1);
         case 1:
-          return renderTransferContent(1);
+          return this.renderTransferContent(1);
         case 2:
-          return renderUssdContent(1);
+          return this.renderUssdContent(1);
         default:
-          return renderCardContent(1);
+          return this.renderCardContent(1);
       }
     };
-    const renderCardContent = (step: number) => {
-      switch (step) {
-        case 1:
-          return cardDetailsForm;
-        case 2:
-          return cardDetailsForm;
-        case 3:
-          return cardDetailsForm;
-        case 4:
-          return cardDetailsForm;
-        case 5:
-          return cardDetailsForm;
-        default:
-          return cardDetailsForm;
-      }
-    };
-    const renderTransferContent = (step: number) => {
-      switch (step) {
-        case 1:
-          return transferDetails;
-        case 2:
-          return transferDetails;
-        default:
-          return transferDetails;
-      }
-    };
-    const renderUssdContent = (step: number) => {
-      switch (step) {
-        case 1:
-          return selectBanks;
-        case 2:
-          return selectBanks;
-        default:
-          return selectBanks;
-      }
-    };
-
     return renderContent();
+  }
+
+  renderCardContent(step: number) {
+    switch (step) {
+      case 1:
+        return cardDetailsForm;
+      case 2:
+        return cardPinForm;
+      case 3:
+        return cardDetailsForm;
+      case 4:
+        return cardDetailsForm;
+      case 5:
+        return cardDetailsForm;
+      default:
+        return cardDetailsForm;
+    }
+  }
+  renderTransferContent(step: number) {
+    switch (step) {
+      case 1:
+        return transferDetails;
+      case 2:
+        return transferDetails;
+      default:
+        return transferDetails;
+    }
+  }
+  renderUssdContent(step: number) {
+    switch (step) {
+      case 1:
+        return selectBanks;
+      case 2:
+        return selectBanks;
+      default:
+        return selectBanks;
+    }
   }
 
   setCurrentPaymentMethod(index: number) {
@@ -97,17 +166,25 @@ class CheckoutForm {
     tabs.forEach((tab) => tab.classList.remove("active"));
     contents.forEach((content) => content.classList.remove("active"));
 
-    tabs[index].classList.add("active");
-    contents[index].classList.add("active");
-    contents[index].innerHTML = this.renderPaymentMethodContent();
+    if (tabs[index]) {
+      tabs[index].classList.add("active");
+    }
+    if (contents[index]) {
+      contents[index].classList.add("active");
+      contents[index].innerHTML =
+        this.renderPaymentMethodContent() as unknown as string;
+    }
   }
 
-  setup(reference: string): void {
+  setup(): void {
     const merchantLogo = document.getElementById("merchantLogo");
+
+    // merchant logo goes here
     if (merchantLogo) {
       merchantLogo.setAttribute("src", nbaLogo);
     }
 
+    // Payment options
     const tabOptions = [
       {
         label: "Pay with Card",
@@ -162,30 +239,37 @@ class CheckoutForm {
         .join("")}
       </div>`;
     }
+    const tabs = document.querySelectorAll(".tab-button");
 
+    tabOptions.forEach((tabOption, index) => {
+      const tab = tabs[index] as HTMLElement;
+      if (tab) {
+        const iconContainer = tab.querySelector(".tab-button-icon");
+        const labelContainer = tab.querySelector(".tab-button-label");
+
+        if (iconContainer) {
+          iconContainer.innerHTML = tabOption.icon;
+        }
+
+        if (labelContainer) {
+          labelContainer.textContent = tabOption.label;
+        }
+
+        tab.dataset.tab = index.toString();
+        tab.addEventListener("click", () => {
+          this.setCurrentPaymentMethod(index);
+        });
+      }
+    });
     this.displayTabLayout();
 
+
+
+    // ----------------------------
     // Event listeners for modal actions
-    const submitBtn = document.getElementById("submitBtn");
     const closeBtn = document.getElementById("closeBtn");
-    const myModalForm = document.getElementById(
-      "myModalForm"
-    ) as HTMLFormElement | null;
 
-    if (submitBtn && closeBtn && myModalForm) {
-      submitBtn.addEventListener("click", () => {
-        const formData = new FormData(myModalForm);
-        const data: { [key: string]: string } = {};
-        formData.forEach((value, key) => {
-          data[key] = value as string;
-        });
-        data["reference"] = reference;
-
-        console.log("Form data:", data);
-        alert("Form submitted! Check console for data.");
-        document.body.removeChild(this.modalContainer);
-      });
-
+    if (closeBtn) {
       closeBtn.addEventListener("click", () => {
         document.body.removeChild(this.modalContainer);
       });
