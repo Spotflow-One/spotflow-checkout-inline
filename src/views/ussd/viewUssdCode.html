@@ -1,6 +1,6 @@
-<div id="ussdBanks">
+<div id="viewCode">
   <div class="box-container">
-    <div class="text-center my-6">
+    <div class="text-center pb-5 mt-4 mb-6">
       <svg
         class="mx-auto w-8 h-8 mb-3"
         width="18"
@@ -15,22 +15,49 @@
         />
       </svg>
 
-      <h5 class="content-heading">Choose your bank to start the payment</h5>
+      <div class="w-4/5 mx-auto">
+        <h5 class="content-heading">
+          Dial the code below to complete this transaction with FCMB’s 329
+        </h5>
+
+        <p class="text-primary-dark my-4">How to pay with FCMB USSD</p>
+      </div>
     </div>
 
-    <div class="my-12">
-      <div class="relative md:mx-[18px] mb-4 mx-0">
-        <div class="relative">
-          <input
-            type="text"
-            id="bank-search-input"
-            class=""
-            placeholder="Search..."
-            autocomplete="off"
+    <div>
+      <button class="copy-code-button">
+        <span> *329*33*4*343788#</span>
+
+        <svg
+          width="14"
+          height="14"
+          viewBox="0 0 14 14"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M8.33337 4.33337H1.66671C0.931374 4.33337 0.333374 4.93137 0.333374 5.66671V12.3334C0.333374 13.0687 0.931374 13.6667 1.66671 13.6667H8.33337C9.06871 13.6667 9.66671 13.0687 9.66671 12.3334V5.66671C9.66671 4.93137 9.06871 4.33337 8.33337 4.33337Z"
+            fill="#F4F4FF"
           />
-          <div class="bank-options" id="bank-options"></div>
-        </div>
+          <path
+            d="M12.3334 0.333374H5.66671C5.31309 0.333374 4.97395 0.47385 4.7239 0.723898C4.47385 0.973947 4.33337 1.31309 4.33337 1.66671V3.00004H9.66671C10.0203 3.00004 10.3595 3.14052 10.6095 3.39056C10.8596 3.64061 11 3.97975 11 4.33337V9.66671H12.3334C12.687 9.66671 13.0261 9.52623 13.2762 9.27618C13.5262 9.02613 13.6667 8.687 13.6667 8.33337V1.66671C13.6667 1.31309 13.5262 0.973947 13.2762 0.723898C13.0261 0.47385 12.687 0.333374 12.3334 0.333374Z"
+            fill="#F4F4FF"
+          />
+        </svg>
+      </button>
+
+      <div class="container-center">
+        <button class="text-grey-400 text-sm text-center hover:underline">
+          Click to copy
+        </button>
       </div>
+    </div>
+
+    <div class="pt-16 mb-2">
+      <button class="ussd-button text-grey-700">I have completed the payment</button>
+    </div>
+    <div class="container-center">
+      <button class="text-grey-400 text-center hover:underline">Cancel</button>
     </div>
   </div>
 </div>

@@ -7,6 +7,8 @@
     --primary: 240, 100%, 28%;
     --primary-light: 266, 21%, 76%;
     --primary-lighter: 240, 100%, 98%;
+    --primary-dark: 240, 39%, 52%;
+    --primary-darker: 240, 100%, 28%;
 
     --success: 151, 58%, 46%;
 
@@ -26,17 +28,27 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
+
+  input:focus {
+    outline: none;
+  }
 }
 
 .tab-button.active::after {
   animation: text-underline-animation 300ms linear forwards;
 }
 
+.option:hover {
+  background-color: #f1f1f1;
+}
+
 @layer base {
   button {
     @apply focus:outline-none;
   }
+
   /* utils */
+  /* --------------------------- */
   .container-center {
     @apply flex items-center justify-center;
   }
@@ -52,6 +64,8 @@
   .box-container {
     @apply px-0 md:px-7 py-[18px] md:py-7;
   }
+
+  /* --------------------------- */
 
   .payment-options {
     @apply w-full max-w-md flex flex-col overflow-hidden min-h-12;
@@ -87,6 +101,10 @@
 
   .content.active {
     @apply block;
+  }
+
+  .content-heading {
+    @apply text-center pt-2 md:pt-0 text-grey-400 font-semibold text-xl;
   }
 
   .header-chip {
@@ -149,7 +167,8 @@
     @apply text-sm text-grey-700 w-3/5 mx-auto text-center;
   }
 
-  .warning-text, .success-text {
+  .warning-text,
+  .success-text {
     @apply text-center my-4 mx-auto text-grey-400 font-semibold;
   }
 
@@ -157,7 +176,33 @@
     @apply mt-12 mx-auto;
   }
 
-  .warning-button , .success-button {
+  .warning-button,
+  .success-button {
     @apply w-full border border-grey-800 mb-4 text-grey-400 rounded-lg p-4 text-center text-sm font-semibold;
+  }
+
+  .transfer-button,
+  .ussd-button {
+    @apply w-full border border-primary-light mb-4 text-primary-darker rounded-lg p-4 text-center text-sm font-semibold;
+  }
+
+  .transfer-close {
+    @apply mb-4 text-white rounded-lg p-4 text-center text-sm font-semibold bg-success w-[200px];
+  }
+
+  #bank-search-input {
+    @apply w-full p-4 border border-primary-light rounded-lg;
+  }
+
+  .bank-options {
+    @apply bg-white w-full mt-1 absolute z-[1000] shadow overflow-y-auto box-border border rounded-lg max-h-[150px] hidden;
+  }
+
+  .bank-option {
+    @apply p-[10px] cursor-pointer hover:bg-primary-lighter;
+  }
+
+  .copy-code-button {
+    @apply mb-4 text-white rounded-lg p-4 text-center text-xl font-semibold bg-primary justify-center gap-2 flex items-center w-3/5 mx-auto;
   }
 }

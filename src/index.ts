@@ -1,12 +1,9 @@
 import "./styles/index.css";
 import template from "./views/checkout.html?raw";
-import cardDetailsForm from "./views/card/cardDetailsForm.html?raw";
-import cardPinForm from "./views/card/cardPinForm.html?raw";
-
-import transferDetails from "./views/transfer/transferDetails.html?raw";
-import selectBanks from "./views/ussd/selectbanks.html?raw";
 import nbaLogo from "./assets/nba-logo.png";
 import Card from "./card";
+import Transfer from "./transfer";
+import Ussd from "./ussd";
 
 class CheckoutForm {
   modalContainer: HTMLDivElement;
@@ -14,6 +11,8 @@ class CheckoutForm {
   currentStep: number;
   container: HTMLDivElement;
   card: Card;
+  transfer: Transfer;
+  ussd: Ussd;
   constructor() {
     this.modalContainer = document.createElement("div");
     this.modalContainer.innerHTML = template;
@@ -22,6 +21,8 @@ class CheckoutForm {
     this.currentStep = 2;
     this.container = document.querySelectorAll(".content")[0] as HTMLDivElement;
     this.card = new Card();
+    this.transfer = new Transfer();
+    this.ussd = new Ussd();
     this.attachInputListeners();
   }
 
@@ -44,6 +45,10 @@ class CheckoutForm {
     const pinInputs = Array.from(
       this.modalContainer.querySelectorAll(".otp-input")
     ) as HTMLInputElement[];
+
+    const banksInput = this.modalContainer.querySelector(
+      "#bank-search-input"
+    ) as HTMLInputElement;
 
     // CARD DETAIL EVENTS //
     if (cardNumberInput) {
@@ -79,6 +84,30 @@ class CheckoutForm {
         this.card.handlePinPaste(event, pinInputs)
       );
     });
+
+    // USSD EVENTS //
+    if (banksInput) {
+      banksInput.addEventListener("input", () =>
+        this.ussd.searchBanksOnInput(
+          banksInput,
+          banksInput.nextElementSibling as HTMLElement
+        )
+      );
+
+      banksInput.addEventListener("focus", () =>
+        this.ussd.openSearchOnFocus(
+          banksInput,
+          banksInput.nextElementSibling as HTMLElement
+        )
+      );
+      this.modalContainer.addEventListener("click", (e) =>
+        this.ussd.closeSearchOptionsOutsideFocus(
+          e,
+          banksInput,
+          banksInput.nextElementSibling as HTMLElement
+        )
+      );
+    }
   }
 
   displayTabLayout() {
@@ -110,51 +139,14 @@ class CheckoutForm {
         case 0:
           return this.card.renderCardContent(1);
         case 1:
-          return this.renderTransferContent(1);
+          return this.transfer.renderTransferContent(1);
         case 2:
-          return this.renderUssdContent(1);
+          return this.ussd.renderUssdContent(3);
         default:
-          return this.renderCardContent(1);
+          return this.card.renderCardContent(1);
       }
     };
     return renderContent();
-  }
-
-  renderCardContent(step: number) {
-    switch (step) {
-      case 1:
-        return cardDetailsForm;
-      case 2:
-        return cardPinForm;
-      case 3:
-        return cardDetailsForm;
-      case 4:
-        return cardDetailsForm;
-      case 5:
-        return cardDetailsForm;
-      default:
-        return cardDetailsForm;
-    }
-  }
-  renderTransferContent(step: number) {
-    switch (step) {
-      case 1:
-        return transferDetails;
-      case 2:
-        return transferDetails;
-      default:
-        return transferDetails;
-    }
-  }
-  renderUssdContent(step: number) {
-    switch (step) {
-      case 1:
-        return selectBanks;
-      case 2:
-        return selectBanks;
-      default:
-        return selectBanks;
-    }
   }
 
   setCurrentPaymentMethod(index: number) {
@@ -262,7 +254,13 @@ class CheckoutForm {
       }
     });
     this.displayTabLayout();
-    this.displayPaymentWarningText();
+    const paymentWarning = this.modalContainer.querySelector("#paymentWarning");
+    const warningText = paymentWarning?.querySelector("#payment-warning-text");
+
+    if (warningText) {
+      this.displayPaymentWarningText(this.currentPaymentMethod, warningText);
+    }
+
     // ----------------------------
     // Event listeners for modal actions
     const closeBtn = document.getElementById("closeBtn");
@@ -273,13 +271,9 @@ class CheckoutForm {
       });
     }
   }
-
-  private displayPaymentWarningText() {
-    const paymentWarning = document.querySelector("#paymentWarning");
-    const warningText = paymentWarning?.querySelector("#payment-warning-text");
-
+  private displayPaymentWarningText(method: number, warningText: Element) {
     const text = (): string => {
-      switch (this.currentPaymentMethod) {
+      switch (method) {
         case 0:
           return "Incorrect otp. please retry with the correct otp";
         case 1:
@@ -287,7 +281,7 @@ class CheckoutForm {
         case 2:
           return "Please dial the ussd shortcode";
         default:
-          return "";
+          return "Error";
       }
     };
 

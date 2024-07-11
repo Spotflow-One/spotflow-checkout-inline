@@ -3,11 +3,17 @@ export default {
   content: ["./src/**/*.{html,js,ts,jsx,tsx}"],
   theme: {
     extend: {
+      screens: {
+        'max-sm': {'max': '639px'},
+      },
       colors: {
         primary: {
           DEFAULT: "hsl(var(--primary))",
           light: "hsl(var(--primary-light))",
           lighter: "hsl(var(--primary-lighter))",
+          dark: "hsl(var(--primary-dark))",
+          darker: "hsl(var(--primary-darker))",
+
         },
         success: {
           DEFAULT: "hsl(var(--success))",
