@@ -4,22 +4,114 @@ import cardOtpForm from "./views/card/cardOtpValidation.html?raw";
 import paymentWarning from "./views/shared/paymentWarning.html?raw";
 import paymentSuccess from "./views/shared/paymentSuccess.html?raw";
 
-
 class Card {
   private cardDetailsValues: { number: string; expiry: string; cvv: string };
   private cardPin: string;
+  private cardOtp: string;
   private contents: NodeListOf<Element>;
-  currentStep: number;
-  constructor() {
-    this.currentStep = 1;
+  private container: HTMLElement;
+  private closeModal: () => void;
+  private _currentStep: number;
+  constructor(container: HTMLElement, closeModal: () => void) {
+    this.container = container;
+    this.closeModal = closeModal
+    this._currentStep = 1;
     this.cardDetailsValues = {
       number: "",
       expiry: "",
       cvv: "",
     };
     this.cardPin = "";
+    this.cardOtp = "";
     this.contents = document.querySelectorAll(".content");
-    this.renderCardContent(this.currentStep);
+    this.renderCardContent();
+    this.attachInputListeners();
+  }
+
+  get currentStep(): number {
+    return this._currentStep;
+  }
+
+  set currentStep(step: number) {
+    this._currentStep = step;
+    this.renderCardContent();
+  }
+
+  attachInputListeners() {
+    // Add event listeners to the card input fields
+    const cardNumberInput = this.container.querySelector(
+      'input[name="number"]'
+    ) as HTMLInputElement;
+    const cardExpiryInput = this.container.querySelector(
+      'input[name="expiry"]'
+    ) as HTMLInputElement;
+    const cardCvvInput = this.container.querySelector(
+      'input[name="cvv"]'
+    ) as HTMLInputElement;
+    const button = this.container.querySelector(
+      ".details-form-button"
+    ) as HTMLButtonElement;
+    const formCard = document.querySelector("#checkoutcard");
+
+    const pinInputs = Array.from(
+      this.container.querySelectorAll(".pin-input")
+    ) as HTMLInputElement[];
+
+    const otpInput = this.container.querySelector(
+      ".otp-input"
+    ) as HTMLInputElement;
+    const otpButton = this.container.querySelector(
+      ".otp-button"
+    ) as HTMLButtonElement;
+      const closeBtn = this.container.querySelector(
+      ".success-button"
+    ) as HTMLButtonElement;
+
+    // CARD DETAIL EVENTS //
+    if (cardNumberInput) {
+      cardNumberInput.addEventListener("input", (e) =>
+        this.handleInputChange(e, button)
+      );
+    }
+
+    if (cardExpiryInput) {
+      cardExpiryInput.addEventListener("input", (e) =>
+        this.handleInputChange(e, button)
+      );
+    }
+
+    if (cardCvvInput) {
+      cardCvvInput.addEventListener("input", (e) =>
+        this.handleInputChange(e, button)
+      );
+    }
+
+    if (formCard) {
+      formCard.addEventListener("submit", (e) => this.handleSubmit(e));
+    }
+
+    // CARD PIN EVENTS //
+    pinInputs.forEach((input, index) => {
+      input.addEventListener("input", (event) =>
+        this.handlePinInputChange(event, index, pinInputs)
+      );
+      input.addEventListener("paste", (event) =>
+        this.handlePinPaste(event, pinInputs)
+      );
+    });
+
+    // CARD OTP EVENTS //
+    if (otpInput) {
+      otpInput.addEventListener("input", (e) =>
+        this.handleOtpInput(e, otpButton)
+      );
+    }
+    if (otpButton) {
+      otpButton.addEventListener("click", (e) => this.submitOtp(e));
+    }
+    if(closeBtn) {
+     closeBtn.addEventListener("click", () => this.closeModal())
+    }
   }
 
   clearNumber(value = "") {
@@ -94,6 +186,7 @@ class Card {
     this.cardPin = "";
     const target = event.target as HTMLInputElement;
     const value = target.value;
+
     if (value) {
       // Move to the next input field if there is a next input
       if (index < pinInputs.length - 1) {
@@ -108,7 +201,7 @@ class Card {
     if (this.cardPin.length === 4) {
       // move to next view after 2 secs
       setTimeout(() => {
-        this.renderCardContent(3);
+        this.currentStep = 3;
       }, 500);
     }
   }
@@ -134,16 +227,33 @@ class Card {
     if (this.cardPin.length === 4) {
       // move to next view after 2 secs
       setTimeout(() => {
-        this.renderCardContent(3);
+        this.currentStep = 3;
       }, 500);
     }
   }
 
-  handleSubmit(e: Event, currentStep: number) {
+  handleOtpInput(event: Event, button: HTMLButtonElement | null) {
+    const target = event.target as HTMLInputElement;
+    const { value } = target;
+    this.cardOtp = "";
+
+    this.cardOtp = value;
+
+    if (this.cardOtp.length > 3) {
+      if (button) {
+        button.removeAttribute("disabled");
+      }
+    }
+  }
+
+  submitOtp(e: Event) {
     e.preventDefault();
-    this.contents[0].innerHTML = this.renderCardContent(2);
+    this.currentStep = 5;
+  }
+
+  handleSubmit(e: Event) {
+    e.preventDefault();
     this.currentStep = 2;
-    console.log("submitted", this.contents[0].innerHTML);
     this.cardDetailsValues = {
       number: "",
       expiry: "",
@@ -151,54 +261,28 @@ class Card {
     };
   }
 
-  renderCardContent(step: number): string {
-    let content: string;
-    this.currentStep = step;
-    switch (step) {
+  private getCardStepContent() {
+    switch (this.currentStep) {
       case 1:
-        content = this.cardDetailsForm();
-        break;
+        return cardDetailsForm;
       case 2:
-        content = this.cardPinForm();
-        break;
+        return cardPinForm;
       case 3:
-        content = this.cardOtpForm();
-        break;
+        return cardOtpForm;
       case 4:
-        content = this.paymentWarning();
-        break;
+        return paymentWarning;
       case 5:
-        content = this.paymentSuccess();
-        break;
+        return paymentSuccess;
       default:
-        content = this.cardDetailsForm();
-        break;
+        return cardDetailsForm;
     }
+  }
 
+  renderCardContent() {
     if (this.contents[0]) {
-      this.contents[0].innerHTML = content;
+      this.contents[0].innerHTML = this.getCardStepContent();
+      this.attachInputListeners();
     }
-    return content;
-  }
-
-  cardDetailsForm(): string {
-    return cardDetailsForm;
-  }
-
-  cardPinForm(): string {
-    return cardPinForm;
-  }
-
-  cardOtpForm(): string {
-    return cardOtpForm;
-  }
-
-  paymentWarning(): string {
-    return paymentWarning;
-  }
-
-  paymentSuccess(): string {
-    return paymentSuccess;
   }
 }
 export default Card;

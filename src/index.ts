@@ -18,95 +18,24 @@ class CheckoutForm {
     this.modalContainer.innerHTML = template;
     document.body.appendChild(this.modalContainer);
     this.currentPaymentMethod = 0;
-    this.currentStep = 2;
+    this.currentStep = 1;
     this.container = document.querySelectorAll(".content")[0] as HTMLDivElement;
-    this.card = new Card();
+    this.card = new Card(this.container, () => this.closeModal());
     this.transfer = new Transfer();
     this.ussd = new Ussd();
     this.attachInputListeners();
   }
 
   attachInputListeners() {
-    // Add event listeners to the card input fields
-    const cardNumberInput = this.modalContainer.querySelector(
-      'input[name="number"]'
-    ) as HTMLInputElement;
-    const cardExpiryInput = this.modalContainer.querySelector(
-      'input[name="expiry"]'
-    ) as HTMLInputElement;
-    const cardCvvInput = this.modalContainer.querySelector(
-      'input[name="cvv"]'
-    ) as HTMLInputElement;
-    const button = this.modalContainer.querySelector(
-      ".details-form-button"
+    // Add event listeners
+    const closeBtn = this.modalContainer.querySelector(
+      ".success-button"
     ) as HTMLButtonElement;
-    const formCard = document.querySelector("#checkoutcard");
 
-    const pinInputs = Array.from(
-      this.modalContainer.querySelectorAll(".otp-input")
-    ) as HTMLInputElement[];
-
-    const banksInput = this.modalContainer.querySelector(
-      "#bank-search-input"
-    ) as HTMLInputElement;
-
-    // CARD DETAIL EVENTS //
-    if (cardNumberInput) {
-      cardNumberInput.addEventListener("input", (e) =>
-        this.card.handleInputChange(e, button)
-      );
-    }
-
-    if (cardExpiryInput) {
-      cardExpiryInput.addEventListener("input", (e) =>
-        this.card.handleInputChange(e, button)
-      );
-    }
-
-    if (cardCvvInput) {
-      cardCvvInput.addEventListener("input", (e) =>
-        this.card.handleInputChange(e, button)
-      );
-    }
-
-    if (formCard) {
-      formCard.addEventListener("submit", (e) =>
-        this.card.handleSubmit(e, this.currentStep)
-      );
-    }
-
-    // CARD PIN EVENTS //
-    pinInputs.forEach((input, index) => {
-      input.addEventListener("input", (event) =>
-        this.card.handlePinInputChange(event, index, pinInputs)
-      );
-      input.addEventListener("paste", (event) =>
-        this.card.handlePinPaste(event, pinInputs)
-      );
-    });
-
-    // USSD EVENTS //
-    if (banksInput) {
-      banksInput.addEventListener("input", () =>
-        this.ussd.searchBanksOnInput(
-          banksInput,
-          banksInput.nextElementSibling as HTMLElement
-        )
-      );
-
-      banksInput.addEventListener("focus", () =>
-        this.ussd.openSearchOnFocus(
-          banksInput,
-          banksInput.nextElementSibling as HTMLElement
-        )
-      );
-      this.modalContainer.addEventListener("click", (e) =>
-        this.ussd.closeSearchOptionsOutsideFocus(
-          e,
-          banksInput,
-          banksInput.nextElementSibling as HTMLElement
-        )
-      );
+    if (closeBtn) {
+      closeBtn.addEventListener("click", () => {
+        document.body.removeChild(this.modalContainer);
+      });
     }
   }
 
@@ -121,14 +50,14 @@ class CheckoutForm {
             if (e.currentTarget.dataset.tab) {
               const tabIndex = parseInt(e.currentTarget.dataset.tab);
               this.setCurrentPaymentMethod(tabIndex);
-              container.innerHTML = this.renderPaymentMethodContent();
-              this.attachInputListeners(); // Reattach listeners after rendering
+              this.renderPaymentMethodContent();
+              this.attachInputListeners();
             }
           }
         });
       });
     }
-    container!.innerHTML = this.renderPaymentMethodContent();
+    this.renderPaymentMethodContent();
     this.attachInputListeners();
     this.setCurrentPaymentMethod(this.currentPaymentMethod);
   }
@@ -137,13 +66,13 @@ class CheckoutForm {
     const renderContent = () => {
       switch (this.currentPaymentMethod) {
         case 0:
-          return this.card.renderCardContent(1);
+          return this.card.renderCardContent();
         case 1:
           return this.transfer.renderTransferContent(1);
         case 2:
-          return this.ussd.renderUssdContent(3);
+          return this.ussd.renderUssdContent(1);
         default:
-          return this.card.renderCardContent(1);
+          return this.card.renderCardContent();
       }
     };
     return renderContent();
@@ -163,9 +92,11 @@ class CheckoutForm {
     }
     if (contents[index]) {
       contents[index].classList.add("active");
-      contents[index].innerHTML =
-        this.renderPaymentMethodContent() as unknown as string;
     }
+  }
+
+  closeModal() {
+    document.body.removeChild(this.modalContainer);
   }
 
   setup(): void {
@@ -259,16 +190,6 @@ class CheckoutForm {
 
     if (warningText) {
       this.displayPaymentWarningText(this.currentPaymentMethod, warningText);
-    }
-
-    // ----------------------------
-    // Event listeners for modal actions
-    const closeBtn = document.getElementById("closeBtn");
-
-    if (closeBtn) {
-      closeBtn.addEventListener("click", () => {
-        document.body.removeChild(this.modalContainer);
-      });
     }
   }
   private displayPaymentWarningText(method: number, warningText: Element) {

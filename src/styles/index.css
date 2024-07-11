@@ -156,7 +156,7 @@
   }
 
   .otp-button {
-    @apply bg-success text-white rounded-lg h-full px-6 font-semibold;
+    @apply bg-success text-white rounded-lg h-full px-6 font-semibold disabled:opacity-80;
   }
 
   .otp-text {
