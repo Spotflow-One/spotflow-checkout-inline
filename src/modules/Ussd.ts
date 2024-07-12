@@ -1,7 +1,7 @@
-import selectBanks from "./views/ussd/selectbanks.html?raw";
-import viewUssdCode from "./views/ussd/viewUssdCode.html?raw";
-import paymentWarning from "./views/shared/paymentWarning.html?raw";
-import paymentSuccess from "./views/shared/paymentSuccess.html?raw";
+import selectBanks from "../views/ussd/selectbanks.html?raw";
+import viewUssdCode from "../views/ussd/viewUssdCode.html?raw";
+import paymentWarning from "../views/shared/paymentWarning.html?raw";
+import paymentSuccess from "../views/shared/paymentSuccess.html?raw";
 
 type BankOption = {
   name: string;

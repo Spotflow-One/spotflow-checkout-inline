@@ -12,6 +12,8 @@
 
     --success: 151, 58%, 46%;
 
+    --error: 0, 74%, 48%;
+
     --common: 60, 4%, 43%;
 
     --grey: 218, 15%, 65%;
@@ -28,8 +30,7 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
-
-  input:focus {
+  input:focus, button:focus{
     outline: none;
   }
 }
@@ -38,14 +39,50 @@
   animation: text-underline-animation 300ms linear forwards;
 }
 
-.option:hover {
-  background-color: #f1f1f1;
+#toast-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  width: 300px;
+  z-index: 9999;
 }
 
-@layer base {
-  button {
-    @apply focus:outline-none;
-  }
+.toast {
+  display: flex;
+  align-items: center;
+  padding: 15px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  opacity: 0;
+  transform: translateY(-50px);
+  transition: opacity 0.5s, transform 0.5s;
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1); ;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+
+.toast.success {
+  background-color: hsl(var(--success));
+  color: #ffffff;
+}
+
+.toast.error {
+  background-color: hsl(var(--error));
+  color: #ffffff;
+}
+
+
+.toast .close-btn {
+  margin-left: auto;
+  cursor: pointer;
+  color: #ffffff;
+}
+
+@layer components {
 
   /* utils */
   /* --------------------------- */
@@ -65,6 +102,9 @@
     @apply px-0 md:px-7 py-[18px] md:py-7;
   }
 
+  .content-heading {
+    @apply text-center pt-2 md:pt-0 text-grey-400 font-semibold text-xl;
+  }
   /* --------------------------- */
 
   .payment-options {
@@ -88,7 +128,7 @@
   }
 
   .main {
-    @apply md:py-8 px-4 md:px-6 w-[calc(100%-250px)];
+    @apply md:py-6 px-4 md:px-6 w-[calc(100%-250px)];
   }
 
   .header-container {
@@ -103,9 +143,7 @@
     @apply block;
   }
 
-  .content-heading {
-    @apply text-center pt-2 md:pt-0 text-grey-400 font-semibold text-xl;
-  }
+
 
   .header-chip {
     @apply py-0 px-1 bg-success text-white rounded-[0.25rem] h-[1.4375rem] text-xs whitespace-nowrap flex items-center justify-center;
@@ -132,7 +170,7 @@
   }
 
   .details-form-button {
-    @apply w-full p-4 inline-flex justify-center rounded-lg text-sm font-semibold text-white focus:outline-none bg-primary disabled:text-primary-light disabled:bg-primary-lighter;
+    @apply w-full h-[50px] inline-flex justify-center items-center rounded-lg text-sm font-semibold text-white focus:outline-none bg-primary disabled:text-primary-light disabled:bg-primary-lighter;
   }
 
   .pin-container {
@@ -204,5 +242,9 @@
 
   .copy-code-button {
     @apply mb-4 text-white rounded-lg p-4 text-center text-xl font-semibold bg-primary justify-center gap-2 flex items-center w-3/5 mx-auto;
+  }
+
+  .spinner {
+    @apply animate-spin h-8 w-8 mr-3 fill-white;
   }
 }

@@ -1,8 +1,10 @@
-import cardDetailsForm from "./views/card/cardDetailsForm.html?raw";
-import cardPinForm from "./views/card/cardPinForm.html?raw";
-import cardOtpForm from "./views/card/cardOtpValidation.html?raw";
-import paymentWarning from "./views/shared/paymentWarning.html?raw";
-import paymentSuccess from "./views/shared/paymentSuccess.html?raw";
+import cardDetailsForm from "../views/card/cardDetailsForm.html?raw";
+import cardPinForm from "../views/card/cardPinForm.html?raw";
+import cardOtpForm from "../views/card/cardOtpValidation.html?raw";
+import paymentWarning from "../views/shared/paymentWarning.html?raw";
+import paymentSuccess from "../views/shared/paymentSuccess.html?raw";
+import { createCardPayment } from "../api";
+import { showToast, generatePaymentReference } from "../utils";
 
 class Card {
   private cardDetailsValues: { number: string; expiry: string; cvv: string };
@@ -11,10 +13,19 @@ class Card {
   private contents: NodeListOf<Element>;
   private container: HTMLElement;
   private closeModal: () => void;
+  private email: string;
+  private token: string;
   private _currentStep: number;
-  constructor(container: HTMLElement, closeModal: () => void) {
+  constructor(
+    container: HTMLElement,
+    closeModal: () => void,
+    token: string,
+    email: string
+  ) {
     this.container = container;
-    this.closeModal = closeModal
+    this.closeModal = closeModal;
+    this.token = token;
+    this.email = email;
     this._currentStep = 1;
     this.cardDetailsValues = {
       number: "",
@@ -25,6 +36,7 @@ class Card {
     this.cardOtp = "";
     this.contents = document.querySelectorAll(".content");
     this.renderCardContent();
+    // generatePaymentReference();
     this.attachInputListeners();
   }
 
@@ -63,7 +75,7 @@ class Card {
     const otpButton = this.container.querySelector(
       ".otp-button"
     ) as HTMLButtonElement;
-      const closeBtn = this.container.querySelector(
+    const closeBtn = this.container.querySelector(
       ".success-button"
     ) as HTMLButtonElement;
 
@@ -109,8 +121,8 @@ class Card {
     if (otpButton) {
       otpButton.addEventListener("click", (e) => this.submitOtp(e));
     }
-    if(closeBtn) {
-     closeBtn.addEventListener("click", () => this.closeModal())
+    if (closeBtn) {
+      closeBtn.addEventListener("click", () => this.closeModal());
     }
   }
 
@@ -251,14 +263,76 @@ class Card {
     this.currentStep = 5;
   }
 
-  handleSubmit(e: Event) {
+  unFormatCreditCardNumber(value: string): string {
+    if (!value) {
+      return value;
+    }
+
+    const clearValue = this.clearNumber(value);
+    const nextValue = `${clearValue.slice(0, 4)}${clearValue.slice(
+      4,
+      8
+    )}${clearValue.slice(8, 12)}${clearValue.slice(12, 16)}`;
+    return nextValue.trim();
+  }
+
+  async handleSubmit(e: Event) {
     e.preventDefault();
-    this.currentStep = 2;
-    this.cardDetailsValues = {
-      number: "",
-      expiry: "",
-      cvv: "",
+    const spin = this.container.querySelector(".spinner");
+    const buttonText = this.container.querySelector(
+      "#details-form-button-text"
+    );
+
+    const payload = {
+      amount: 14.99,
+      channel: "card",
+      currency: "USD",
+      customer: {
+        email: this.email,
+      },
+      reference: generatePaymentReference(),
+      card: {
+        pan: this.unFormatCreditCardNumber(this.cardDetailsValues.number),
+        cvv: this.cardDetailsValues.cvv,
+        expiryMonth: this.cardDetailsValues?.expiry.split("/")[0].trim(),
+        expiryYear: this.cardDetailsValues?.expiry.split("/")[1].trim(),
+      },
     };
+
+    // show loading spinner
+    if (spin && buttonText) {
+      spin.classList.remove("hidden");
+      buttonText.classList.add("hidden");
+    }
+    // send card details
+    const response = createCardPayment(this.token, payload);
+
+    response
+      .then((data) => {
+        console.log("Fetched fruits:", data);
+        if (data.status === "failed") {
+          if (data.providerMessage) {
+            showToast(data.providerMessage, "error");
+          } else {
+            showToast("Payment failed", "error");
+          }
+        } else {
+          showToast("Payment Created!", "success");
+        this.currentStep = 2
+        }
+
+      })
+      .catch((error) => {
+        showToast("Payment failed", "error")
+        console.log("Fetched fruits:", error);
+      })
+      .finally(() => {
+        // remove loading spinner
+        if (spin && buttonText) {
+          spin.classList.add("hidden");
+          buttonText.classList.remove("hidden");
+        }
+      });
   }
 
   private getCardStepContent() {

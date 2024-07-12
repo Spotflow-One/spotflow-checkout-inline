@@ -1,10 +1,12 @@
+import { error } from "console";
+
 /** @type {import('tailwindcss').Config} */
 export default {
   content: ["./src/**/*.{html,js,ts,jsx,tsx}"],
   theme: {
     extend: {
       screens: {
-        'max-sm': {'max': '639px'},
+        "max-sm": { max: "639px" },
       },
       colors: {
         primary: {
@@ -13,10 +15,12 @@ export default {
           lighter: "hsl(var(--primary-lighter))",
           dark: "hsl(var(--primary-dark))",
           darker: "hsl(var(--primary-darker))",
-
         },
         success: {
           DEFAULT: "hsl(var(--success))",
+        },
+        error: {
+          DEFAULT: "hsl(var(--error))",
         },
         common: {
           DEFAULT: "hsl(var(--common))",
@@ -31,7 +35,6 @@ export default {
           600: "hsl(var(--grey-600))",
           700: "hsl(var(--grey-700))",
           800: "hsl(var(--grey-800))",
-
         },
       },
     },
