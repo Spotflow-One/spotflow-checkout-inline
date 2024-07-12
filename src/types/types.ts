@@ -35,12 +35,6 @@ export type CardDetails = {
     reference: string;
   };
   
-  export type CardPaymentRequest = CardPaymentRequestPayload;
-  
-  export type AuthorizeCardPaymentRequest = AuthorizeCardPaymentRequestPayload;
-  
-  export type ValidateCardPaymentRequest = ValidateCardPaymentRequestPayload;
-  
   export type PaymentResponseData = {
     id: string;
     reference: string;

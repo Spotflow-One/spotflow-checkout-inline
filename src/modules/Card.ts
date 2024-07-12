@@ -3,8 +3,20 @@ import cardPinForm from "../views/card/cardPinForm.html?raw";
 import cardOtpForm from "../views/card/cardOtpValidation.html?raw";
 import paymentWarning from "../views/shared/paymentWarning.html?raw";
 import paymentSuccess from "../views/shared/paymentSuccess.html?raw";
-import { createCardPayment } from "../api";
-import { showToast, generatePaymentReference } from "../utils";
+import {
+  authorizeCardPayment,
+  createCardPayment,
+  validateCardPayment,
+} from "../api";
+import {
+  showToast,
+  generatePaymentReference,
+  formatCreditCardNumber,
+  formatExpirationDate,
+  formatCVC,
+  unFormatCreditCardNumber,
+} from "../utils";
+import loaderGif from "../assets/loader.gif";
 
 class Card {
   private cardDetailsValues: { number: string; expiry: string; cvv: string };
@@ -16,6 +28,7 @@ class Card {
   private email: string;
   private token: string;
   private _currentStep: number;
+  private activeRef: string;
   constructor(
     container: HTMLElement,
     closeModal: () => void,
@@ -34,9 +47,9 @@ class Card {
     };
     this.cardPin = "";
     this.cardOtp = "";
+    this.activeRef = "";
     this.contents = document.querySelectorAll(".content");
     this.renderCardContent();
-    // generatePaymentReference();
     this.attachInputListeners();
   }
 
@@ -126,51 +139,17 @@ class Card {
     }
   }
 
-  clearNumber(value = "") {
-    return value.replace(/\D+/g, "");
-  }
-
-  formatCreditCardNumber(value: string): string {
-    if (!value) {
-      return value;
-    }
-
-    const clearValue = this.clearNumber(value);
-    const nextValue = `${clearValue.slice(0, 4)} ${clearValue.slice(
-      4,
-      8
-    )} ${clearValue.slice(8, 12)} ${clearValue.slice(12, 16)}`;
-    return nextValue.trim();
-  }
-
-  formatCVC(value: string): string {
-    const clearValue = this.clearNumber(value);
-    const maxLength = 3;
-
-    return clearValue.slice(0, maxLength);
-  }
-
-  formatExpirationDate(value: string): string {
-    const clearValue = this.clearNumber(value);
-
-    if (clearValue.length >= 3) {
-      return `${clearValue.slice(0, 2)} / ${clearValue.slice(2, 4)}`;
-    }
-
-    return clearValue;
-  }
-
   handleInputChange(event: Event, button: HTMLButtonElement | null) {
     const target = event.target as HTMLInputElement;
     const { name, value } = target;
     let formattedValue = value;
 
     if (name === "number") {
-      formattedValue = this.formatCreditCardNumber(value);
+      formattedValue = formatCreditCardNumber(value);
     } else if (name === "expiry") {
-      formattedValue = this.formatExpirationDate(value);
+      formattedValue = formatExpirationDate(value);
     } else if (name === "cvv") {
-      formattedValue = this.formatCVC(value);
+      formattedValue = formatCVC(value);
     }
 
     this.cardDetailsValues = {
@@ -190,6 +169,53 @@ class Card {
     }
   }
 
+  private handlePinRequest() {
+    const loader = this.container.querySelector("#loader");
+    const mainContent = this.container.querySelector("#pin-content");
+
+    if (this.cardPin.length === 4) {
+      const payload = {
+        authorization: {
+          pin: this.cardPin,
+        },
+        reference: this.activeRef,
+      };
+
+      setTimeout(() => {
+        // show loading content
+        if (loader && mainContent) {
+          loader.classList.remove("hidden");
+          loader.querySelector("img")?.setAttribute("src", loaderGif);
+          mainContent.classList.add("hidden");
+        }
+        // send authorization
+        const response = authorizeCardPayment(this.token, payload);
+        response
+          .then((data) => {
+            if (data.status === "failed") {
+              if (data.providerMessage) {
+                showToast(data.providerMessage, "error");
+              } else {
+                showToast("Payment failed", "error");
+              }
+            } else {
+              showToast("Payment Authorized!", "success");
+              this.currentStep = 3;
+            }
+          })
+          .catch((error) => {
+            showToast(error.message, "error");
+          })
+          .finally(() => {
+            // remove loading spinner
+            if (loader && mainContent) {
+              loader.classList.add("hidden");
+              mainContent.classList.remove("hidden");
+            }
+          });
+      }, 500);
+    }
+  }
   handlePinInputChange(
     event: Event,
     index: number,
@@ -210,12 +236,7 @@ class Card {
     }
     this.cardPin = pinInputs.map((input) => input.value).join("");
 
-    if (this.cardPin.length === 4) {
-      // move to next view after 2 secs
-      setTimeout(() => {
-        this.currentStep = 3;
-      }, 500);
-    }
+    this.handlePinRequest();
   }
 
   handlePinPaste(event: ClipboardEvent, pinInputs: HTMLInputElement[]) {
@@ -236,12 +257,7 @@ class Card {
     }
     this.cardPin = pinInputs.map((input) => input.value).join("");
 
-    if (this.cardPin.length === 4) {
-      // move to next view after 2 secs
-      setTimeout(() => {
-        this.currentStep = 3;
-      }, 500);
-    }
+    this.handlePinRequest();
   }
 
   handleOtpInput(event: Event, button: HTMLButtonElement | null) {
@@ -260,20 +276,46 @@ class Card {
 
   submitOtp(e: Event) {
     e.preventDefault();
-    this.currentStep = 5;
-  }
+    const loader = this.container.querySelector("#loader");
+    const mainContent = this.container.querySelector("#otp-content");
 
-  unFormatCreditCardNumber(value: string): string {
-    if (!value) {
-      return value;
+    const payload = {
+      authorization: {
+        otp: this.cardPin,
+      },
+      reference: this.activeRef,
+    };
+    // show loading spinner
+    if (loader && mainContent) {
+      loader.classList.remove("hidden");
+      loader.querySelector("img")?.setAttribute("src", loaderGif);
+      mainContent.classList.add("hidden");
     }
+    // send card details
+    const response = validateCardPayment(this.token, payload);
 
-    const clearValue = this.clearNumber(value);
-    const nextValue = `${clearValue.slice(0, 4)}${clearValue.slice(
-      4,
-      8
-    )}${clearValue.slice(8, 12)}${clearValue.slice(12, 16)}`;
-    return nextValue.trim();
+    response
+      .then((data) => {
+        if (data.status === "failed") {
+          if (data.providerMessage) {
+            showToast(data.providerMessage, "error");
+          } else {
+            showToast("Payment failed", "error");
+          }
+        } else if (data.status === "successful") {
+          this.currentStep = 5;
+        }
+      })
+      .catch((error) => {
+        showToast(error.message, "error");
+      })
+      .finally(() => {
+        // remove loading spinner
+        if (loader && mainContent) {
+          loader.classList.add("hidden");
+          mainContent.classList.remove("hidden");
+        }
+      });
   }
 
   async handleSubmit(e: Event) {
@@ -292,7 +334,7 @@ class Card {
       },
       reference: generatePaymentReference(),
       card: {
-        pan: this.unFormatCreditCardNumber(this.cardDetailsValues.number),
+        pan: unFormatCreditCardNumber(this.cardDetailsValues.number),
         cvv: this.cardDetailsValues.cvv,
         expiryMonth: this.cardDetailsValues?.expiry.split("/")[0].trim(),
         expiryYear: this.cardDetailsValues?.expiry.split("/")[1].trim(),
@@ -309,22 +351,20 @@ class Card {
 
     response
       .then((data) => {
-        console.log("Fetched fruits:", data);
         if (data.status === "failed") {
           if (data.providerMessage) {
             showToast(data.providerMessage, "error");
           } else {
             showToast("Payment failed", "error");
           }
-        } else {
+        } else if (data.status === "pending_authorization") {
           showToast("Payment Created!", "success");
-        this.currentStep = 2
+          this.activeRef = data.reference;
+          this.currentStep = 2;
         }
-
       })
       .catch((error) => {
-        showToast("Payment failed", "error")
-        console.log("Fetched fruits:", error);
+        showToast(error.message, "error");
       })
       .finally(() => {
         // remove loading spinner

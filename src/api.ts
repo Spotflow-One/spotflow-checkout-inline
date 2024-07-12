@@ -1,5 +1,9 @@
-import { PaymentRequestPayload, PaymentResponseData } from "./types/types";
-import { showToast } from "./utils";
+import {
+  PaymentRequestPayload,
+  PaymentResponseData,
+  AuthorizeCardPaymentRequestPayload,
+  ValidateCardPaymentRequestPayload,
+} from "./types/types";
 
 class FetchError extends Error {
   constructor(message: string, public status: number) {
@@ -26,22 +30,28 @@ const getHeaders = (token: string): Headers => {
   return headers;
 };
 
+const baseurl = "http://dev-api.spotflow.one/api/v1";
+
 export const createCardPayment = async (
   token: string,
   payload: PaymentRequestPayload
 ): Promise<PaymentResponseData> => {
-  const url = "http://dev-api.spotflow.one/api/v1/payments";
   try {
     const headers = getHeaders(token);
 
-    const response = await fetch(url, {
+    const response = await fetch(`${baseurl}/payments`, {
       method: "POST",
       headers: headers,
       body: JSON.stringify(payload),
     });
 
     if (!response.ok) {
-      throw new FetchError("Network response was not ok", response.status);
+      const errorData = await response.json();
+      if (errorData.message) {
+        throw new FetchError(errorData.message, response.status);
+      } else {
+        throw new FetchError("Network response was not ok", response.status);
+      }
     }
 
     const responseData: PaymentResponseData = await response.json();
@@ -49,17 +59,82 @@ export const createCardPayment = async (
   } catch (error) {
     if (error instanceof FetchError) {
       console.error(`FetchError: ${error.message} (status: ${error.status})`);
-      showToast(
-        `FetchError: ${error.message} (status: ${error.status})`,
-        "error",
-        5000
-      );
     } else if (error instanceof AuthorizationError) {
       console.error(`AuthorizationError: ${error.message}`);
-      showToast(`AuthorizationError: ${error.message}`, "error", 5000);
     } else {
       console.error(`Unexpected error: ${error}`);
-      showToast(`Unexpected error: ${error}`, "error", 5000);
+    }
+    throw error; // Re-throw the error after logging it
+  }
+};
+
+export const authorizeCardPayment = async (
+  token: string,
+  payload: AuthorizeCardPaymentRequestPayload
+): Promise<PaymentResponseData> => {
+  try {
+    const headers = getHeaders(token);
+
+    const response = await fetch(`${baseurl}/payments/authorize`, {
+      method: "POST",
+      headers: headers,
+      body: JSON.stringify(payload),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      if (errorData.message) {
+        throw new FetchError(errorData.message, response.status);
+      } else {
+        throw new FetchError("Network response was not ok", response.status);
+      }
+    }
+
+    const responseData: PaymentResponseData = await response.json();
+    return responseData;
+  } catch (error) {
+    if (error instanceof FetchError) {
+      console.error(`FetchError: ${error.message} (status: ${error.status})`);
+    } else if (error instanceof AuthorizationError) {
+      console.error(`AuthorizationError: ${error.message}`);
+    } else {
+      console.error(`Unexpected error: ${error}`);
+    }
+    throw error; // Re-throw the error after logging it
+  }
+};
+
+export const validateCardPayment = async (
+  token: string,
+  payload: ValidateCardPaymentRequestPayload
+): Promise<PaymentResponseData> => {
+  try {
+    const headers = getHeaders(token);
+
+    const response = await fetch(`${baseurl}/payments/validate`, {
+      method: "POST",
+      headers: headers,
+      body: JSON.stringify(payload),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      if (errorData.message) {
+        throw new FetchError(errorData.message, response.status);
+      } else {
+        throw new FetchError("Network response was not ok", response.status);
+      }
+    }
+
+    const responseData: PaymentResponseData = await response.json();
+    return responseData;
+  } catch (error) {
+    if (error instanceof FetchError) {
+      console.error(`FetchError: ${error.message} (status: ${error.status})`);
+    } else if (error instanceof AuthorizationError) {
+      console.error(`AuthorizationError: ${error.message}`);
+    } else {
+      console.error(`Unexpected error: ${error}`);
     }
     throw error; // Re-throw the error after logging it
   }
