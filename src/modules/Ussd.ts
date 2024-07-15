@@ -2,28 +2,36 @@ import selectBanks from "../views/ussd/selectbanks.html?raw";
 import viewUssdCode from "../views/ussd/viewUssdCode.html?raw";
 import paymentWarning from "../views/shared/paymentWarning.html?raw";
 import paymentSuccess from "../views/shared/paymentSuccess.html?raw";
+import { banks } from "../data";
+import { BankOption } from "../types/types";
 
-type BankOption = {
-  name: string;
-  code: string;
-};
+
 class Ussd {
+  // private container: HTMLElement;
+  private contents: NodeListOf<Element>;
   private banks: BankOption[];
-  constructor() {
-    this.banks = [
-      {
-        name: "First City Monument Bank",
-        code: "*329#",
-      },
-      {
-        name: "First Bank",
-        code: "*268#",
-      },
-    ];
+  private _currentStep: number;
+  constructor(
+    // container?: HTMLElement,
+  ) {
+    // this.container = container;
+    this.contents = document.querySelectorAll(".content");
+    this.banks = banks
+    this._currentStep = 1;
+    this.renderUssdContent();
   }
 
-  renderUssdContent(step: number) {
-    switch (step) {
+  get currentStep(): number {
+    return this._currentStep;
+  }
+
+  set currentStep(step: number) {
+    this._currentStep = step;
+    this.renderUssdContent();
+  }
+
+  private getUssdStepContent() {
+    switch (this.currentStep) {
       case 1:
         return selectBanks;
       case 2:
@@ -34,6 +42,13 @@ class Ussd {
         return paymentSuccess;
       default:
         return selectBanks;
+    }
+  }
+
+
+  renderUssdContent() {
+    if (this.contents[2]) {
+      this.contents[2].innerHTML = this.getUssdStepContent();
     }
   }
 

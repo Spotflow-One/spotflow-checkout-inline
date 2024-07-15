@@ -38,9 +38,20 @@ class CheckoutForm {
       ".success-button"
     ) as HTMLButtonElement;
 
+    const closeM = this.modalContainer.querySelector(
+      "#close-modal"
+    ) as HTMLButtonElement;
+
     if (closeBtn) {
       this.cleanup();
       closeBtn.addEventListener("click", () => {
+        document.body.removeChild(this.modalContainer);
+      });
+    }
+
+    if (closeM) {
+      this.cleanup();
+      closeM.addEventListener("click", () => {
         document.body.removeChild(this.modalContainer);
       });
     }
@@ -108,7 +119,7 @@ class CheckoutForm {
         case 1:
           return this.transfer.renderTransferContent();
         case 2:
-          return this.ussd.renderUssdContent(1);
+          return this.ussd.renderUssdContent();
         default:
           return this.card.renderCardContent();
       }
@@ -137,10 +148,6 @@ class CheckoutForm {
     // Stop timer
     if (this.transfer) {
       this.transfer.destroyTimer();
-    }
-
-    if (this.currentPaymentMethod !== 1) {
-      this.transfer.stopPolling();
     }
   }
 
