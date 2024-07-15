@@ -1,8 +1,9 @@
 import {
-  PaymentRequestPayload,
+  CardPaymentRequestPayload,
   PaymentResponseData,
   AuthorizeCardPaymentRequestPayload,
   ValidateCardPaymentRequestPayload,
+  PaymentRequestPayload,
 } from "./types/types";
 
 class FetchError extends Error {
@@ -34,7 +35,7 @@ const baseurl = "http://dev-api.spotflow.one/api/v1";
 
 export const createCardPayment = async (
   token: string,
-  payload: PaymentRequestPayload
+  payload: CardPaymentRequestPayload
 ): Promise<PaymentResponseData> => {
   try {
     const headers = getHeaders(token);
@@ -115,6 +116,79 @@ export const validateCardPayment = async (
       method: "POST",
       headers: headers,
       body: JSON.stringify(payload),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      if (errorData.message) {
+        throw new FetchError(errorData.message, response.status);
+      } else {
+        throw new FetchError("Network response was not ok", response.status);
+      }
+    }
+
+    const responseData: PaymentResponseData = await response.json();
+    return responseData;
+  } catch (error) {
+    if (error instanceof FetchError) {
+      console.error(`FetchError: ${error.message} (status: ${error.status})`);
+    } else if (error instanceof AuthorizationError) {
+      console.error(`AuthorizationError: ${error.message}`);
+    } else {
+      console.error(`Unexpected error: ${error}`);
+    }
+    throw error; // Re-throw the error after logging it
+  }
+};
+
+export const createTransferPayment = async (
+  token: string,
+  payload: PaymentRequestPayload
+): Promise<PaymentResponseData> => {
+  try {
+    const headers = getHeaders(token);
+
+    const response = await fetch(`${baseurl}/payments`, {
+      method: "POST",
+      headers: headers,
+      body: JSON.stringify(payload),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      if (errorData.message) {
+        throw new FetchError(errorData.message, response.status);
+      } else {
+        throw new FetchError("Network response was not ok", response.status);
+      }
+    }
+
+    const responseData: PaymentResponseData = await response.json();
+    return responseData;
+  } catch (error) {
+    if (error instanceof FetchError) {
+      console.error(`FetchError: ${error.message} (status: ${error.status})`);
+    } else if (error instanceof AuthorizationError) {
+      console.error(`AuthorizationError: ${error.message}`);
+    } else {
+      console.error(`Unexpected error: ${error}`);
+    }
+    throw error; // Re-throw the error after logging it
+  }
+};
+
+export const verifyPaymentTransfer = async (
+  token: string,
+  reference: string,
+  signal: AbortSignal
+): Promise<PaymentResponseData> => {
+  try {
+    const headers = getHeaders(token);
+
+    const response = await fetch(`${baseurl}/payments/verify?reference=${reference}`, {
+      method: "GET",
+      headers: headers,
+      signal
     });
 
     if (!response.ok) {

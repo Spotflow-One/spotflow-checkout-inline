@@ -11,9 +11,11 @@ class CheckoutForm {
   currentPaymentMethod: number;
   currentStep: number;
   container: HTMLDivElement;
-  card: Card;
-  transfer: Transfer;
-  ussd: Ussd;
+  card!: Card;
+  transfer!: Transfer;
+  ussd!: Ussd;
+  merchantKey: string;
+  email: string;
   constructor(
     merchantKey: string = "sk_test_63c4799e3b8e450cae1b78b687d473b8",
     email: string = "ekiirah@gmail.com"
@@ -24,16 +26,10 @@ class CheckoutForm {
     this.currentPaymentMethod = 0;
     this.currentStep = 1;
     this.container = document.querySelectorAll(".content")[0] as HTMLDivElement;
-    this.card = new Card(
-      this.container,
-      () => this.closeModal(),
-      merchantKey,
-      email
-    );
-    this.transfer = new Transfer();
-    this.ussd = new Ussd();
+    this.merchantKey = merchantKey;
+    this.email = email;
+    this.updatePaymentMethodView(this.merchantKey, this.email);
     this.attachInputListeners();
-
   }
 
   attachInputListeners() {
@@ -43,12 +39,11 @@ class CheckoutForm {
     ) as HTMLButtonElement;
 
     if (closeBtn) {
+      this.cleanup();
       closeBtn.addEventListener("click", () => {
         document.body.removeChild(this.modalContainer);
       });
     }
-
-
   }
 
   displayTabLayout() {
@@ -61,7 +56,9 @@ class CheckoutForm {
           if (e.currentTarget instanceof HTMLElement) {
             if (e.currentTarget.dataset.tab) {
               const tabIndex = parseInt(e.currentTarget.dataset.tab);
+              this.updatePaymentMethodView(this.merchantKey, this.email);
               this.setCurrentPaymentMethod(tabIndex);
+              this.cleanup();
               this.renderPaymentMethodContent();
               this.attachInputListeners();
             }
@@ -69,9 +66,38 @@ class CheckoutForm {
         });
       });
     }
+    this.updatePaymentMethodView(this.merchantKey, this.email);
     this.renderPaymentMethodContent();
     this.attachInputListeners();
     this.setCurrentPaymentMethod(this.currentPaymentMethod);
+  }
+
+  private updatePaymentMethodView(merchantKey: string, email: string) {
+    switch (this.currentPaymentMethod) {
+      case 0:
+        return (this.card = new Card(
+          this.modalContainer,
+          () => this.closeModal(),
+          merchantKey,
+          email
+        ));
+      case 1:
+        return (this.transfer = new Transfer(
+          this.modalContainer,
+          () => this.closeModal(),
+          merchantKey,
+          email
+        ));
+      case 2:
+        return (this.ussd = new Ussd());
+      default:
+        return (this.card = new Card(
+          this.modalContainer,
+          () => this.closeModal(),
+          merchantKey,
+          email
+        ));
+    }
   }
 
   renderPaymentMethodContent() {
@@ -80,7 +106,7 @@ class CheckoutForm {
         case 0:
           return this.card.renderCardContent();
         case 1:
-          return this.transfer.renderTransferContent(1);
+          return this.transfer.renderTransferContent();
         case 2:
           return this.ussd.renderUssdContent(1);
         default:
@@ -104,6 +130,17 @@ class CheckoutForm {
     }
     if (contents[index]) {
       contents[index].classList.add("active");
+    }
+  }
+
+  private cleanup() {
+    // Stop timer
+    if (this.transfer) {
+      this.transfer.destroyTimer();
+    }
+
+    if (this.currentPaymentMethod !== 1) {
+      this.transfer.stopPolling();
     }
   }
 

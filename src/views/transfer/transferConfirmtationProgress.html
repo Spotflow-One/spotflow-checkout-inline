@@ -1,3 +1,49 @@
-<div class="progress-container">
-    <div class="progress-bar" id="progress-bar"></div>
+<div id="trasferConfirmationProgress">
+  <div class="box-container">
+    <div class="text-center mt-7 w-4/5 mx-auto">
+      <h5
+        class="text-center text-grey-400 w-4/5 mx-auto mt-4 mb-7 flex text-xl"
+      >
+        We’re waiting to confirm your transfer. This can take a few minutes
+      </h5>
+
+      <div class="container-center gap-2 pb-10">
+        <div class="relative">
+          <div
+            class="relative h-9 w-9 rounded-full border border-dashed border-grey-200"
+          ></div>
+          <p
+            class="text-sm absolute -bottom-[25px] right-2/4 translate-x-2/4 text-grey-100"
+          >
+            Sent
+          </p>
+        </div>
+        <div class="w-4/5">
+          <div class="progress-container">
+            <div class="progress-bar"></div>
+          </div>
+        </div>
+        <div class="relative">
+          <div
+            class="relative h-9 w-9 rounded-full border border-dashed border-grey-200"
+          ></div>
+          <p
+            class="text-sm absolute -bottom-[25px] right-2/4 translate-x-2/4 text-grey-100"
+          >
+            Received
+          </p>
+        </div>
+      </div>
+      <div class="mt-10 mx-[18px]">
+        <button class="warning-button w-full cursor-text">
+          Please wait for <span id="ctd-timer"> </span> minutes
+        </button>
+      </div>
+      <div class="container-center">
+        <button class="text-grey-400 text-center hover:underline" id="show-acn">
+          Show account number
+        </button>
+      </div>
+    </div>
   </div>
+</div>
