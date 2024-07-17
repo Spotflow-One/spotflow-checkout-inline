@@ -17,8 +17,8 @@ class CheckoutForm {
   merchantKey: string;
   email: string;
   constructor(
-    merchantKey: string = "sk_test_63c4799e3b8e450cae1b78b687d473b8",
-    email: string = "ekiirah@gmail.com"
+    merchantKey: string,
+    email: string
   ) {
     this.modalContainer = document.createElement("div");
     this.modalContainer.innerHTML = template;
