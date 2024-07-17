@@ -16,10 +16,7 @@ class CheckoutForm {
   ussd!: Ussd;
   merchantKey: string;
   email: string;
-  constructor(
-    merchantKey: string,
-    email: string
-  ) {
+  constructor(merchantKey: string, email: string) {
     this.modalContainer = document.createElement("div");
     this.modalContainer.innerHTML = template;
     document.body.appendChild(this.modalContainer);
@@ -37,23 +34,18 @@ class CheckoutForm {
     const closeBtn = this.modalContainer.querySelector(
       ".success-button"
     ) as HTMLButtonElement;
-
-    const closeM = this.modalContainer.querySelector(
+    const closeM = document.body.querySelector(
       "#close-modal"
     ) as HTMLButtonElement;
 
     if (closeBtn) {
       this.cleanup();
-      closeBtn.addEventListener("click", () => {
-        document.body.removeChild(this.modalContainer);
-      });
+      closeBtn.addEventListener("click", this.closeModal);
     }
 
     if (closeM) {
       this.cleanup();
-      closeM.addEventListener("click", () => {
-        document.body.removeChild(this.modalContainer);
-      });
+      closeM.addEventListener("click", () => this.closeModal());
     }
   }
 
@@ -152,15 +144,22 @@ class CheckoutForm {
   }
 
   closeModal() {
-    document.body.removeChild(this.modalContainer);
+    if (this.modalContainer && this.modalContainer.parentNode) {
+      document.body.removeChild(this.modalContainer);
+    }
   }
 
   setup(): void {
     const merchantLogo = document.getElementById("merchantLogo");
+    const merchantEmail = document.getElementById("merchant-email");
 
     // merchant logo goes here
     if (merchantLogo) {
       merchantLogo.setAttribute("src", nbaLogo);
+    }
+
+    if (merchantEmail) {
+      merchantEmail.innerHTML = this.email;
     }
 
     let paymentOptionsContainer = document.querySelector(".payment-options");

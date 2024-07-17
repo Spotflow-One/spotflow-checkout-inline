@@ -157,7 +157,7 @@
   }
 
   .main {
-    @apply md:py-4 px-4 w-[calc(100%-250px)];
+    @apply md:py-4 px-4 w-[calc(100%-250px)] max-h-[90vh] overflow-auto;
   }
 
   .header-container {

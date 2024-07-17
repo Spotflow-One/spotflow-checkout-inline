@@ -1,10 +1,12 @@
 <div role="dialog" class="relative z-10" aria-labelledby="modal-title" aria-modal="true">
   <div class="fixed inset-0 bg-[#fafaff] bg-opacity-100 transition-opacity" aria-hidden="true"></div>
+
   <div id="toast-container"></div>
+
   <div class="fixed inset-0 z-10 w-screen overflow-y-auto">
-    <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+    <div class="relative flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
       <div
-        class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 w-100% sm:w-[80%] md:w-[900px] min-h-screen sm:min-h-[70%] flex">
+        class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 w-full sm:w-[80%] md:w-[900px] min-h-screen sm:min-h-[70%] flex">       
         <aside class="px-2 py-4 md:flex justify-center w-[250px] bg-[#f4f4ff] overflow-auto hidden">
           <div class="w-full py-8">
             <div class="container-center">
@@ -18,18 +20,18 @@
           </div>
         </aside>
         <div class="main" id="main">
+          <button class="top-0 right-0 text-lg fixed hover:bg-primary hover:text-white h-6 w-6 flex justify-center items-end rounded-full" id="close-modal">x</button>
 
           <div class="box-container relative">
             <!-- header -->
-             <button class="-right-[10px] -top-[15px] absolute text-xl" id="close-modal">x</button>
             <div class="header-container">
               <div class="container-between border-b border-b-white pb-[9.6px]">
-                <p class="text-xs"></p>
-                <p class="text-xs"></p>
+                <p class="text-xs" id="merchant-email"></p>
+                <p class="text-xs">League Pass</p>
               </div>
               <div class="container-between pt-[9.6px] pb-[6.4px]">
                 <div class="align-center">
-                  <p class="text-sm mr-1"> </p>
+                  <p class="text-sm mr-1">USD 1 = NGN 1,483.98</p>
                   <div class="group relative flex flex-col items-center cursor-pointer">
                     <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path
