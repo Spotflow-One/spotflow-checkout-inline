@@ -4,4 +4,3 @@ node_modules
 !.vscode/extensions.json
 
 # build
-dist

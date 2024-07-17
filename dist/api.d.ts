@@ -1,0 +1,7 @@
+import { CardPaymentRequestPayload, PaymentResponseData, AuthorizeCardPaymentRequestPayload, ValidateCardPaymentRequestPayload, PaymentRequestPayload } from './types/types';
+
+export declare const createCardPayment: (token: string, payload: CardPaymentRequestPayload) => Promise<PaymentResponseData>;
+export declare const authorizeCardPayment: (token: string, payload: AuthorizeCardPaymentRequestPayload) => Promise<PaymentResponseData>;
+export declare const validateCardPayment: (token: string, payload: ValidateCardPaymentRequestPayload) => Promise<PaymentResponseData>;
+export declare const createTransferPayment: (token: string, payload: PaymentRequestPayload) => Promise<PaymentResponseData>;
+export declare const verifyPaymentTransfer: (token: string, reference: string, signal: AbortSignal) => Promise<PaymentResponseData>;
