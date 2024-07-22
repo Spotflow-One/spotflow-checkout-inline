@@ -27,6 +27,13 @@ class CheckoutForm {
     this.email = email;
     this.updatePaymentMethodView(this.merchantKey, this.email);
     this.attachInputListeners();
+
+    // close modal if no merchant key or email is passed
+    if (merchantKey === "" || email === "") {
+      this.closeModal();
+      throw new Error("Merchant key or email is required");
+
+    }
   }
 
   attachInputListeners() {

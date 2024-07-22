@@ -14,13 +14,12 @@
       </button>
     </div>
     <div id="checkout-container"></div>
-    <script src="./dist/checkout-inline.umd.cjs"></script>
+    <script src="./dist/checkout-inline.js"></script>
     <script>
       const openCheckout = () => {
         const checkout = new SpotflowCheckout(
-          merchantKey = "merchant-key",
+          merchantKey = "merchant_key",
           email = "email",
-          
         );
         checkout.setup();
       };
