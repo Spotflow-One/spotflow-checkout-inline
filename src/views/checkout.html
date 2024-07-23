@@ -4,13 +4,14 @@
   <div id="toast-container"></div>
 
   <div class="fixed inset-0 z-10 w-screen overflow-y-auto">
-    <div class="relative flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+    <div class="relative flex min-h-full items-end justify-center text-center sm:items-center p-0">
       <div
-        class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 w-full sm:w-[80%] md:w-[900px] min-h-screen sm:min-h-[70%] flex">       
+        class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 w-full sm:w-4/5 md:w-[90%] lg:w-[900px] min-h-screen sm:min-h-[70%] flex">
+
         <aside class="px-2 py-4 md:flex justify-center w-[250px] bg-[#f4f4ff] overflow-auto hidden">
           <div class="w-full py-8">
             <div class="container-center">
-              <img src="" alt="Nba Logo" id="merchantLogo" />
+              <img src="" alt="Nba Logo" id="merchantLogo" class="hidden md:flex" />
             </div>
             <h5 class="text-xl font-semibold text-common pt-10 pb-4 text-center">PAYMENT OPTIONS</h5>
             <div class="payment-options">
@@ -20,9 +21,16 @@
           </div>
         </aside>
         <div class="main" id="main">
-          <button class="top-0 right-0 text-lg fixed hover:bg-primary hover:text-white h-6 w-6 flex justify-center items-end rounded-full" id="close-modal">x</button>
+          <div class="container-center w-full bg-primary-lighter">
+            <img src="" alt="Nba Logo" id="merchantLogoMob" class="md:hidden" />
+          </div>
+          <div id="mob-tab-co">
 
-          <div class="box-container relative">
+          </div>
+          <button
+            class="hidden top-0 right-0 text-lg fixed hover:bg-primary hover:text-white h-6 w-6 md:flex justify-center items-end rounded-full close-btn">x</button>
+
+          <div class="box-container relative max-sm:py-4 max-sm:px-4">
             <!-- header -->
             <div class="header-container">
               <div class="container-between border-b border-b-white pb-[9.6px]">
@@ -77,11 +85,25 @@
             </div>
             <!-- body -->
             <div class="box-container-method">
-              <div class="content active" data-content="0"></div>
+              <div class="content active" data-content="0">
+              </div>
               <div class="content" data-content="1"></div>
               <div class="content" data-content="2"></div>
             </div>
+
+            <div id="mob-container" class="md:hidden">
+
+            
+            </div>
             <!-- footer -->
+            <div class="container-between gap-2 mt-20 mb-8 md:hidden" id="mob-action-btns">
+              <button class="button-outline px-3 w-auto" id="change-method">
+                <span class="text-[10px] mr-1">x</span> Change Payment Method
+              </button>
+              <button class="button-outline px-6 w-auto close-btn">
+                <span class="text-[10px] mr-1">x</span> Cancel Payment
+              </button>
+            </div>
             <div class="container-center pt-2 pb-8 gap-1">
               <svg width="10" height="12" viewBox="0 0 10 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path

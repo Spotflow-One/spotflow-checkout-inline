@@ -16,11 +16,13 @@ class CheckoutForm {
   ussd!: Ussd;
   merchantKey: string;
   email: string;
+  isMobile: boolean = false;
   constructor(merchantKey: string, email: string) {
     this.modalContainer = document.createElement("div");
     this.modalContainer.innerHTML = template;
     document.body.appendChild(this.modalContainer);
-    this.currentPaymentMethod = 0;
+    this.isMobile = window.matchMedia("(max-width: 767px)").matches;
+    this.currentPaymentMethod = this.isMobile ? 3 : 0;
     this.currentStep = 1;
     this.container = document.querySelectorAll(".content")[0] as HTMLDivElement;
     this.merchantKey = merchantKey;
@@ -32,50 +34,118 @@ class CheckoutForm {
     if (merchantKey === "" || email === "") {
       this.closeModal();
       throw new Error("Merchant key or email is required");
-
     }
   }
 
   attachInputListeners() {
     // Add event listeners
-    const closeBtn = this.modalContainer.querySelector(
-      ".success-button"
+    const changeMethod = document.body.querySelector(
+      "#change-method"
     ) as HTMLButtonElement;
-    const closeM = document.body.querySelector(
-      "#close-modal"
-    ) as HTMLButtonElement;
+    const close = document.body.querySelectorAll(
+      ".close-btn"
+    ) as NodeListOf<HTMLButtonElement>;
+    const mobContainer = document.querySelector("#mob-container");
+    const mobTabHeader = document.querySelector("#mob-tab-co");
+    const mobCurrentMethodHeader = document.querySelector("#mob-tab-c");
 
-    if (closeBtn) {
+    // Change Payment Method
+    if (changeMethod) {
       this.cleanup();
-      closeBtn.addEventListener("click", this.closeModal);
+      changeMethod.addEventListener("click", () => {
+        this.currentPaymentMethod = 3;
+        this.attachInputListeners();
+        if (mobContainer) {
+          mobContainer.innerHTML = this.mobileContainerContent();
+        }
+        this.setup();
+        // remove payment option header text
+        if (
+          mobTabHeader && mobCurrentMethodHeader  && mobCurrentMethodHeader.parentNode
+        ) {
+          mobTabHeader.removeChild(mobCurrentMethodHeader);
+        }
+      });
     }
 
-    if (closeM) {
-      this.cleanup();
-      closeM.addEventListener("click", () => this.closeModal());
+    // Close Payment Actions
+    if (close.length > 0) {
+      close.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          this.cleanup();
+          this.closeModal();
+        });
+      });
     }
   }
 
   displayTabLayout() {
     const tabs = document.querySelectorAll(".tab-button");
+    const mobTabs = document.querySelectorAll(".mob-tab-button");
     const container = document.querySelector(".box-container-method");
+    const mobContainer = document.querySelector("#mob-container");
+    const innerMobContainer = document.querySelector("#inner-mob-container");
+    const mobTabHeader = document.querySelector("#mob-tab-co");
 
-    if (tabs && container) {
-      tabs.forEach((button) => {
-        button.addEventListener("click", (e) => {
-          if (e.currentTarget instanceof HTMLElement) {
-            if (e.currentTarget.dataset.tab) {
-              const tabIndex = parseInt(e.currentTarget.dataset.tab);
-              this.updatePaymentMethodView(this.merchantKey, this.email);
-              this.setCurrentPaymentMethod(tabIndex);
-              this.cleanup();
-              this.renderPaymentMethodContent();
-              this.attachInputListeners();
+
+    if (!this.isMobile) {
+      if (tabs && container) {
+        tabs.forEach((button) => {
+          button.addEventListener("click", (e) => {
+            if (e.currentTarget instanceof HTMLElement) {
+              if (e.currentTarget.dataset.tab) {
+                const tabIndex = parseInt(e.currentTarget.dataset.tab);
+                this.updatePaymentMethodView(this.merchantKey, this.email);
+                this.setCurrentPaymentMethod(tabIndex);
+                this.cleanup();
+                this.renderPaymentMethodContent();
+                this.attachInputListeners();
+              }
             }
-          }
+          });
         });
-      });
+      }
+    } else {
+      if (mobTabs && container && mobContainer && innerMobContainer) {
+        mobTabs.forEach((button) => {
+          button.addEventListener("click", (e) => {
+            if (e.currentTarget instanceof HTMLElement) {
+              if (e.currentTarget.dataset.tab) {
+                const tabIndex = parseInt(e.currentTarget.dataset.tab);
+                this.updatePaymentMethodView(this.merchantKey, this.email);
+                this.setCurrentPaymentMethod(tabIndex);
+                mobContainer.removeChild(innerMobContainer);
+
+                this.cleanup();
+                tabOptions.forEach((option, index) => {
+                  if (this.currentPaymentMethod === index) {
+                    // add payment option header
+                    if (mobTabHeader) {
+                      mobTabHeader.innerHTML = `
+                          <div id="mob-tab-c" class="w-full pt-2 px-5 md:hidden">
+                            <div>
+                              <button class="pt-3 px-2 grow align-center text-grey-600 tex-sm font-semibold" data-tab="${index}">
+                              <div class="min-w-8 mr-2 align-center">
+                                ${option.icon}
+                                </div>
+                                <span>${option.label}</span>
+                              </button>
+                            </div>
+                          </div>
+                      `;
+                    }
+                  }
+                });
+
+                this.renderPaymentMethodContent();
+                this.attachInputListeners();
+              }
+            }
+          });
+        });
+      }
     }
+
     this.updatePaymentMethodView(this.merchantKey, this.email);
     this.renderPaymentMethodContent();
     this.attachInputListeners();
@@ -119,6 +189,8 @@ class CheckoutForm {
           return this.transfer.renderTransferContent();
         case 2:
           return this.ussd.renderUssdContent();
+        case 3:
+          return "";
         default:
           return this.card.renderCardContent();
       }
@@ -130,7 +202,8 @@ class CheckoutForm {
     this.currentPaymentMethod = index;
 
     const tabs = document.querySelectorAll(".tab-button");
-    const contents = document.querySelectorAll(".content");
+    let contents = document.querySelectorAll(".content");
+    const mobileActionButtons = document.getElementById("mob-action-btns");
 
     tabs.forEach((tab) => tab.classList.remove("active"));
     contents.forEach((content) => content.classList.remove("active"));
@@ -140,6 +213,11 @@ class CheckoutForm {
     }
     if (contents[index]) {
       contents[index].classList.add("active");
+    }
+
+    if (index !== 3 && mobileActionButtons) {
+      mobileActionButtons.classList.remove("hidden");
+      mobileActionButtons.classList.add("md:hidden");
     }
   }
 
@@ -158,67 +236,143 @@ class CheckoutForm {
 
   setup(): void {
     const merchantLogo = document.getElementById("merchantLogo");
+    const merchantLogoMob = document.getElementById("merchantLogoMob");
+    const mobileActionButtons = document.getElementById("mob-action-btns");
     const merchantEmail = document.getElementById("merchant-email");
-
-    // merchant logo goes here
-    if (merchantLogo) {
-      merchantLogo.setAttribute("src", nbaLogo);
-    }
+    const paymentWarning = this.modalContainer.querySelector("#paymentWarning");
+    const warningText = paymentWarning?.querySelector("#payment-warning-text");
+    const mobContainer = document.querySelector("#mob-container");
 
     if (merchantEmail) {
       merchantEmail.innerHTML = this.email;
     }
 
-    let paymentOptionsContainer = document.querySelector(".payment-options");
-    if (paymentOptionsContainer) {
-      paymentOptionsContainer.innerHTML = `<div> 
-      ${tabOptions
-        .map(
-          (option, index) =>
-            `
-            <div class="tab">   
-              <button class="tab-button group" data-tab="${index}"> 
-              <div class="min-w-8">
-                ${option.icon}
-                </div>
-                <span>${option.label}</span>
-              </button>
-            </div>
-          `
-        )
-        .join("")}
-      </div>`;
-    }
-    const tabs = document.querySelectorAll(".tab-button");
-
-    tabOptions.forEach((tabOption, index) => {
-      const tab = tabs[index] as HTMLElement;
-      if (tab) {
-        const iconContainer = tab.querySelector(".tab-button-icon");
-        const labelContainer = tab.querySelector(".tab-button-label");
-
-        if (iconContainer) {
-          iconContainer.innerHTML = tabOption.icon;
-        }
-
-        if (labelContainer) {
-          labelContainer.textContent = tabOption.label;
-        }
-
-        tab.dataset.tab = index.toString();
-        tab.addEventListener("click", () => {
-          this.setCurrentPaymentMethod(index);
-        });
+    if (!this.isMobile) {
+      // merchant logo goes here
+      if (merchantLogo) {
+        merchantLogo.setAttribute("src", nbaLogo);
       }
-    });
-    this.displayTabLayout();
 
-    const paymentWarning = this.modalContainer.querySelector("#paymentWarning");
-    const warningText = paymentWarning?.querySelector("#payment-warning-text");
+      let paymentOptionsContainer = document.querySelector(".payment-options");
+      if (paymentOptionsContainer) {
+        paymentOptionsContainer.innerHTML = `<div> 
+        ${tabOptions
+          .map(
+            (option, index) =>
+              `
+              <div class="tab">   
+                <button class="tab-button group" data-tab="${index}"> 
+                <div class="min-w-8 md:container-center lg:block">
+                  ${option.icon}
+                  </div>
+                  <span>${option.label}</span>
+                </button>
+              </div>
+            `
+          )
+          .join("")}
+        </div>`;
+      }
+      const tabs = document.querySelectorAll(".tab-button");
+      tabOptions.forEach((tabOption, index) => {
+        const tab = tabs[index] as HTMLElement;
+        if (tab) {
+          const iconContainer = tab.querySelector(".tab-button-icon");
+          const labelContainer = tab.querySelector(".tab-button-label");
+
+          if (iconContainer) {
+            iconContainer.innerHTML = tabOption.icon;
+          }
+
+          if (labelContainer) {
+            labelContainer.textContent = tabOption.label;
+          }
+
+          tab.dataset.tab = index.toString();
+          tab.addEventListener("click", () => {
+            this.setCurrentPaymentMethod(index);
+          });
+        }
+      });
+    } else {
+      if (merchantLogoMob) {
+        merchantLogoMob.setAttribute("src", nbaLogo);
+      }
+
+      if (mobContainer) {
+        mobContainer.innerHTML = this.mobileContainerContent();
+      }
+      let mobileOptionsContainer = document.querySelector(".mob-options");
+      if (mobileOptionsContainer) {
+        this.viewMobileOptions(mobileOptionsContainer);
+      }
+
+      const mobTabs = document.querySelectorAll(".mob-tab-button");
+
+      tabOptions.forEach((_, index) => {
+        const tab = mobTabs[index] as HTMLElement;
+        if (tab) {
+          tab.dataset.tab = index.toString();
+          tab.addEventListener("click", () => {
+            this.setCurrentPaymentMethod(index);
+          });
+        }
+      });
+
+      if (mobileActionButtons) {
+        if (this.currentPaymentMethod === 3) {
+          mobileActionButtons.classList.add("hidden");
+          mobileActionButtons.classList.remove("md:hidden");
+        }
+      }
+    }
+
+    this.displayTabLayout();
 
     if (warningText) {
       this.displayPaymentWarningText(this.currentPaymentMethod, warningText);
     }
+  }
+
+  private mobileContainerContent() {
+    return `  <div class="box-container" id="inner-mob-container">
+                <p class="text-sm text-grey-100">
+                  Use one of the payment methods below to pay NGN 22,244.86
+                  to Spotflow
+                </p>
+
+                <div>
+                  <p class="font-semibold border-b border-[#E6E6E7] pb-4 pt-9 text-grey-700 mb-2">
+                    PAYMENT OPTIONS
+                  </p>
+
+                  <div class="mob-options"></div>
+                  <div class="container-center mt-12">
+                    <button class="button-outline w-[150px] close-btn justify-center">
+                      <span class="text-[10px] mr-1">x</span> Cancel Payment
+                    </button>
+                  </div>
+                </div>
+              </div>`;
+  }
+
+  private viewMobileOptions(mobileOptionsContainer: Element) {
+    mobileOptionsContainer.innerHTML = `
+      ${tabOptions
+        .map(
+          (option, index) =>
+            `
+                <div class="tab">
+                  <button class="mob-tab-button py-3 px-2 grow align-center text-grey-600 tex-sm font-semibold" data-tab="${index}">
+                  <div class="min-w-8 mr-3 align-center">
+                    ${option.icon}
+                    </div>
+                    <span>${option.label}</span>
+                  </button>
+                </div>
+              `
+        )
+        .join("")}`;
   }
   private displayPaymentWarningText(method: number, warningText: Element) {
     const text = (): string => {

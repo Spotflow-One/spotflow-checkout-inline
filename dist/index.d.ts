@@ -12,15 +12,18 @@ declare class CheckoutForm {
     ussd: Ussd;
     merchantKey: string;
     email: string;
+    isMobile: boolean;
     constructor(merchantKey: string, email: string);
     attachInputListeners(): void;
     displayTabLayout(): void;
     private updatePaymentMethodView;
-    renderPaymentMethodContent(): void;
+    renderPaymentMethodContent(): void | "";
     setCurrentPaymentMethod(index: number): void;
     private cleanup;
     closeModal(): void;
     setup(): void;
+    private mobileContainerContent;
+    private viewMobileOptions;
     private displayPaymentWarningText;
 }
 export default CheckoutForm;

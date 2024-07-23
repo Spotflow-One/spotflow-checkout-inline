@@ -30,7 +30,8 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
-  input:focus, button:focus{
+  input:focus,
+  button:focus {
     outline: none;
   }
 }
@@ -56,14 +57,13 @@
   opacity: 0;
   transform: translateY(-50px);
   transition: opacity 0.5s, transform 0.5s;
-  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1); ;
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
 }
 
 .toast.show {
   opacity: 1;
   transform: translateY(0);
 }
-
 
 .toast.success {
   background-color: hsl(var(--success));
@@ -74,7 +74,6 @@
   background-color: hsl(var(--error));
   color: #ffffff;
 }
-
 
 .toast .close-btn {
   margin-left: auto;
@@ -110,9 +109,7 @@
   }
 }
 
-
 @layer components {
-
   /* utils */
   /* --------------------------- */
   .container-center {
@@ -128,12 +125,22 @@
   }
 
   .box-container {
-    @apply px-0 md:px-7 py-[18px] md:py-7;
+    @apply px-0 md:px-5 lg:px-7 py-[18px] md:py-7;
   }
 
   .content-heading {
     @apply text-center pt-2 md:pt-0 text-grey-400 font-semibold text-xl;
   }
+
+  .button-outline { 
+    @apply border border-[#E6E6E7] h-10 rounded font-semibold text-xs text-grey-400 flex items-center;
+  }
+
+  /* Responsive utility classes */
+  .md\\:container-center {
+    @apply md:flex md:items-center md:justify-center;
+  }
+
   /* --------------------------- */
 
   .payment-options {
@@ -145,7 +152,7 @@
   }
 
   .tab-button {
-    @apply py-3 px-5 grow text-center text-[#3D3844] flex items-center hover:bg-primary hover:rounded-xl hover:text-white;
+    @apply py-3 px-5 grow flex md:block text-center text-[#3D3844] lg:flex items-center md:hover:bg-primary md:hover:rounded-xl md:hover:text-white;
   }
 
   .tab-button.active {
@@ -153,11 +160,11 @@
   }
 
   .tab-button span {
-    @apply justify-start flex shrink-0 font-semibold my-1;
+    @apply justify-center lg:justify-start flex shrink-0 font-semibold my-1;
   }
 
   .main {
-    @apply md:py-4 px-4 w-[calc(100%-250px)] max-h-[90vh] overflow-auto;
+    @apply md:py-4 lg:px-4 w-full lg:w-[calc(100%-250px)] max-h-[90vh] overflow-auto;
   }
 
   .header-container {
@@ -171,8 +178,6 @@
   .content.active {
     @apply block;
   }
-
-
 
   .header-chip {
     @apply py-0 px-1 bg-success text-white rounded-[0.25rem] h-[1.4375rem] text-xs whitespace-nowrap flex items-center justify-center;
@@ -223,11 +228,11 @@
   }
 
   .otp-button {
-    @apply bg-success text-white rounded-lg h-full px-6 font-semibold disabled:opacity-80;
+    @apply bg-success text-white rounded-lg h-14 max-sm:w-full md:h-full px-6 font-semibold disabled:opacity-80;
   }
 
   .otp-text {
-    @apply text-sm font-semibold text-center text-grey-400 w-3/5 mx-auto;
+    @apply text-sm font-semibold text-center text-grey-400 w-11/12 md:w-3/5 mx-auto;
   }
 
   .otp-subtext {
