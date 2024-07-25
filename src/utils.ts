@@ -68,6 +68,33 @@ export const formatTime = (seconds: number) => {
   return `${String(minutes).padStart(2, "0")}:${String(secs).padStart(2, "0")}`;
 };
 
+// -------------------------   //
+//        Card Types           //
+// -------------------------   //
+
+export const getCardType = (cardNumber: string) => {
+  // Remove spaces or dashes from the card number
+  cardNumber = cardNumber.replace(/\D/g, "");
+
+  // Check for card types
+  const cardPatterns = {
+    Visa: /^4/,
+    MasterCard: /^5[1-5]|^2(2[2-9]|[3-6]|7[01])/,
+    "American Express": /^3[47]/,
+    Discover: /^6(?:011|5|4[4-9]|22)/,
+    UnionPay: /^62/,
+    Verve: /^506099|^5061[0-8]|^50619|^6500[02]|^5078[6-9]|^65003[1-3]/,
+  };
+
+  for (const [card, pattern] of Object.entries(cardPatterns)) {
+    if (pattern.test(cardNumber)) {
+      return card;
+    }
+  }
+
+  return "Unknown";
+};
+
 // ----------------------- //
 //     Toaster functions   //
 // ----------------------- //

@@ -12,8 +12,9 @@ declare class CheckoutForm {
     ussd: Ussd;
     merchantKey: string;
     email: string;
+    amount: number;
     isMobile: boolean;
-    constructor(merchantKey: string, email: string);
+    constructor(merchantKey: string, email: string, amount: number);
     attachInputListeners(): void;
     displayTabLayout(): void;
     private updatePaymentMethodView;

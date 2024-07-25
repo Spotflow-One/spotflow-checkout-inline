@@ -5,4 +5,5 @@ export declare const formatCVC: (value: string) => string;
 export declare const formatExpirationDate: (value: string) => string;
 export declare const unFormatCreditCardNumber: (value: string) => string;
 export declare const formatTime: (seconds: number) => string;
+export declare const getCardType: (cardNumber: string) => string;
 export declare const showToast: (message: string, theme: "success" | "error" | "info" | "warning", duration?: number) => void;

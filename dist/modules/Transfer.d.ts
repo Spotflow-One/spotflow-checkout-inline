@@ -6,6 +6,7 @@ declare class Transfer {
     private closeModal;
     private email;
     private token;
+    private amount;
     private _currentStep;
     private activeRef;
     private paymentResponse;
@@ -13,7 +14,7 @@ declare class Transfer {
     private timeLeft;
     private timerId;
     private abortController;
-    constructor(container: HTMLElement, closeModal: () => void, token: string, email: string);
+    constructor(container: HTMLElement, closeModal: () => void, token: string, email: string, amount: number);
     get currentStep(): number;
     set currentStep(step: number);
     attachInputListeners(): void;

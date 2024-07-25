@@ -15,8 +15,10 @@ import {
   formatExpirationDate,
   formatCVC,
   unFormatCreditCardNumber,
+  getCardType,
 } from "../utils";
 import loaderGif from "../assets/loader.gif";
+import { cardTypes } from "../data";
 
 class Card {
   private cardDetailsValues: { number: string; expiry: string; cvv: string };
@@ -27,18 +29,25 @@ class Card {
   private closeModal: () => void;
   private email: string;
   private token: string;
+  private amount: number;
   private _currentStep: number;
   private activeRef: string;
+  private creditCardTypes: {
+    name: string;
+    icon: string;
+  }[];
   constructor(
     container: HTMLElement,
     closeModal: () => void,
     token: string,
-    email: string
+    email: string,
+    amount: number
   ) {
     this.container = container;
     this.closeModal = closeModal;
     this.token = token;
     this.email = email;
+    this.amount = amount;
     this._currentStep = 1;
     this.cardDetailsValues = {
       number: "",
@@ -49,8 +58,45 @@ class Card {
     this.cardOtp = "";
     this.activeRef = "";
     this.contents = document.querySelectorAll(".content");
+    this.creditCardTypes = [...cardTypes];
     this.renderCardContent();
+  
+    if (this.currentStep === 1) {
+      this.displayCardTypes();
+    }
+
     this.attachInputListeners();
+  }
+
+  private displayCardTypes() {
+    requestAnimationFrame(() => {
+      const cardTypesContainer = this.container.querySelector(
+        "#card-types"
+      ) as HTMLElement;
+ 
+      // If the card type is unknown, display all card types
+      if (
+        this.creditCardTypes.length === 1 &&
+          this.creditCardTypes[0].name === "Unknown"
+      ) {
+        cardTypes.forEach((type) => {
+          const cardType = document.createElement("div");
+          cardType.classList.add("card-type");
+          cardType.innerHTML = type.icon;
+          cardTypesContainer.appendChild(cardType);
+        });
+      } else {
+        // reset the card types container
+        cardTypesContainer.innerHTML = "";
+        // update the card types container with the filtered card types
+        this.creditCardTypes.forEach((type) => {
+          const cardType = document.createElement("div");
+          cardType.classList.add("card-type");
+          cardType.innerHTML = type.icon;
+          cardTypesContainer.appendChild(cardType);
+        });
+      }
+    });
   }
 
   get currentStep(): number {
@@ -60,6 +106,9 @@ class Card {
   set currentStep(step: number) {
     this._currentStep = step;
     this.renderCardContent();
+    if (step === 1) {
+      this.displayCardTypes();
+    }
   }
 
   attachInputListeners() {
@@ -146,6 +195,7 @@ class Card {
 
     if (name === "number") {
       formattedValue = formatCreditCardNumber(value);
+      this.filterCreditCardType(value);
     } else if (name === "expiry") {
       formattedValue = formatExpirationDate(value);
     } else if (name === "cvv") {
@@ -326,7 +376,7 @@ class Card {
     );
 
     const payload = {
-      amount: 14.99,
+      amount: this.amount,
       channel: "card",
       currency: "USD",
       customer: {
@@ -389,6 +439,25 @@ class Card {
         return paymentSuccess;
       default:
         return cardDetailsForm;
+    }
+  }
+
+  filterCreditCardType(val: string) {
+    if (val) {
+      this.creditCardTypes = cardTypes.filter(
+        (type) => type.name === getCardType(val)
+      );
+
+      if (this.creditCardTypes.length >= 1) {
+        this.displayCardTypes();
+      } else {
+        this.creditCardTypes = [...cardTypes];
+        this.displayCardTypes();
+      }
+     
+    } else {
+      this.creditCardTypes = [...cardTypes];
+      this.displayCardTypes();
     }
   }
 

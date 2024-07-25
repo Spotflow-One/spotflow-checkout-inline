@@ -7,3 +7,7 @@ export declare const banks: {
     name: string;
     code: string;
 }[];
+export declare const cardTypes: {
+    name: string;
+    icon: string;
+}[];

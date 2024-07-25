@@ -15,6 +15,7 @@ class Transfer {
   private closeModal: () => void;
   private email: string;
   private token: string;
+  private amount: number;
   private _currentStep: number;
   private activeRef: string;
   private paymentResponse: PaymentResponseData | null;
@@ -26,13 +27,15 @@ class Transfer {
     container: HTMLElement,
     closeModal: () => void,
     token: string,
-    email: string
+    email: string,
+    amount: number
   ) {
     this.container = container;
     this.contents = document.querySelectorAll(".content");
     this.closeModal = closeModal;
     this.token = token;
     this.email = email;
+    this.amount = amount;
     this._currentStep = 1;
     this.renderTransferContent();
     this.paymentResponse = null;
@@ -186,7 +189,7 @@ class Transfer {
       }
 
       const payload = {
-        amount: 14.99,
+        amount: this.amount,
         channel: "bank_transfer",
         currency: "USD",
         customer: {

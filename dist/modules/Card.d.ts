@@ -7,9 +7,12 @@ declare class Card {
     private closeModal;
     private email;
     private token;
+    private amount;
     private _currentStep;
     private activeRef;
-    constructor(container: HTMLElement, closeModal: () => void, token: string, email: string);
+    private creditCardTypes;
+    constructor(container: HTMLElement, closeModal: () => void, token: string, email: string, amount: number);
+    private displayCardTypes;
     get currentStep(): number;
     set currentStep(step: number);
     attachInputListeners(): void;
@@ -21,6 +24,7 @@ declare class Card {
     submitOtp(e: Event): void;
     handleSubmit(e: Event): Promise<void>;
     private getCardStepContent;
+    filterCreditCardType(val: string): void;
     renderCardContent(): void;
 }
 export default Card;

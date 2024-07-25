@@ -16,8 +16,9 @@ class CheckoutForm {
   ussd!: Ussd;
   merchantKey: string;
   email: string;
+  amount: number;
   isMobile: boolean = false;
-  constructor(merchantKey: string, email: string) {
+  constructor(merchantKey: string, email: string, amount: number) {
     this.modalContainer = document.createElement("div");
     this.modalContainer.innerHTML = template;
     document.body.appendChild(this.modalContainer);
@@ -27,7 +28,7 @@ class CheckoutForm {
     this.container = document.querySelectorAll(".content")[0] as HTMLDivElement;
     this.merchantKey = merchantKey;
     this.email = email;
-    this.updatePaymentMethodView(this.merchantKey, this.email);
+    this.amount = amount;
     this.attachInputListeners();
 
     // close modal if no merchant key or email is passed
@@ -61,7 +62,9 @@ class CheckoutForm {
         this.setup();
         // remove payment option header text
         if (
-          mobTabHeader && mobCurrentMethodHeader  && mobCurrentMethodHeader.parentNode
+          mobTabHeader &&
+          mobCurrentMethodHeader &&
+          mobCurrentMethodHeader.parentNode
         ) {
           mobTabHeader.removeChild(mobCurrentMethodHeader);
         }
@@ -87,7 +90,6 @@ class CheckoutForm {
     const innerMobContainer = document.querySelector("#inner-mob-container");
     const mobTabHeader = document.querySelector("#mob-tab-co");
 
-
     if (!this.isMobile) {
       if (tabs && container) {
         tabs.forEach((button) => {
@@ -95,7 +97,11 @@ class CheckoutForm {
             if (e.currentTarget instanceof HTMLElement) {
               if (e.currentTarget.dataset.tab) {
                 const tabIndex = parseInt(e.currentTarget.dataset.tab);
-                this.updatePaymentMethodView(this.merchantKey, this.email);
+                this.updatePaymentMethodView(
+                  this.merchantKey,
+                  this.email,
+                  this.amount
+                );
                 this.setCurrentPaymentMethod(tabIndex);
                 this.cleanup();
                 this.renderPaymentMethodContent();
@@ -112,7 +118,11 @@ class CheckoutForm {
             if (e.currentTarget instanceof HTMLElement) {
               if (e.currentTarget.dataset.tab) {
                 const tabIndex = parseInt(e.currentTarget.dataset.tab);
-                this.updatePaymentMethodView(this.merchantKey, this.email);
+                this.updatePaymentMethodView(
+                  this.merchantKey,
+                  this.email,
+                  this.amount
+                );
                 this.setCurrentPaymentMethod(tabIndex);
                 mobContainer.removeChild(innerMobContainer);
 
@@ -146,27 +156,33 @@ class CheckoutForm {
       }
     }
 
-    this.updatePaymentMethodView(this.merchantKey, this.email);
+    this.updatePaymentMethodView(this.merchantKey, this.email, this.amount);
     this.renderPaymentMethodContent();
     this.attachInputListeners();
     this.setCurrentPaymentMethod(this.currentPaymentMethod);
   }
 
-  private updatePaymentMethodView(merchantKey: string, email: string) {
+  private updatePaymentMethodView(
+    merchantKey: string,
+    email: string,
+    amount: number
+  ) {
     switch (this.currentPaymentMethod) {
       case 0:
         return (this.card = new Card(
           this.modalContainer,
           () => this.closeModal(),
           merchantKey,
-          email
+          email,
+          amount
         ));
       case 1:
         return (this.transfer = new Transfer(
           this.modalContainer,
           () => this.closeModal(),
           merchantKey,
-          email
+          email,
+          amount
         ));
       case 2:
         return (this.ussd = new Ussd());
@@ -175,7 +191,8 @@ class CheckoutForm {
           this.modalContainer,
           () => this.closeModal(),
           merchantKey,
-          email
+          email,
+          amount
         ));
     }
   }
