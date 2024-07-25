@@ -3,10 +3,12 @@ import cardPinForm from "../views/card/cardPinForm.html?raw";
 import cardOtpForm from "../views/card/cardOtpValidation.html?raw";
 import paymentWarning from "../views/shared/paymentWarning.html?raw";
 import paymentSuccess from "../views/shared/paymentSuccess.html?raw";
+import loadingComp from "../views/shared/loader.html?raw";
 import {
   authorizeCardPayment,
   createCardPayment,
   validateCardPayment,
+  verifyPayment
 } from "../api";
 import {
   showToast,
@@ -19,6 +21,7 @@ import {
 } from "../utils";
 import loaderGif from "../assets/loader.gif";
 import { cardTypes } from "../data";
+import { PaymentResponseData } from "../types/types";
 
 class Card {
   private cardDetailsValues: { number: string; expiry: string; cvv: string };
@@ -36,6 +39,7 @@ class Card {
     name: string;
     icon: string;
   }[];
+
   constructor(
     container: HTMLElement,
     closeModal: () => void,
@@ -60,7 +64,7 @@ class Card {
     this.contents = document.querySelectorAll(".content");
     this.creditCardTypes = [...cardTypes];
     this.renderCardContent();
-  
+
     if (this.currentStep === 1) {
       this.displayCardTypes();
     }
@@ -73,11 +77,11 @@ class Card {
       const cardTypesContainer = this.container.querySelector(
         "#card-types"
       ) as HTMLElement;
- 
+
       // If the card type is unknown, display all card types
       if (
         this.creditCardTypes.length === 1 &&
-          this.creditCardTypes[0].name === "Unknown"
+        this.creditCardTypes[0].name === "Unknown"
       ) {
         cardTypes.forEach((type) => {
           const cardType = document.createElement("div");
@@ -289,6 +293,17 @@ class Card {
     this.handlePinRequest();
   }
 
+
+  showLoader() {
+    const loader = this.container.querySelector("#loader");
+    if (loader) {
+      loader.classList.remove("hidden");
+      loader.querySelector("img")?.setAttribute("src", loaderGif);
+    }
+  }
+
+
+
   handlePinPaste(event: ClipboardEvent, pinInputs: HTMLInputElement[]) {
     event.preventDefault();
     this.cardPin = "";
@@ -411,6 +426,14 @@ class Card {
           showToast("Payment Created!", "success");
           this.activeRef = data.reference;
           this.currentStep = 2;
+        } else if (data.status === "pending_validation") {
+          if (
+            data.authorization.mode === "3DS" &&
+            data.authorization.redirectUrl
+          ) {
+            this.activeRef = data.reference;
+            this.redirectTo3DS(data.authorization.redirectUrl);
+          }
         }
       })
       .catch((error) => {
@@ -425,6 +448,56 @@ class Card {
       });
   }
 
+  private redirectTo3DS(url: string): void {
+    const newWindow = window.open(url, "_blank");
+    if (newWindow) {
+      // show loading state during 3ds authentication
+      this.currentStep = 6
+      this.showLoader();
+      const intervalId = setInterval(() => {
+        if (newWindow.closed) {
+          clearInterval(intervalId);
+          this.verifyPayment(
+            () => {
+              this.currentStep = 5;
+            },
+            (error) => {
+              showToast(error.message, "error");
+              this.currentStep = 4
+            }
+          );
+        }
+      }, 2000);
+    } else {
+      alert(
+        "Please enable popups for this site to complete the authentication."
+      );
+    }
+  }
+
+  async verifyPayment(
+    onSuccess: (data: PaymentResponseData) => void,
+    onError: (error: Error) => void
+  ) {
+    try {
+      const responseData = await verifyPayment(
+        this.token,
+        this.activeRef
+      );
+      if (responseData.status === "failed") {
+        this.currentStep = 4;
+      } else {
+        // Stop polling when successful
+        onSuccess(responseData);
+      }
+    } catch (error) {
+      console.error(error);
+
+        onError(new Error("failed"))
+      //  showToast(error, "error")
+    }
+  }
+
   private getCardStepContent() {
     switch (this.currentStep) {
       case 1:
@@ -437,12 +510,14 @@ class Card {
         return paymentWarning;
       case 5:
         return paymentSuccess;
+      case 6:
+        return loadingComp;
       default:
         return cardDetailsForm;
     }
   }
 
-  filterCreditCardType(val: string) {
+  private filterCreditCardType(val: string) {
     if (val) {
       this.creditCardTypes = cardTypes.filter(
         (type) => type.name === getCardType(val)
@@ -454,7 +529,6 @@ class Card {
         this.creditCardTypes = [...cardTypes];
         this.displayCardTypes();
       }
-     
     } else {
       this.creditCardTypes = [...cardTypes];
       this.displayCardTypes();

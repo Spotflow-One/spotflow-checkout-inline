@@ -48,6 +48,7 @@ export type PaymentResponseData = {
 };
 export interface Authorization {
     mode: string;
+    redirectUrl: string | null;
 }
 export interface BankDetails {
     accountName: string;

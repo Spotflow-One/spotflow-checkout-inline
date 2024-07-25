@@ -1,3 +1,5 @@
+import { PaymentResponseData } from '../types/types';
+
 declare class Card {
     private cardDetailsValues;
     private cardPin;
@@ -19,12 +21,15 @@ declare class Card {
     handleInputChange(event: Event, button: HTMLButtonElement | null): void;
     private handlePinRequest;
     handlePinInputChange(event: Event, index: number, pinInputs: HTMLInputElement[]): void;
+    showLoader(): void;
     handlePinPaste(event: ClipboardEvent, pinInputs: HTMLInputElement[]): void;
     handleOtpInput(event: Event, button: HTMLButtonElement | null): void;
     submitOtp(e: Event): void;
     handleSubmit(e: Event): Promise<void>;
+    private redirectTo3DS;
+    verifyPayment(onSuccess: (data: PaymentResponseData) => void, onError: (error: Error) => void): Promise<void>;
     private getCardStepContent;
-    filterCreditCardType(val: string): void;
+    private filterCreditCardType;
     renderCardContent(): void;
 }
 export default Card;

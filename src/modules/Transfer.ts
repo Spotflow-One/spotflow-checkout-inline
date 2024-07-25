@@ -4,7 +4,7 @@ import transferConfirmationOne from "../views/transfer/transferConfirmationOne.h
 import transferConfirmationTwo from "../views/transfer/transferConfirmationTwo.html?raw";
 import transferConfirmationProgress from "../views/transfer/transferConfirmtationProgress.html?raw";
 import paymentSuccess from "../views/shared/paymentSuccess.html?raw";
-import { createTransferPayment, verifyPaymentTransfer } from "../api";
+import { createTransferPayment, verifyPayment } from "../api";
 import { showToast, generatePaymentReference, formatTime } from "../utils";
 import loaderGif from "../assets/loader.gif";
 import { PaymentResponseData } from "../types/types";
@@ -265,7 +265,7 @@ class Transfer {
 
       attempts += 1;
       try {
-        const responseData = await verifyPaymentTransfer(
+        const responseData = await verifyPayment(
           token,
           this.activeRef,
           signal

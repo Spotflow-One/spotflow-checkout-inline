@@ -177,10 +177,10 @@ export const createTransferPayment = async (
   }
 };
 
-export const verifyPaymentTransfer = async (
+export const verifyPayment = async (
   token: string,
   reference: string,
-  signal: AbortSignal
+  signal?: AbortSignal
 ): Promise<PaymentResponseData> => {
   try {
     const headers = getHeaders(token);
