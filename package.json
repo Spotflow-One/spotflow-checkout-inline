@@ -1,5 +1,5 @@
 {
-  "name": "@spotflow/checkout-inline-js",
+  "name": "@spot-flow/checkout-inline-js",
   "version": "0.0.1",
   "description": "",
   "main": "./dist/checkout-inline.js",
