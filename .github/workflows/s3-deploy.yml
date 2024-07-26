@@ -29,7 +29,7 @@ jobs:
 
         #Deploys the changes to S3 by overwriting the contents of the bucket with whatever is in git, and excludes the .git directory
       - name: Deploy to S3
-        run: aws s3 sync . s3://checkout-inline  --delete --exclude ".git/*" ".github/*"
+        run: aws s3 sync . s3://checkout-inline  --delete --exclude ".git/*" --exclude ".github/*"
 
         #Tells cloudfront to dump the cache so the changed files get served
       - name: Invalidate CloudFront cache
