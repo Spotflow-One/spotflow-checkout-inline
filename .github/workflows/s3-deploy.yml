@@ -5,6 +5,7 @@ on:
   push:
     branches:
       - cloudfront
+  workflow_dispatch:
 
 #Select a runtime for the job to run
 jobs:
