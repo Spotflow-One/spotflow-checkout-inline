@@ -3,41 +3,49 @@
 
 This project is an inline library that enables users to make payments seamlessly. It integrates smoothly into your application, providing a streamlined checkout experience.
 
+## Demo
+<img width="808" alt="Screenshot 2024-07-26 at 16 05 52" src="https://github.com/user-attachments/assets/4dbb0b2e-2142-4f04-994a-5c352de7d30e">
 
 
-
-## Contributing
-
-We welcome contributions! Follow the steps below to get started:
-
-### Getting Started
-
-1. **Clone the repository:**
-
-   ```sh
-   git clone https://github.com/Spotflow-One/spotflow-checkout.git
-   cd your-repo
+## Installation
+ ```sh
+ npm install @spotflow/inline-js-checkout
    ```
 
-2. **Install dependencies:**
+## Usage
+ ```sh
+ import SpotflowCheckout from @spotflow/inline-js-checkout;
 
-   ```sh
-   npm install
-   ```
+ const checkout = new SpotflowCheckout(
+       merchantKey = "<sk_test_f998479c0eedhXXXXXXXXXXXXXXXX>"// This is your Merchant Key generated for your Merchant on Spotflow
+       email = "email",
+       amount = 1000,
+     );
+ checkout.setup();
+ ```
 
-### Example Usage
-
-You can see an example of how to use the library in `index.html`. Open this file in your browser to see it in action.
-
-### Building the Project
-
-To build the project, run:
-
-```sh
-npm run build
+Alternatively, you can include it directly in your HTML via a CDN:
+```sh 
+<script src="spotflow/cdn"></script>  
 ```
 
-This will compile the source files and generate the output in the `dist` directory.
- 
+ ```sh
+ <button onclick="openCheckout()">
+    Make Payment
+ </button>
+ ```
+ ```sh
+ <script>
+   const openCheckout = () => {
+     const checkout = new SpotflowCheckout(
+       merchantKey = "<sk_test_f998479c0eedhXXXXXXXXXXXXXXXX>"// This is your Merchant Key generated for your Merchant on Spotflow
+       email = "temi@mailinator.com",
+       amount = 1000,
+     );
+     checkout.setup();
+   };
+ </script>
+ ```
+
 
 
