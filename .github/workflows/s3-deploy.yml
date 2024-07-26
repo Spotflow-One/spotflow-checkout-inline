@@ -4,7 +4,7 @@ name: Deploy to S3 and Invalidate CloudFront Cache
 on:
   push:
     branches:
-      - cloudfront
+      - main
   workflow_dispatch:
 
 #Select a runtime for the job to run
