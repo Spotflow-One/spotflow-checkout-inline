@@ -1,8 +1,9 @@
 {
-  "name": "checkout-inline",
-  "version": "1.0.0",
+  "name": "@spotflow/inline-js-checkout",
+  "version": "0.0.1",
   "description": "",
   "main": "./dist/checkout-inline.js",
+  "source": "./src/index.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "vite",
@@ -10,7 +11,7 @@
   },
   "type": "module",
   "keywords": [],
-  "types": "./dist/checkout-inline.js",
+  "types": "./dist/index.d.ts",
   "files": [
     "dist"
   ],

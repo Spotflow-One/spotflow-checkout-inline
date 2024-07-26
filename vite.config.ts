@@ -1,7 +1,6 @@
 import { resolve } from "node:path";
 import { defineConfig } from "vite";
 import dts from "vite-plugin-dts";
-import packageJson from "./package.json";
 import cssInjectedByJsPlugin from "vite-plugin-css-injected-by-js";
 
 export default defineConfig({
@@ -10,7 +9,7 @@ export default defineConfig({
       entry: resolve(__dirname, "src/index.ts"),
       formats: ["umd"],
       name: "SpotflowCheckout",
-      fileName: () => `${packageJson.name}.js`,
+      fileName: () => `checkout-inline.js`,
     },
     rollupOptions: {
       external: [],
