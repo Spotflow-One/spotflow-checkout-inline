@@ -411,4 +411,4 @@ class CheckoutForm {
   }
 }
 
-export default CheckoutForm;
+export { CheckoutForm };

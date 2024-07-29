@@ -14,9 +14,9 @@ This project is an inline library that enables users to make payments seamlessly
 
 ## Usage
  ```sh
- import SpotflowCheckout from @spotflow/inline-js-checkout;
+ import { CheckoutForm } from @spotflow/inline-js-checkout;
 
- const checkout = new SpotflowCheckout(
+ const checkout = new CheckoutForm(
        merchantKey = "<sk_test_f998479c0eedhXXXXXXXXXXXXXXXX>"// This is your Merchant Key generated for your Merchant on Spotflow
        email = "email",
        amount = 1000,
@@ -37,7 +37,8 @@ Alternatively, you can include it directly in your HTML via a CDN:
  ```sh
  <script>
    const openCheckout = () => {
-     const checkout = new SpotflowCheckout(
+     const { CheckoutForm } = SpotflowCheckout
+     const checkout = new CheckoutForm(
        merchantKey = "<sk_test_f998479c0eedhXXXXXXXXXXXXXXXX>"// This is your Merchant Key generated for your Merchant on Spotflow
        email = "temi@mailinator.com",
        amount = 1000,

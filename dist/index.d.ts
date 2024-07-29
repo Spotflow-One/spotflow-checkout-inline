@@ -27,4 +27,4 @@ declare class CheckoutForm {
     private viewMobileOptions;
     private displayPaymentWarningText;
 }
-export default CheckoutForm;
+export { CheckoutForm };
