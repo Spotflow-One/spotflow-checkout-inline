@@ -1,6 +1,6 @@
 {
   "name": "@spot-flow/checkout-inline-js",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "",
   "main": "dist/checkout-inline.js",
   "source": "src/index.ts",
