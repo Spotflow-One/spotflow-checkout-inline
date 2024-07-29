@@ -15,6 +15,8 @@ export default defineConfig({
       external: [],
       output: {
         globals: {},
+        format: "umd",
+        exports: "named",
       },
     },
   },
