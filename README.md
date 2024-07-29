@@ -14,7 +14,7 @@ This project is an inline library that enables users to make payments seamlessly
 
 ## Usage
  ```sh
- import { CheckoutForm } from @spotflow/inline-js-checkout;
+ import { CheckoutForm } from "@spot-flow/checkout-inline-js";
 
  const checkout = new CheckoutForm(
        merchantKey = "<sk_test_f998479c0eedhXXXXXXXXXXXXXXXX>"// This is your Merchant Key generated for your Merchant on Spotflow
@@ -26,7 +26,7 @@ This project is an inline library that enables users to make payments seamlessly
 
 Alternatively, you can include it directly in your HTML via a CDN:
 ```sh 
-<script src="spotflow/cdn"></script>  
+<script src="https://dr4h9151gox1m.cloudfront.net/dist/checkout-inline.js"></script>  
 ```
 
  ```sh
@@ -49,4 +49,35 @@ Alternatively, you can include it directly in your HTML via a CDN:
  ```
 
 
+## Contributing
 
+We welcome contributions! Follow the steps below to get started:
+
+### Getting Started
+
+1. **Clone the repository:**
+
+   ```sh
+   git clone https://github.com/Spotflow-One/spotflow-checkout.git
+   cd your-repo
+   ```
+
+2. **Install dependencies:**
+
+   ```sh
+   npm install
+   ```
+
+### Example Usage
+
+You can see an example of how to use the library in `index.html`. Open this file in your browser to see it in action.
+
+### Building the Project
+
+To build the project, run:
+
+```sh
+npm run build
+```
+
+This will compile the source files and generate the output in the `dist` directory.
