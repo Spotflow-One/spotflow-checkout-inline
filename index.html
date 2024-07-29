@@ -16,7 +16,8 @@
     <script src="./dist/checkout-inline.js"></script>
     <script>
       const openCheckout = () => {
-        const checkout = new SpotflowCheckout(
+        const { CheckoutForm } = SpotflowCheckout
+        const checkout = new CheckoutForm(
           merchantKey = "merchant_key",
           email = "email",
           amount = 1000,
