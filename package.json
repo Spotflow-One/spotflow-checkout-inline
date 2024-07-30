@@ -3,6 +3,7 @@
   "version": "0.0.5",
   "description": "",
   "main": "dist/checkout-inline.js",
+  "module": "dist/checkout-inline.es.js",
   "source": "src/index.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

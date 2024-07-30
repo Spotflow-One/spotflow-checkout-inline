@@ -7,9 +7,9 @@ export default defineConfig({
   build: {
     lib: {
       entry: resolve(__dirname, "src/index.ts"),
-      formats: ["umd"],
+      formats: ["es", "umd"],
       name: "SpotflowCheckout",
-      fileName: () => `checkout-inline.js`,
+      fileName: (format) => (format === "es" ? `checkout-inline.${format}.js` : `checkout-inline.js`),
     },
     rollupOptions: {
       external: [],
