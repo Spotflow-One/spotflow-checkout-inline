@@ -1,7 +1,8 @@
 import { resolve } from "node:path";
 import { defineConfig } from "vite";
 import dts from "vite-plugin-dts";
-import cssInjectedByJsPlugin from "vite-plugin-css-injected-by-js";
+import { libInjectCss } from "vite-plugin-lib-inject-css";
+
 
 export default defineConfig({
   build: {
@@ -24,7 +25,7 @@ export default defineConfig({
     include: ["/src/views/*.html"],
   },
 
-  plugins: [cssInjectedByJsPlugin(), dts()],
+  plugins: [libInjectCss(), dts()],
   resolve: {
     alias: {
       "@": resolve(__dirname, "src"),

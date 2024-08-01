@@ -1,133 +1,133 @@
-(function(){"use strict";try{if(typeof document<"u"){var t=document.createElement("style");t.appendChild(document.createTextNode('*,:before,:after{box-sizing:border-box;border-width:0;border-style:solid;border-color:#e5e7eb}:before,:after{--tw-content: ""}html,:host{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;-o-tab-size:4;tab-size:4;font-family:ui-sans-serif,system-ui,sans-serif,"Apple Color Emoji","Segoe UI Emoji",Segoe UI Symbol,"Noto Color Emoji";font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}body{margin:0;line-height:inherit}hr{height:0;color:inherit;border-top-width:1px}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,samp,pre{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,Liberation Mono,Courier New,monospace;font-feature-settings:normal;font-variation-settings:normal;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}table{text-indent:0;border-color:inherit;border-collapse:collapse}button,input,optgroup,select,textarea{font-family:inherit;font-feature-settings:inherit;font-variation-settings:inherit;font-size:100%;font-weight:inherit;line-height:inherit;letter-spacing:inherit;color:inherit;margin:0;padding:0}button,select{text-transform:none}button,input:where([type=button]),input:where([type=reset]),input:where([type=submit]){-webkit-appearance:button;background-color:transparent;background-image:none}:-moz-focusring{outline:auto}:-moz-ui-invalid{box-shadow:none}progress{vertical-align:baseline}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}blockquote,dl,dd,h1,h2,h3,h4,h5,h6,hr,figure,p,pre{margin:0}fieldset{margin:0;padding:0}legend{padding:0}ol,ul,menu{list-style:none;margin:0;padding:0}dialog{padding:0}textarea{resize:vertical}input::-moz-placeholder,textarea::-moz-placeholder{opacity:1;color:#9ca3af}input::placeholder,textarea::placeholder{opacity:1;color:#9ca3af}button,[role=button]{cursor:pointer}:disabled{cursor:default}img,svg,video,canvas,audio,iframe,embed,object{display:block;vertical-align:middle}img,video{max-width:100%;height:auto}[hidden]{display:none}:root{--primary: 240, 100%, 28%;--primary-light: 266, 21%, 76%;--primary-lighter: 240, 100%, 98%;--primary-dark: 240, 39%, 52%;--primary-darker: 240, 100%, 28%;--success: 151, 58%, 46%;--error: 0, 74%, 48%;--common: 60, 4%, 43%;--grey: 218, 15%, 65%;--grey-100: 270, 3%, 62%;--grey-200: 264, 3%, 72%;--grey-300: 260, 3%, 81%;--grey-400: 264, 6%, 34%;--grey-500: 217, 24%, 27%;--grey-600: 265, 10%, 24%;--grey-700: 260, 4%, 43%;--grey-800: 265, 21%, 76%;text-rendering:optimizeLegibility;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}input:focus,button:focus{outline:none}*,:before,:after{--tw-border-spacing-x: 0;--tw-border-spacing-y: 0;--tw-translate-x: 0;--tw-translate-y: 0;--tw-rotate: 0;--tw-skew-x: 0;--tw-skew-y: 0;--tw-scale-x: 1;--tw-scale-y: 1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness: proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width: 0px;--tw-ring-offset-color: #fff;--tw-ring-color: rgb(59 130 246 / .5);--tw-ring-offset-shadow: 0 0 #0000;--tw-ring-shadow: 0 0 #0000;--tw-shadow: 0 0 #0000;--tw-shadow-colored: 0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x: 0;--tw-border-spacing-y: 0;--tw-translate-x: 0;--tw-translate-y: 0;--tw-rotate: 0;--tw-skew-x: 0;--tw-skew-y: 0;--tw-scale-x: 1;--tw-scale-y: 1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness: proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width: 0px;--tw-ring-offset-color: #fff;--tw-ring-color: rgb(59 130 246 / .5);--tw-ring-offset-shadow: 0 0 #0000;--tw-ring-shadow: 0 0 #0000;--tw-shadow: 0 0 #0000;--tw-shadow-colored: 0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }.container{width:100%}@media (min-width: 640px){.container{max-width:640px}}@media (min-width: 768px){.container{max-width:768px}}@media (min-width: 1024px){.container{max-width:1024px}}@media (min-width: 1280px){.container{max-width:1280px}}@media (min-width: 1536px){.container{max-width:1536px}}.container-center{display:flex;align-items:center;justify-content:center}.container-between{display:flex;align-items:center;justify-content:space-between}.align-center{display:flex;align-items:center}.box-container{padding:18px 0}@media (min-width: 768px){.box-container{padding:1.75rem 1.25rem}}@media (min-width: 1024px){.box-container{padding-left:1.75rem;padding-right:1.75rem}}.content-heading{padding-top:.5rem;text-align:center;font-size:1.25rem;line-height:1.75rem;font-weight:600;color:hsl(var(--grey-400))}@media (min-width: 768px){.content-heading{padding-top:0}}.button-outline{display:flex;height:2.5rem;align-items:center;border-radius:.25rem;border-width:1px;--tw-border-opacity: 1;border-color:rgb(230 230 231 / var(--tw-border-opacity));font-size:.75rem;line-height:1rem;font-weight:600;color:hsl(var(--grey-400))}.payment-options{display:flex;min-height:3rem;width:100%;max-width:28rem;flex-direction:column;overflow:hidden}.tab{margin-bottom:.75rem;display:flex;align-items:center;justify-content:flex-start;text-align:left}.tab-button{display:flex;flex-grow:1;align-items:center;padding:.75rem 1.25rem;text-align:center;--tw-text-opacity: 1;color:rgb(61 56 68 / var(--tw-text-opacity))}@media (min-width: 768px){.tab-button{display:block}.tab-button:hover{border-radius:.75rem;background-color:hsl(var(--primary));--tw-text-opacity: 1;color:rgb(255 255 255 / var(--tw-text-opacity))}}@media (min-width: 1024px){.tab-button{display:flex}}.tab-button.active{border-radius:.75rem;background-color:hsl(var(--primary));--tw-text-opacity: 1;color:rgb(255 255 255 / var(--tw-text-opacity))}.tab-button.active *{fill:#fff}.tab-button span{margin-top:.25rem;margin-bottom:.25rem;display:flex;flex-shrink:0;justify-content:center;font-weight:600}@media (min-width: 1024px){.tab-button span{justify-content:flex-start}}.main{max-height:90vh;width:100%;overflow:auto}@media (min-width: 768px){.main{padding-top:1rem;padding-bottom:1rem}}@media (min-width: 1024px){.main{width:calc(100% - 250px);padding-left:1rem;padding-right:1rem}}.header-container{border-radius:.75rem;background-color:hsl(var(--primary));padding:2.5rem 1rem;--tw-text-opacity: 1;color:rgb(255 255 255 / var(--tw-text-opacity))}@media (min-width: 768px){.header-container{padding:1.25rem 2.25rem}}.content{display:none}.content.active{display:block}.header-chip{display:flex;height:1.4375rem;align-items:center;justify-content:center;white-space:nowrap;border-radius:.25rem;background-color:hsl(var(--success));padding-top:0;padding-bottom:0;padding-left:.25rem;padding-right:.25rem;font-size:.75rem;line-height:1rem;--tw-text-opacity: 1;color:rgb(255 255 255 / var(--tw-text-opacity))}.tooltip{position:absolute;left:0;top:20px;margin-bottom:1.25rem;display:none;width:320px;flex-direction:column;align-items:center}.group:hover .tooltip{display:flex}.tooltip-textbox{position:relative;z-index:10;border-radius:.5rem;--tw-bg-opacity: 1;background-color:rgb(255 255 255 / var(--tw-bg-opacity));padding:1rem 1.25rem;font-size:.75rem;line-height:1rem;--tw-shadow: 0 10px 15px -3px rgb(0 0 0 / .1), 0 4px 6px -4px rgb(0 0 0 / .1);--tw-shadow-colored: 0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000),var(--tw-ring-shadow, 0 0 #0000),var(--tw-shadow)}.tooltip-title{margin-bottom:.25rem;font-size:13px;font-weight:500;line-height:17.4px;color:hsl(var(--grey-500))}.tooltip-text{font-size:13px;line-height:17.4px;letter-spacing:.025em;color:hsl(var(--grey))}.details-input-container{width:100%;border-radius:.5rem;border-width:1px;--tw-border-opacity: 1;border-color:rgb(206 205 208 / var(--tw-border-opacity));--tw-bg-opacity: 1;background-color:rgb(255 255 255 / var(--tw-bg-opacity));padding:1.5rem .75rem .5rem}.details-input-container::-moz-placeholder{color:hsl(var(--grey-200))}.details-input-container::placeholder{color:hsl(var(--grey-200))}.details-input-container:focus{outline:2px solid transparent;outline-offset:2px}.details-form-button{display:inline-flex;height:50px;width:100%;align-items:center;justify-content:center;border-radius:.5rem;background-color:hsl(var(--primary));font-size:.875rem;line-height:1.25rem;font-weight:600;--tw-text-opacity: 1;color:rgb(255 255 255 / var(--tw-text-opacity))}.details-form-button:focus{outline:2px solid transparent;outline-offset:2px}.details-form-button:disabled{background-color:hsl(var(--primary-lighter));color:hsl(var(--primary-light))}.pin-container{margin-left:auto;margin-right:auto;display:flex;justify-content:space-between}.pin-text{margin-left:auto;margin-right:auto;width:80%;text-align:center;font-size:.875rem;line-height:1.25rem;font-weight:600;color:hsl(var(--grey-400))}.pin-input{height:3.5rem;width:5rem;border-radius:.5rem;border-width:1px;border-color:hsl(var(--grey-300));text-align:center;font-size:1.125rem;line-height:1.75rem}.pin-input:focus{border-color:hsl(var(--primary));outline:2px solid transparent;outline-offset:2px}.pin-cancel{text-align:center;font-size:.875rem;line-height:1.25rem;font-weight:600;color:hsl(var(--grey-600))}.pin-cancel:hover{text-decoration-line:underline}.otp-input{width:100%;border-radius:.5rem;border-width:1px;--tw-border-opacity: 1;border-color:rgb(206 205 208 / var(--tw-border-opacity));--tw-bg-opacity: 1;background-color:rgb(255 255 255 / var(--tw-bg-opacity));padding:1rem .75rem}.otp-input::-moz-placeholder{color:hsl(var(--grey-200))}.otp-input::placeholder{color:hsl(var(--grey-200))}.otp-input:focus{outline:2px solid transparent;outline-offset:2px}.otp-button{height:3.5rem;border-radius:.5rem;background-color:hsl(var(--success));padding-left:1.5rem;padding-right:1.5rem;font-weight:600;--tw-text-opacity: 1;color:rgb(255 255 255 / var(--tw-text-opacity))}.otp-button:disabled{opacity:.8}@media (min-width: 768px){.otp-button{height:100%}}@media (max-width: 639px){.otp-button{width:100%}}.otp-text{margin-left:auto;margin-right:auto;width:91.666667%;text-align:center;font-size:.875rem;line-height:1.25rem;font-weight:600;color:hsl(var(--grey-400))}@media (min-width: 768px){.otp-text{width:60%}}.otp-subtext{margin-left:auto;margin-right:auto;width:60%;text-align:center;font-size:.875rem;line-height:1.25rem;color:hsl(var(--grey-700))}.warning-text,.success-text{margin-top:1rem;margin-bottom:1rem;margin-left:auto;margin-right:auto;text-align:center;font-weight:600;color:hsl(var(--grey-400))}.warning-list{margin-left:auto;margin-right:auto;margin-top:3rem}.warning-button,.success-button{margin-bottom:1rem;width:100%;border-radius:.5rem;border-width:1px;border-color:hsl(var(--grey-800));padding:1rem;text-align:center;font-size:.875rem;line-height:1.25rem;font-weight:600;color:hsl(var(--grey-400))}.transfer-button,.ussd-button{margin-bottom:1rem;width:100%;border-radius:.5rem;border-width:1px;border-color:hsl(var(--primary-light));padding:1rem;text-align:center;font-size:.875rem;line-height:1.25rem;font-weight:600;color:hsl(var(--primary-darker))}.transfer-close{margin-bottom:1rem;width:200px;border-radius:.5rem;background-color:hsl(var(--success));padding:1rem;text-align:center;font-size:.875rem;line-height:1.25rem;font-weight:600;--tw-text-opacity: 1;color:rgb(255 255 255 / var(--tw-text-opacity))}#bank-search-input{width:100%;border-radius:.5rem;border-width:1px;border-color:hsl(var(--primary-light));padding:1rem}.bank-options{position:absolute;z-index:1000;margin-top:.25rem;box-sizing:border-box;display:none;max-height:150px;width:100%;overflow-y:auto;border-radius:.5rem;border-width:1px;--tw-bg-opacity: 1;background-color:rgb(255 255 255 / var(--tw-bg-opacity));--tw-shadow: 0 1px 3px 0 rgb(0 0 0 / .1), 0 1px 2px -1px rgb(0 0 0 / .1);--tw-shadow-colored: 0 1px 3px 0 var(--tw-shadow-color), 0 1px 2px -1px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000),var(--tw-ring-shadow, 0 0 #0000),var(--tw-shadow)}.bank-option{cursor:pointer;padding:10px}.bank-option:hover{background-color:hsl(var(--primary-lighter))}.copy-code-button{margin-left:auto;margin-right:auto;margin-bottom:1rem;display:flex;width:60%;align-items:center;justify-content:center;gap:.5rem;border-radius:.5rem;background-color:hsl(var(--primary));padding:1rem;text-align:center;font-size:1.25rem;line-height:1.75rem;font-weight:600;--tw-text-opacity: 1;color:rgb(255 255 255 / var(--tw-text-opacity))}.spinner{margin-right:.75rem;height:2rem;width:2rem}@keyframes spin{to{transform:rotate(360deg)}}.spinner{animation:spin 1s linear infinite;fill:#fff}.fixed{position:fixed}.absolute{position:absolute}.relative{position:relative}.inset-0{top:0;right:0;bottom:0;left:0}.-bottom-\\[25px\\]{bottom:-25px}.-bottom-\\[30px\\]{bottom:-30px}.left-0{left:0}.right-0{right:0}.right-2\\/4{right:50%}.right-3{right:.75rem}.top-0{top:0}.top-1{top:.25rem}.top-1\\/2,.top-2\\/4{top:50%}.top-\\[20px\\]{top:20px}.z-10{z-index:10}.order-1{order:1}.order-2{order:2}.col-span-2{grid-column:span 2 / span 2}.mx-0{margin-left:0;margin-right:0}.mx-4{margin-left:1rem;margin-right:1rem}.mx-5{margin-left:1.25rem;margin-right:1.25rem}.mx-\\[18px\\]{margin-left:18px;margin-right:18px}.mx-auto{margin-left:auto;margin-right:auto}.my-12{margin-top:3rem;margin-bottom:3rem}.my-4{margin-top:1rem;margin-bottom:1rem}.my-6{margin-top:1.5rem;margin-bottom:1.5rem}.my-8{margin-top:2rem;margin-bottom:2rem}.my-auto{margin-top:auto;margin-bottom:auto}.mb-0{margin-bottom:0}.mb-2{margin-bottom:.5rem}.mb-3{margin-bottom:.75rem}.mb-4{margin-bottom:1rem}.mb-5{margin-bottom:1.25rem}.mb-6{margin-bottom:1.5rem}.mb-7{margin-bottom:1.75rem}.mb-8{margin-bottom:2rem}.mr-1{margin-right:.25rem}.mr-2{margin-right:.5rem}.mr-3{margin-right:.75rem}.mt-10{margin-top:2.5rem}.mt-12{margin-top:3rem}.mt-20{margin-top:5rem}.mt-4{margin-top:1rem}.mt-6{margin-top:1.5rem}.mt-7{margin-top:1.75rem}.mt-8{margin-top:2rem}.block{display:block}.flex{display:flex}.grid{display:grid}.contents{display:contents}.hidden{display:none}.h-12{height:3rem}.h-3{height:.75rem}.h-6{height:1.5rem}.h-8{height:2rem}.h-9{height:2.25rem}.h-\\[20vh\\]{height:20vh}.h-\\[40vh\\]{height:40vh}.h-full{height:100%}.min-h-full{min-height:100%}.min-h-screen{min-height:100vh}.w-11\\/12{width:91.666667%}.w-12{width:3rem}.w-3{width:.75rem}.w-3\\/5{width:60%}.w-4\\/5{width:80%}.w-5\\/6{width:83.333333%}.w-6{width:1.5rem}.w-8{width:2rem}.w-9{width:2.25rem}.w-\\[150px\\]{width:150px}.w-\\[200px\\]{width:200px}.w-\\[250px\\]{width:250px}.w-auto{width:auto}.w-full{width:100%}.w-screen{width:100vw}.min-w-8{min-width:2rem}.grow{flex-grow:1}.-translate-y-1\\/2,.-translate-y-2\\/4{--tw-translate-y: -50%;transform:translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skew(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.translate-x-2\\/4{--tw-translate-x: 50%;transform:translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skew(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.transform{transform:translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skew(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.cursor-pointer{cursor:pointer}.cursor-text{cursor:text}.grid-cols-1{grid-template-columns:repeat(1,minmax(0,1fr))}.grid-cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}.flex-col{flex-direction:column}.items-end{align-items:flex-end}.items-center{align-items:center}.justify-end{justify-content:flex-end}.justify-center{justify-content:center}.gap-1{gap:.25rem}.gap-2{gap:.5rem}.gap-4{gap:1rem}.gap-7{gap:1.75rem}.overflow-auto{overflow:auto}.overflow-hidden{overflow:hidden}.overflow-y-auto{overflow-y:auto}.rounded-full{border-radius:9999px}.rounded-lg{border-radius:.5rem}.rounded-md{border-radius:.375rem}.border,.border-\\[1px\\]{border-width:1px}.border-b{border-bottom-width:1px}.border-dashed{border-style:dashed}.border-\\[\\#C0B5CF\\]{--tw-border-opacity: 1;border-color:rgb(192 181 207 / var(--tw-border-opacity))}.border-\\[\\#E6E6E7\\]{--tw-border-opacity: 1;border-color:rgb(230 230 231 / var(--tw-border-opacity))}.border-grey-200{border-color:hsl(var(--grey-200))}.border-primary{border-color:hsl(var(--primary))}.border-b-white{--tw-border-opacity: 1;border-bottom-color:rgb(255 255 255 / var(--tw-border-opacity))}.bg-\\[\\#f4f4ff\\]{--tw-bg-opacity: 1;background-color:rgb(244 244 255 / var(--tw-bg-opacity))}.bg-\\[\\#fafaff\\]{--tw-bg-opacity: 1;background-color:rgb(250 250 255 / var(--tw-bg-opacity))}.bg-primary{background-color:hsl(var(--primary))}.bg-primary-lighter{background-color:hsl(var(--primary-lighter))}.bg-white{--tw-bg-opacity: 1;background-color:rgb(255 255 255 / var(--tw-bg-opacity))}.bg-opacity-100{--tw-bg-opacity: 1}.p-0{padding:0}.px-2{padding-left:.5rem;padding-right:.5rem}.px-3{padding-left:.75rem;padding-right:.75rem}.px-5{padding-left:1.25rem;padding-right:1.25rem}.px-6{padding-left:1.5rem;padding-right:1.5rem}.py-3{padding-top:.75rem;padding-bottom:.75rem}.py-4{padding-top:1rem;padding-bottom:1rem}.py-5{padding-top:1.25rem;padding-bottom:1.25rem}.py-8{padding-top:2rem;padding-bottom:2rem}.pb-1{padding-bottom:.25rem}.pb-10{padding-bottom:2.5rem}.pb-4{padding-bottom:1rem}.pb-5{padding-bottom:1.25rem}.pb-8{padding-bottom:2rem}.pb-\\[6\\.4px\\]{padding-bottom:6.4px}.pb-\\[9\\.6px\\]{padding-bottom:9.6px}.pt-1{padding-top:.25rem}.pt-10{padding-top:2.5rem}.pt-16{padding-top:4rem}.pt-2{padding-top:.5rem}.pt-3{padding-top:.75rem}.pt-9{padding-top:2.25rem}.pt-\\[9\\.6px\\]{padding-top:9.6px}.text-left{text-align:left}.text-center{text-align:center}.text-\\[10px\\]{font-size:10px}.text-lg{font-size:1.125rem;line-height:1.75rem}.text-sm{font-size:.875rem;line-height:1.25rem}.text-xl{font-size:1.25rem;line-height:1.75rem}.text-xs{font-size:.75rem;line-height:1rem}.font-semibold{font-weight:600}.tracking-\\[0\\.5px\\]{letter-spacing:.5px}.text-common{color:hsl(var(--common))}.text-grey-100{color:hsl(var(--grey-100))}.text-grey-400{color:hsl(var(--grey-400))}.text-grey-600{color:hsl(var(--grey-600))}.text-grey-700{color:hsl(var(--grey-700))}.text-primary-dark{color:hsl(var(--primary-dark))}.text-success{color:hsl(var(--success))}.shadow-xl{--tw-shadow: 0 20px 25px -5px rgb(0 0 0 / .1), 0 8px 10px -6px rgb(0 0 0 / .1);--tw-shadow-colored: 0 20px 25px -5px var(--tw-shadow-color), 0 8px 10px -6px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000),var(--tw-ring-shadow, 0 0 #0000),var(--tw-shadow)}.filter{filter:var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow)}.transition{transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,-webkit-backdrop-filter;transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter;transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter,-webkit-backdrop-filter;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.transition-all{transition-property:all;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.transition-opacity{transition-property:opacity;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.tab-button.active:after{animation:text-underline-animation .3s linear forwards}#toast-container{position:fixed;top:20px;right:20px;width:300px;z-index:9999}.toast{display:flex;align-items:center;padding:15px;margin-bottom:10px;border-radius:5px;opacity:0;transform:translateY(-50px);transition:opacity .5s,transform .5s;box-shadow:0 1px 3px #0000001a,0 1px 2px -1px #0000001a}.toast.show{opacity:1;transform:translateY(0)}.toast.success{background-color:hsl(var(--success));color:#fff}.toast.error{background-color:hsl(var(--error));color:#fff}.toast .close-btn{margin-left:auto;cursor:pointer;color:#fff}.progress-container{width:100%;height:10px;background-color:#f3f3f3;border-radius:5px;overflow:hidden;position:relative}.progress-bar{height:100%;background-color:#4caf50;width:0;position:absolute;top:0;left:0;animation:progress 1s linear infinite}@keyframes progress{0%{width:0}to{width:100%}}@media (min-width: 768px){.md\\:container-center{display:flex;align-items:center;justify-content:center}}.hover\\:bg-primary:hover{background-color:hsl(var(--primary))}.hover\\:text-white:hover{--tw-text-opacity: 1;color:rgb(255 255 255 / var(--tw-text-opacity))}.hover\\:underline:hover{text-decoration-line:underline}.group:hover .group-hover\\:flex{display:flex}.group:hover .group-hover\\:fill-white{fill:#fff}@media (min-width: 640px){.sm\\:my-8{margin-top:2rem;margin-bottom:2rem}.sm\\:min-h-\\[70\\%\\]{min-height:70%}.sm\\:w-4\\/5{width:80%}.sm\\:items-center{align-items:center}}@media (min-width: 768px){.md\\:mx-5{margin-left:1.25rem;margin-right:1.25rem}.md\\:mx-6{margin-left:1.5rem;margin-right:1.5rem}.md\\:mx-\\[18px\\]{margin-left:18px;margin-right:18px}.md\\:flex{display:flex}.md\\:hidden{display:none}.md\\:w-3\\/5{width:60%}.md\\:w-4\\/5{width:80%}.md\\:w-\\[90\\%\\]{width:90%}.md\\:grid-cols-3{grid-template-columns:repeat(3,minmax(0,1fr))}.md\\:gap-5{gap:1.25rem}.md\\:py-16{padding-top:4rem;padding-bottom:4rem}.md\\:text-xl{font-size:1.25rem;line-height:1.75rem}}@media (min-width: 1024px){.lg\\:block{display:block}.lg\\:w-\\[900px\\]{width:900px}}@media (max-width: 639px){.max-sm\\:mx-auto{margin-left:auto;margin-right:auto}.max-sm\\:hidden{display:none}.max-sm\\:w-4\\/5{width:80%}.max-sm\\:px-4{padding-left:1rem;padding-right:1rem}.max-sm\\:py-4{padding-top:1rem;padding-bottom:1rem}.max-sm\\:py-5{padding-top:1.25rem;padding-bottom:1.25rem}.max-sm\\:text-center{text-align:center}}')),document.head.appendChild(t)}}catch(r){console.error("vite-plugin-css-injected-by-js",r)}})();
-var D = Object.defineProperty;
+import './index.css';var D = Object.defineProperty;
 var J = (r, e, t) => e in r ? D(r, e, { enumerable: !0, configurable: !0, writable: !0, value: t }) : r[e] = t;
 var o = (r, e, t) => J(r, typeof e != "symbol" ? e + "" : e, t);
-const K = `<div role="dialog" class="relative z-10" aria-labelledby="modal-title" aria-modal="true">
-  <div class="fixed inset-0 bg-[#fafaff] bg-opacity-100 transition-opacity" aria-hidden="true"></div>
-
-  <div id="toast-container"></div>
-
-  <div class="fixed inset-0 z-10 w-screen overflow-y-auto">
-    <div class="relative flex min-h-full items-end justify-center text-center sm:items-center p-0">
-      <div
-        class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 w-full sm:w-4/5 md:w-[90%] lg:w-[900px] min-h-screen sm:min-h-[70%] flex">
-
-        <aside class="px-2 py-4 md:flex justify-center w-[250px] bg-[#f4f4ff] overflow-auto hidden">
-          <div class="w-full py-8">
-            <div class="container-center">
-              <img src="" alt="Nba Logo" id="merchantLogo" class="hidden md:flex" />
-            </div>
-            <h5 class="text-xl font-semibold text-common pt-10 pb-4 text-center">PAYMENT OPTIONS</h5>
-            <div class="payment-options">
-
-              <!-- Tab options -->
-            </div>
-          </div>
-        </aside>
-        <div class="main" id="main">
-          <div class="container-center w-full bg-primary-lighter">
-            <img src="" alt="Nba Logo" id="merchantLogoMob" class="md:hidden" />
-          </div>
-          <div id="mob-tab-co">
-
-          </div>
-          <button
-            class="hidden top-0 right-0 text-lg fixed hover:bg-primary hover:text-white h-6 w-6 md:flex justify-center items-end rounded-full close-btn">x</button>
-
-          <div class="box-container relative max-sm:py-4 max-sm:px-4">
-            <!-- header -->
-            <div class="header-container">
-              <div class="container-between border-b border-b-white pb-[9.6px]">
-                <p class="text-xs" id="merchant-email"></p>
-                <p class="text-xs">League Pass</p>
+const K = `<div id="checkout-modal">
+  <div role="dialog" class="relative z-10" aria-labelledby="modal-title" aria-modal="true">
+    <div class="fixed inset-0 bg-[#fafaff] bg-opacity-100 transition-opacity" aria-hidden="true"></div>
+  
+    <div id="toast-container"></div>
+  
+    <div class="fixed inset-0 z-10 w-screen overflow-y-auto">
+      <div class="relative flex min-h-full items-end justify-center text-center sm:items-center p-0">
+        <div
+          class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 w-full sm:w-4/5 md:w-[90%] lg:w-[900px] min-h-screen sm:min-h-[70%] flex">
+  
+          <aside class="px-2 py-4 md:flex justify-center w-[250px] bg-[#f4f4ff] overflow-auto hidden">
+            <div class="w-full py-8">
+              <div class="container-center">
+                <img src="" alt="Nba Logo" id="merchantLogo" class="hidden md:flex" />
               </div>
-              <div class="container-between pt-[9.6px] pb-[6.4px]">
-                <div class="align-center">
-                  <p class="text-sm mr-1">USD 1 = NGN 1,483.98</p>
-                  <div class="group relative flex flex-col items-center cursor-pointer">
-                    <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path
-                        d="M5 8C4.72386 8 4.5 7.77614 4.5 7.5L4.5 4C4.5 3.72386 4.72386 3.5 5 3.5C5.27614 3.5 5.5 3.72386 5.5 4L5.5 7.5C5.5 7.77614 5.27614 8 5 8Z"
-                        fill="#CCCCE8" />
-                      <path
-                        d="M5.625 2.625C5.625 2.27982 5.34518 2 5 2C4.65482 2 4.375 2.27982 4.375 2.625C4.375 2.97018 4.65482 3.25 5 3.25C5.34518 3.25 5.625 2.97018 5.625 2.625Z"
-                        fill="#CCCCE8" />
-                      <path fill-rule="evenodd" clip-rule="evenodd"
-                        d="M10 5C10 7.76142 7.76142 10 5 10C2.23858 10 1.95703e-07 7.76142 4.37114e-07 5C6.78525e-07 2.23858 2.23858 -6.78525e-07 5 -4.37114e-07C7.76142 -1.95703e-07 10 2.23858 10 5ZM5 9C7.20914 9 9 7.20914 9 5C9 2.79086 7.20914 1 5 1C2.79086 0.999999 1 2.79086 1 5C1 7.20914 2.79086 9 5 9Z"
-                        fill="#CCCCE8" />
-                    </svg>
-
-                    <div class="tooltip">
-                      <div class="tooltip-textbox">
-                        <p class="tooltip-title">
-                          What is this?
-                        </p>
-                        <p class="tooltip-text">
-                          This rate reflects the current exchange rate for
-                          converting United States Dollars (USD) to Nigerian Naira
-                          (NGN). Please note that exchange rates are subject to
-                          change and may vary slightly at the time of the
-                          transaction.
-                        </p>
+              <h5 class="text-xl font-semibold text-common pt-10 pb-4 text-center">PAYMENT OPTIONS</h5>
+              <div class="payment-options">
+  
+                <!-- Tab options -->
+              </div>
+            </div>
+          </aside>
+          <div class="main" id="main">
+            <div class="container-center w-full bg-primary-lighter">
+              <img src="" alt="Nba Logo" id="merchantLogoMob" class="md:hidden" />
+            </div>
+            <div id="mob-tab-co">
+  
+            </div>
+            <button
+              class="hidden top-0 right-0 text-lg fixed hover:bg-primary hover:text-white h-6 w-6 md:flex justify-center items-end rounded-full close-btn">x</button>
+  
+            <div class="box-container relative max-sm:py-4 max-sm:px-4">
+              <!-- header -->
+              <div class="header-container">
+                <div class="container-between border-b border-b-white pb-[9.6px]">
+                  <p class="text-xs" id="merchant-email"></p>
+                  <p class="text-xs">League Pass</p>
+                </div>
+                <div class="container-between pt-[9.6px] pb-[6.4px]">
+                  <div class="align-center">
+                    <p class="text-sm mr-1">USD 1 = NGN 1,483.98</p>
+                    <div class="group relative flex flex-col items-center cursor-pointer">
+                      <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                          d="M5 8C4.72386 8 4.5 7.77614 4.5 7.5L4.5 4C4.5 3.72386 4.72386 3.5 5 3.5C5.27614 3.5 5.5 3.72386 5.5 4L5.5 7.5C5.5 7.77614 5.27614 8 5 8Z"
+                          fill="#CCCCE8" />
+                        <path
+                          d="M5.625 2.625C5.625 2.27982 5.34518 2 5 2C4.65482 2 4.375 2.27982 4.375 2.625C4.375 2.97018 4.65482 3.25 5 3.25C5.34518 3.25 5.625 2.97018 5.625 2.625Z"
+                          fill="#CCCCE8" />
+                        <path fill-rule="evenodd" clip-rule="evenodd"
+                          d="M10 5C10 7.76142 7.76142 10 5 10C2.23858 10 1.95703e-07 7.76142 4.37114e-07 5C6.78525e-07 2.23858 2.23858 -6.78525e-07 5 -4.37114e-07C7.76142 -1.95703e-07 10 2.23858 10 5ZM5 9C7.20914 9 9 7.20914 9 5C9 2.79086 7.20914 1 5 1C2.79086 0.999999 1 2.79086 1 5C1 7.20914 2.79086 9 5 9Z"
+                          fill="#CCCCE8" />
+                      </svg>
+  
+                      <div class="tooltip">
+                        <div class="tooltip-textbox">
+                          <p class="tooltip-title">
+                            What is this?
+                          </p>
+                          <p class="tooltip-text">
+                            This rate reflects the current exchange rate for
+                            converting United States Dollars (USD) to Nigerian Naira
+                            (NGN). Please note that exchange rates are subject to
+                            change and may vary slightly at the time of the
+                            transaction.
+                          </p>
+                        </div>
                       </div>
                     </div>
                   </div>
+                  <div>
+                    <p class="text-sm"> Pay
+                      <span> USD 14.99</span>
+                    </p>
+                  </div>
+  
                 </div>
-                <div>
-                  <p class="text-sm"> Pay
-                    <span> USD 14.99</span>
-                  </p>
-                </div>
-
-              </div>
-
-              <div class="flex justify-end">
-                <div class="header-chip">
-                  NGN 22,244.86
+  
+                <div class="flex justify-end">
+                  <div class="header-chip">
+                    NGN 22,244.86
+                  </div>
                 </div>
               </div>
-            </div>
-            <!-- body -->
-            <div class="box-container-method">
-              <div class="content active" data-content="0">
+              <!-- body -->
+              <div class="box-container-method">
+                <div class="content active" data-content="0">
+                </div>
+                <div class="content" data-content="1"></div>
+                <div class="content" data-content="2"></div>
               </div>
-              <div class="content" data-content="1"></div>
-              <div class="content" data-content="2"></div>
-            </div>
-
-            <div id="mob-container" class="md:hidden">
-
-            
-            </div>
-            <!-- footer -->
-            <div class="container-between gap-2 mt-20 mb-8 md:hidden" id="mob-action-btns">
-              <button class="button-outline px-3 w-auto" id="change-method">
-                <span class="text-[10px] mr-1">x</span> Change Payment Method
-              </button>
-              <button class="button-outline px-6 w-auto close-btn">
-                <span class="text-[10px] mr-1">x</span> Cancel Payment
-              </button>
-            </div>
-            <div class="container-center pt-2 pb-8 gap-1">
-              <svg width="10" height="12" viewBox="0 0 10 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path
-                  d="M4.884 0.68L1.384 2.235C1.024 2.395 0.789001 2.755 0.789001 3.15V5.5C0.789001 8.275 2.709 10.87 5.289 11.5C7.869 10.87 9.789 8.275 9.789 5.5V3.15C9.789 2.755 9.554 2.395 9.194 2.235L5.694 0.68C5.439 0.565 5.139 0.565 4.884 0.68ZM5.289 5.995H8.789C8.524 8.055 7.149 9.89 5.289 10.465V6H1.789V3.15L5.289 1.595V5.995Z"
-                  fill="#6D6A73" />
-              </svg>
-
-              <p class="text-[10px] text-grey-100">
-                PCI DSS Certified
-              </p>
+  
+              <div id="mob-container" class="md:hidden">
+  
+              
+              </div>
+              <!-- footer -->
+              <div class="container-between gap-2 mt-20 mb-8 md:hidden" id="mob-action-btns">
+                <button class="button-outline px-3 w-auto" id="change-method">
+                  <span class="text-[10px] mr-1">x</span> Change Payment Method
+                </button>
+                <button class="button-outline px-6 w-auto close-btn">
+                  <span class="text-[10px] mr-1">x</span> Cancel Payment
+                </button>
+              </div>
+              <div class="container-center pt-2 pb-8 gap-1">
+                <svg width="10" height="12" viewBox="0 0 10 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path
+                    d="M4.884 0.68L1.384 2.235C1.024 2.395 0.789001 2.755 0.789001 3.15V5.5C0.789001 8.275 2.709 10.87 5.289 11.5C7.869 10.87 9.789 8.275 9.789 5.5V3.15C9.789 2.755 9.554 2.395 9.194 2.235L5.694 0.68C5.439 0.565 5.139 0.565 4.884 0.68ZM5.289 5.995H8.789C8.524 8.055 7.149 9.89 5.289 10.465V6H1.789V3.15L5.289 1.595V5.995Z"
+                    fill="#6D6A73" />
+                </svg>
+  
+                <p class="text-[10px] text-grey-100">
+                  PCI DSS Certified
+                </p>
+              </div>
             </div>
           </div>
         </div>
+  
       </div>
-
     </div>
   </div>
 </div>
-</div>
-</div>`, x = "data:image/png;base64,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", f = `<form id="checkoutcard">
+`, x = "data:image/png;base64,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", f = `<form id="checkoutcard">
   <div class="box-container">
     <h5 class="content-heading">Enter your card details to pay</h5>
     <div class="mt-8">

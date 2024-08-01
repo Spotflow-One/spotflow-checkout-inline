@@ -1,8 +1,9 @@
-import { error } from "console";
+import { scopedPreflightStyles, isolateInsideOfContainer } from 'tailwindcss-scoped-preflight';
 
 /** @type {import('tailwindcss').Config} */
 export default {
   content: ["./src/**/*.{html,js,ts,jsx,tsx}"],
+  important: "#checkout-modal",
   theme: {
     extend: {
       screens: {
@@ -39,5 +40,10 @@ export default {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    scopedPreflightStyles({
+      isolationStrategy: isolateInsideOfContainer('#checkout-modal', {
+      }),
+    }),
+  ],
 };
