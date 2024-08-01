@@ -3,13 +3,20 @@
 
 This project is an inline library that enables users to make payments seamlessly. It integrates smoothly into your application, providing a streamlined checkout experience.
 
+For React components and usage, [link](https://github.com/Spotflow-One/react-spotflow-checkout)
+
+For Vue.js components and usage, [link](https://github.com/Spotflow-One/vue-spotflow-checkout)
+
+For Angular components and usage, [link](https://github.com/Spotflow-One/angular-spotflow-checkout)
+
+
 ## Demo
 <img width="808" alt="Screenshot 2024-07-26 at 16 05 52" src="https://github.com/user-attachments/assets/4dbb0b2e-2142-4f04-994a-5c352de7d30e">
 
 
 ## Installation
  ```sh
- npm install @spotflow/inline-js-checkout
+npm install @spot-flow/checkout-inline-js
    ```
 
 ## Usage
