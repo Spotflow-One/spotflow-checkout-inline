@@ -1,6 +1,6 @@
 {
   "name": "@spot-flow/checkout-inline-js",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "",
   "main": "dist/checkout-inline.js",
   "module": "dist/checkout-inline.es.js",
@@ -11,13 +11,10 @@
     "build": "vite build"
   },
   "type": "module",
-  "keywords": [],
   "types": "dist/index.d.ts",
   "files": [
     "dist"
   ],
-  "author": "",
-  "license": "ISC",
   "devDependencies": {
     "@types/node": "^20.14.9",
     "autoprefixer": "^10.4.19",
@@ -29,5 +26,21 @@
     "vite-plugin-dts": "^3.9.1",
     "vite-plugin-lib-inject-css": "^2.1.1",
     "tailwindcss-scoped-preflight": "^3.4.3"
-  }
+  },
+  "author": "Oluwatomisin Jimoh <jayoluwatosin@gmail.com>",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Spotflow-One/spotflow-checkout-inline"
+  },
+  "homepage": "https://github.com/Spotflow-One/spotflow-checkout-inline",
+  "bugs": {
+    "url": "https://github.com/Spotflow-One/spotflow-checkout-inline/issues"
+  },
+  "keywords": [
+    "cdn",
+    "spotflow",
+    "checkout",
+    "inline"
+  ]
 }
