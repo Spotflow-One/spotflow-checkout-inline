@@ -30,7 +30,7 @@ class CheckoutForm {
     this.email = email;
     this.amount = amount;
     this.attachInputListeners();
-
+    this.switchTab = this.switchTab.bind(this);
     // close modal if no merchant key or email is passed
     if (merchantKey === "" || email === "") {
       this.closeModal();
@@ -40,8 +40,12 @@ class CheckoutForm {
 
   attachInputListeners() {
     // Add event listeners
-    const changeMethod = document.body.querySelector("#change-method") as HTMLButtonElement;
-    const close = document.body.querySelectorAll(".close-btn") as NodeListOf<HTMLButtonElement>;
+    const changeMethod = document.body.querySelector(
+      "#change-method"
+    ) as HTMLButtonElement;
+    const close = document.body.querySelectorAll(
+      ".close-btn"
+    ) as NodeListOf<HTMLButtonElement>;
     const mobContainer = document.querySelector("#mob-container");
     const mobTabHeader = document.querySelector("#mob-tab-co");
     const mobCurrentMethodHeader = document.querySelector("#mob-tab-c");
@@ -57,7 +61,11 @@ class CheckoutForm {
         }
         this.setup();
         // remove payment option header text
-        if (mobTabHeader && mobCurrentMethodHeader && mobCurrentMethodHeader.parentNode) {
+        if (
+          mobTabHeader &&
+          mobCurrentMethodHeader &&
+          mobCurrentMethodHeader.parentNode
+        ) {
           mobTabHeader.removeChild(mobCurrentMethodHeader);
         }
       });
@@ -89,11 +97,8 @@ class CheckoutForm {
             if (e.currentTarget instanceof HTMLElement) {
               if (e.currentTarget.dataset.tab) {
                 const tabIndex = parseInt(e.currentTarget.dataset.tab);
-                this.updatePaymentMethodView(this.merchantKey, this.email, this.amount);
-                this.setCurrentPaymentMethod(tabIndex);
-                this.cleanup();
-                this.renderPaymentMethodContent();
-                this.attachInputListeners();
+                this.switchTab(tabIndex);
+
               }
             }
           });
@@ -106,7 +111,11 @@ class CheckoutForm {
             if (e.currentTarget instanceof HTMLElement) {
               if (e.currentTarget.dataset.tab) {
                 const tabIndex = parseInt(e.currentTarget.dataset.tab);
-                this.updatePaymentMethodView(this.merchantKey, this.email, this.amount);
+                this.updatePaymentMethodView(
+                  this.merchantKey,
+                  this.email,
+                  this.amount
+                );
                 this.setCurrentPaymentMethod(tabIndex);
                 mobContainer.removeChild(innerMobContainer);
 
@@ -146,20 +155,44 @@ class CheckoutForm {
     this.setCurrentPaymentMethod(this.currentPaymentMethod);
   }
 
-  private updatePaymentMethodView(merchantKey: string, email: string, amount: number) {
+  private updatePaymentMethodView(
+    merchantKey: string,
+    email: string,
+    amount: number
+  ) {
     switch (this.currentPaymentMethod) {
       case 0:
-        return (this.card = new Card(this.modalContainer, () => this.closeModal(), merchantKey, email, amount));
+        return (this.card = new Card(
+          this.modalContainer,
+          () => this.closeModal(),
+          merchantKey,
+          email,
+          amount,
+          () => this.switchTab(1)
+        ));
       case 1:
-        return (this.transfer = new Transfer(this.modalContainer, () => this.closeModal(), merchantKey, email, amount));
+        return (this.transfer = new Transfer(
+          this.modalContainer,
+          () => this.closeModal(),
+          merchantKey,
+          email,
+          amount
+        ));
       case 2:
         return (this.ussd = new Ussd());
       default:
-        return (this.card = new Card(this.modalContainer, () => this.closeModal(), merchantKey, email, amount));
+        return (this.card = new Card(
+          this.modalContainer,
+          () => this.closeModal(),
+          merchantKey,
+          email,
+          amount,
+          () => this.switchTab(1)
+        ));
     }
   }
 
-  renderPaymentMethodContent() {
+ private renderPaymentMethodContent() {
     const renderContent = () => {
       switch (this.currentPaymentMethod) {
         case 0:
@@ -177,7 +210,7 @@ class CheckoutForm {
     return renderContent();
   }
 
-  setCurrentPaymentMethod(index: number) {
+ private setCurrentPaymentMethod(index: number) {
     this.currentPaymentMethod = index;
 
     const tabs = document.querySelectorAll(".tab-button");
@@ -200,17 +233,12 @@ class CheckoutForm {
     }
   }
 
-  private cleanup() {
-    // Stop timer
-    if (this.transfer) {
-      this.transfer.destroyTimer();
-    }
-  }
-
-  closeModal() {
-    if (this.modalContainer && this.modalContainer.parentNode) {
-      document.body.removeChild(this.modalContainer);
-    }
+  switchTab(tabIndex: number) {
+    this.setCurrentPaymentMethod(tabIndex);
+    this.updatePaymentMethodView(this.merchantKey, this.email, this.amount);
+    this.cleanup();
+    this.renderPaymentMethodContent();
+    this.attachInputListeners();
   }
 
   setup(): void {
@@ -218,8 +246,6 @@ class CheckoutForm {
     const merchantLogoMob = document.getElementById("merchantLogoMob");
     const mobileActionButtons = document.getElementById("mob-action-btns");
     const merchantEmail = document.getElementById("merchant-email");
-    const paymentWarning = this.modalContainer.querySelector("#paymentWarning");
-    const warningText = paymentWarning?.querySelector("#payment-warning-text");
     const mobContainer = document.querySelector("#mob-container");
 
     if (merchantEmail) {
@@ -307,10 +333,6 @@ class CheckoutForm {
     }
 
     this.displayTabLayout();
-
-    if (warningText) {
-      this.displayPaymentWarningText(this.currentPaymentMethod, warningText);
-    }
   }
 
   private mobileContainerContent() {
@@ -353,22 +375,17 @@ class CheckoutForm {
         )
         .join("")}`;
   }
-  private displayPaymentWarningText(method: number, warningText: Element) {
-    const text = (): string => {
-      switch (method) {
-        case 0:
-          return "Incorrect otp. please retry with the correct otp";
-        case 1:
-          return "Account expired";
-        case 2:
-          return "Please dial the ussd shortcode";
-        default:
-          return "Error";
-      }
-    };
 
-    if (warningText) {
-      warningText.innerHTML = text();
+  private cleanup() {
+    // Stop timer
+    if (this.transfer) {
+      this.transfer.destroyTimer();
+    }
+  }
+
+  closeModal() {
+    if (this.modalContainer && this.modalContainer.parentNode) {
+      document.body.removeChild(this.modalContainer);
     }
   }
 }

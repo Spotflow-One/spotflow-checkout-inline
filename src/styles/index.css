@@ -245,7 +245,7 @@
   }
 
   .warning-list {
-    @apply mt-12 mx-auto;
+    @apply mt-12 md:mt-10 mx-auto;
   }
 
   .warning-button,

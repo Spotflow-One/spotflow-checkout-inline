@@ -18,13 +18,13 @@ declare class CheckoutForm {
     attachInputListeners(): void;
     displayTabLayout(): void;
     private updatePaymentMethodView;
-    renderPaymentMethodContent(): void | "";
-    setCurrentPaymentMethod(index: number): void;
-    private cleanup;
-    closeModal(): void;
+    private renderPaymentMethodContent;
+    private setCurrentPaymentMethod;
+    switchTab(tabIndex: number): void;
     setup(): void;
     private mobileContainerContent;
     private viewMobileOptions;
-    private displayPaymentWarningText;
+    private cleanup;
+    closeModal(): void;
 }
 export { CheckoutForm };

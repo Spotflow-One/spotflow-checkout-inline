@@ -8,7 +8,7 @@ import {
   authorizeCardPayment,
   createCardPayment,
   validateCardPayment,
-  verifyPayment
+  verifyPayment,
 } from "../api";
 import {
   showToast,
@@ -39,13 +39,16 @@ class Card {
     name: string;
     icon: string;
   }[];
+  private switchTab: (val: number) => void;
 
   constructor(
     container: HTMLElement,
     closeModal: () => void,
     token: string,
     email: string,
-    amount: number
+    amount: number,
+    switchTab: (val: number) => void
+   
   ) {
     this.container = container;
     this.closeModal = closeModal;
@@ -63,8 +66,8 @@ class Card {
     this.activeRef = "";
     this.contents = document.querySelectorAll(".content");
     this.creditCardTypes = [...cardTypes];
+    this.switchTab = switchTab
     this.renderCardContent();
-
     if (this.currentStep === 1) {
       this.displayCardTypes();
     }
@@ -112,6 +115,7 @@ class Card {
     this.renderCardContent();
     if (step === 1) {
       this.displayCardTypes();
+      this.creditCardTypes = [...cardTypes];
     }
   }
 
@@ -144,7 +148,15 @@ class Card {
     const closeBtn = this.container.querySelector(
       ".success-button"
     ) as HTMLButtonElement;
+    const goToCardDetails = this.container.querySelector(
+      "#go-to-card"
+    ) as HTMLButtonElement;
 
+    const goToTransfer = document.querySelector(
+      "#go-to-transfer"
+    ) as HTMLButtonElement;
+
+    
     // CARD DETAIL EVENTS //
     if (cardNumberInput) {
       cardNumberInput.addEventListener("input", (e) =>
@@ -190,6 +202,20 @@ class Card {
     if (closeBtn) {
       closeBtn.addEventListener("click", () => this.closeModal());
     }
+
+
+    // PAYMENT ERROR EVENTS //
+    if (goToCardDetails) {
+      goToCardDetails.addEventListener("click", () => {
+        this.currentStep = 1;
+      });
+    }
+
+    if (goToTransfer) {
+      goToTransfer.addEventListener("click", () => {
+        this.switchTab(1)
+      });
+    }
   }
 
   handleInputChange(event: Event, button: HTMLButtonElement | null) {
@@ -224,9 +250,6 @@ class Card {
   }
 
   private handlePinRequest() {
-    const loader = this.container.querySelector("#loader");
-    const mainContent = this.container.querySelector("#pin-content");
-
     if (this.cardPin.length === 4) {
       const payload = {
         authorization: {
@@ -237,20 +260,21 @@ class Card {
 
       setTimeout(() => {
         // show loading content
-        if (loader && mainContent) {
-          loader.classList.remove("hidden");
-          loader.querySelector("img")?.setAttribute("src", loaderGif);
-          mainContent.classList.add("hidden");
-        }
+        this.currentStep = 6;
+        this.showLoader();
+
         // send authorization
         const response = authorizeCardPayment(this.token, payload);
         response
           .then((data) => {
             if (data.status === "failed") {
+              this.currentStep = 4;
               if (data.providerMessage) {
                 showToast(data.providerMessage, "error");
+                this.setPaymentError(data.providerMessage);
               } else {
                 showToast("Payment failed", "error");
+                this.setPaymentError("Payment failed");
               }
             } else {
               showToast("Payment Authorized!", "success");
@@ -259,13 +283,8 @@ class Card {
           })
           .catch((error) => {
             showToast(error.message, "error");
-          })
-          .finally(() => {
-            // remove loading spinner
-            if (loader && mainContent) {
-              loader.classList.add("hidden");
-              mainContent.classList.remove("hidden");
-            }
+            this.currentStep = 4;
+            this.setPaymentError("Payment failed");
           });
       }, 500);
     }
@@ -293,7 +312,6 @@ class Card {
     this.handlePinRequest();
   }
 
-
   showLoader() {
     const loader = this.container.querySelector("#loader");
     if (loader) {
@@ -302,7 +320,40 @@ class Card {
     }
   }
 
+  setPaymentError(text: string) {
+    const warningText = this.container.querySelector("#payment-warning-text");
+    const warningListButtons = this.container.querySelector(".warning-list");
 
+    if (warningText) {
+      warningText.textContent = text;
+    }
+    const cardErrorActions = [
+      {
+        text: "Try again with your card",
+        action: "go-to-card",
+      },
+      {
+        text: "Try again with transfer",
+        action: "go-to-transfer",
+      },
+    ];
+
+    if (warningListButtons) {
+      cardErrorActions.forEach(({ action, text }) => {
+        const button = document.createElement("button");
+        button.textContent = text;
+        button.setAttribute("id", action);
+        button.classList.add("warning-button");
+
+        const div = document.createElement("div");
+        div.appendChild(button);
+
+        warningListButtons.appendChild(div);
+      });
+    }
+
+    this.attachInputListeners();
+  }
 
   handlePinPaste(event: ClipboardEvent, pinInputs: HTMLInputElement[]) {
     event.preventDefault();
@@ -341,8 +392,6 @@ class Card {
 
   submitOtp(e: Event) {
     e.preventDefault();
-    const loader = this.container.querySelector("#loader");
-    const mainContent = this.container.querySelector("#otp-content");
 
     const payload = {
       authorization: {
@@ -351,21 +400,22 @@ class Card {
       reference: this.activeRef,
     };
     // show loading spinner
-    if (loader && mainContent) {
-      loader.classList.remove("hidden");
-      loader.querySelector("img")?.setAttribute("src", loaderGif);
-      mainContent.classList.add("hidden");
-    }
+    this.currentStep = 6;
+    this.showLoader();
+
     // send card details
     const response = validateCardPayment(this.token, payload);
 
     response
       .then((data) => {
         if (data.status === "failed") {
+          this.currentStep = 4;
           if (data.providerMessage) {
             showToast(data.providerMessage, "error");
+            this.setPaymentError(data.providerMessage);
           } else {
             showToast("Payment failed", "error");
+            this.setPaymentError("Payment failed");
           }
         } else if (data.status === "successful") {
           this.currentStep = 5;
@@ -373,14 +423,9 @@ class Card {
       })
       .catch((error) => {
         showToast(error.message, "error");
+        this.currentStep = 4;
+        this.setPaymentError("Payment failed");
       })
-      .finally(() => {
-        // remove loading spinner
-        if (loader && mainContent) {
-          loader.classList.add("hidden");
-          mainContent.classList.remove("hidden");
-        }
-      });
   }
 
   async handleSubmit(e: Event) {
@@ -406,7 +451,7 @@ class Card {
       },
     };
 
-    // show loading spinner
+    // show button spinner
     if (spin && buttonText) {
       spin.classList.remove("hidden");
       buttonText.classList.add("hidden");
@@ -417,10 +462,13 @@ class Card {
     response
       .then((data) => {
         if (data.status === "failed") {
+          this.currentStep = 4;
           if (data.providerMessage) {
             showToast(data.providerMessage, "error");
+            this.setPaymentError(data.providerMessage);
           } else {
             showToast("Payment failed", "error");
+            this.setPaymentError("Payment failed");
           }
         } else if (data.status === "pending_authorization") {
           showToast("Payment Created!", "success");
@@ -438,9 +486,11 @@ class Card {
       })
       .catch((error) => {
         showToast(error.message, "error");
+        this.currentStep = 4;
+        this.setPaymentError("Payment failed");
       })
       .finally(() => {
-        // remove loading spinner
+        // remove button spinner
         if (spin && buttonText) {
           spin.classList.add("hidden");
           buttonText.classList.remove("hidden");
@@ -452,7 +502,7 @@ class Card {
     const newWindow = window.open(url, "_blank");
     if (newWindow) {
       // show loading state during 3ds authentication
-      this.currentStep = 6
+      this.currentStep = 6;
       this.showLoader();
       const intervalId = setInterval(() => {
         if (newWindow.closed) {
@@ -463,7 +513,7 @@ class Card {
             },
             (error) => {
               showToast(error.message, "error");
-              this.currentStep = 4
+              this.currentStep = 4;
             }
           );
         }
@@ -480,10 +530,7 @@ class Card {
     onError: (error: Error) => void
   ) {
     try {
-      const responseData = await verifyPayment(
-        this.token,
-        this.activeRef
-      );
+      const responseData = await verifyPayment(this.token, this.activeRef);
       if (responseData.status === "failed") {
         this.currentStep = 4;
       } else {
@@ -493,7 +540,7 @@ class Card {
     } catch (error) {
       console.error(error);
 
-        onError(new Error("failed"))
+      onError(new Error("failed"));
       //  showToast(error, "error")
     }
   }

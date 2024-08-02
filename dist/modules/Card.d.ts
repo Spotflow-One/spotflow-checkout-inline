@@ -13,7 +13,8 @@ declare class Card {
     private _currentStep;
     private activeRef;
     private creditCardTypes;
-    constructor(container: HTMLElement, closeModal: () => void, token: string, email: string, amount: number);
+    private switchTab;
+    constructor(container: HTMLElement, closeModal: () => void, token: string, email: string, amount: number, switchTab: (val: number) => void);
     private displayCardTypes;
     get currentStep(): number;
     set currentStep(step: number);
@@ -22,6 +23,7 @@ declare class Card {
     private handlePinRequest;
     handlePinInputChange(event: Event, index: number, pinInputs: HTMLInputElement[]): void;
     showLoader(): void;
+    setPaymentError(text: string): void;
     handlePinPaste(event: ClipboardEvent, pinInputs: HTMLInputElement[]): void;
     handleOtpInput(event: Event, button: HTMLButtonElement | null): void;
     submitOtp(e: Event): void;
