@@ -334,7 +334,7 @@ const y = (r) => {
     throw new g("Missing authorization token");
   const e = new Headers();
   return e.append("Content-Type", "application/json"), e.append("Authorization", `Bearer ${r}`), e;
-}, L = "http://dev-api.spotflow.one/api/v1", q = async (r, e) => {
+}, L = "https://dev-api.spotflow.one/api/v1", q = async (r, e) => {
   try {
     const t = y(r), n = await fetch(`${L}/payments`, {
       method: "POST",
