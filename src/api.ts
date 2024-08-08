@@ -31,7 +31,7 @@ const getHeaders = (token: string): Headers => {
   return headers;
 };
 
-const baseurl = "http://dev-api.spotflow.one/api/v1";
+const baseurl = "https://dev-api.spotflow.one/api/v1";
 
 export const createCardPayment = async (
   token: string,
@@ -188,7 +188,7 @@ export const verifyPayment = async (
     const response = await fetch(`${baseurl}/payments/verify?reference=${reference}`, {
       method: "GET",
       headers: headers,
-      signal
+      signal,
     });
 
     if (!response.ok) {
