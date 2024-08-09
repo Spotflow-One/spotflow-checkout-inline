@@ -783,7 +783,7 @@ class R {
   }
   displayButtonText(e) {
     const t = this.container.querySelector("#details-form-button-text");
-    console.log({ amount: this.amount, buttonText: t }), t && (e ? t.textContent = e : t.textContent = `Pay ${this.currency || "USD"} ${H(this.amount || 0)}`);
+    t && (e ? t.textContent = e : t.textContent = `Pay ${this.currency || "USD"} ${H(this.amount || 0)}`);
   }
 }
 const b = `<div>
@@ -1542,7 +1542,7 @@ class C1 {
   }
   setup() {
     const e = document.getElementById("merchantLogo"), t = document.getElementById("merchantLogoMob"), n = document.getElementById("mob-action-btns"), A = document.getElementById("merchant-email"), s = document.querySelector("#mob-container");
-    if (console.log("dslnajdsbajslkn"), this.displayRate(), A && (A.innerHTML = "this.email"), this.isMobile) {
+    if (console.log("dslnajdsbajslkn"), this.displayRate(), A && (A.innerHTML = this.email), this.isMobile) {
       t && t.setAttribute("src", f), s && (s.innerHTML = this.mobileContainerContent());
       let r = document.querySelector(".mob-options");
       r && this.viewMobileOptions(r);
