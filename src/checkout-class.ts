@@ -230,7 +230,7 @@ class CheckoutForm {
     this.displayRate();
 
     if (merchantEmail) {
-      merchantEmail.innerHTML = "this.email";
+      merchantEmail.innerHTML = this.email;
     }
 
     if (!this.isMobile) {

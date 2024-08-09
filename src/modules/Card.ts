@@ -530,7 +530,6 @@ class Card {
 
   private displayButtonText(_val?: string) {
     const buttonText = this.container.querySelector("#details-form-button-text") as HTMLSpanElement;
-    console.log({ amount: this.amount, buttonText });
     if (buttonText) {
       if (_val) {
         buttonText.textContent = _val;

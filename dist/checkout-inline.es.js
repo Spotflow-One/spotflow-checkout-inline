@@ -1620,10 +1620,11 @@ class C1 {
     ).join("")}`;
   }
   displayRate() {
-    console.log("reached rate limit"), alert("reached rate limit");
     const e = document.getElementById("payment-rate-display"), t = document.getElementById("container-payment-text"), n = document.getElementById("header-chip-amount");
     W(this.merchantKey, { from: "NGN", to: "USD" }).then((A) => {
       e && (e.innerHTML = `1 NGN = ${A.rate} USD`), t && (t.innerHTML = `NGN ${H(this.amount || 0, 2)}`), n && (n.innerHTML = `NGN ${H((this.amount || 0) * (A.rate || 1), 2)}`);
+    }).catch((A) => {
+      console.error({ err: A });
     }).finally(() => {
       console.log("reached rate limit");
     });
