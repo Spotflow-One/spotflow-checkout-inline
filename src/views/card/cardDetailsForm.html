@@ -3,19 +3,10 @@
     <h5 class="content-heading">Enter your card details to pay</h5>
     <div class="mt-8">
       <div class="relative mx-4 md:mx-6 mb-4">
-        <span
-          class="absolute text-xs left-0 top-1 text-grey-100 pt-1 pb-1 px-3 tracking-[0.5px]"
-          >CARD NUMBER</span
-        >
+        <span class="absolute text-xs left-0 top-1 text-grey-100 pt-1 pb-1 px-3 tracking-[0.5px]">CARD NUMBER</span>
         <div>
-          <input
-            class="details-input-container"
-            type="tel"
-            id="card-number"
-            name="number"
-            placeholder="0000 0000 0000 0000"
-            required
-          />
+          <input class="details-input-container" type="tel" id="card-number" name="number"
+            placeholder="0000 0000 0000 0000" required />
         </div>
         <div class="absolute right-3 top-1/2 -translate-y-2/4 max-sm:hidden">
           <div id="card-types" class="align-center gap-2">
@@ -25,36 +16,17 @@
 
       <div class="grid grid-cols-2 gap-4 my-4 mx-4 md:mx-6">
         <div class="relative w-full">
-          <span
-            class="absolute text-xs left-0 top-1 text-grey-100 pt-1 pb-1 px-3 tracking-[0.5px]"
-            >CARD EXPIRY</span
-          >
+          <span class="absolute text-xs left-0 top-1 text-grey-100 pt-1 pb-1 px-3 tracking-[0.5px]">CARD EXPIRY</span>
           <div>
-            <input
-              class="details-input-container"
-              type="tel"
-              id="card-expiry"
-              name="expiry"
-              placeholder="MM / YY"
-              required
-            />
+            <input class="details-input-container" type="tel" id="card-expiry" name="expiry" placeholder="MM / YY"
+              required />
           </div>
         </div>
 
         <div class="relative w-full">
-          <span
-            class="absolute text-xs left-0 top-1 text-grey-100 pt-1 pb-1 px-3 tracking-[0.5px]"
-            >CVV</span
-          >
+          <span class="absolute text-xs left-0 top-1 text-grey-100 pt-1 pb-1 px-3 tracking-[0.5px]">CVV</span>
           <div>
-            <input
-              class="details-input-container"
-              type="tel"
-              id="card-cvv"
-              name="cvv"
-              placeholder="123"
-              required
-            />
+            <input class="details-input-container" type="tel" id="card-cvv" name="cvv" placeholder="123" required />
           </div>
         </div>
       </div>
@@ -63,10 +35,10 @@
         <button type="submit" disabled="true" class="details-form-button">
           <svg class="spinner hidden" id="spinner" viewBox="0 0 24 24">
             <path
-              d="M10.14,1.16a11,11,0,0,0-9,8.92A1.59,1.59,0,0,0,2.46,12,1.52,1.52,0,0,0,4.11,10.7a8,8,0,0,1,6.66-6.61A1.42,1.42,0,0,0,12,2.69h0A1.57,1.57,0,0,0,10.14,1.16Z"
-            ></path>
+              d="M10.14,1.16a11,11,0,0,0-9,8.92A1.59,1.59,0,0,0,2.46,12,1.52,1.52,0,0,0,4.11,10.7a8,8,0,0,1,6.66-6.61A1.42,1.42,0,0,0,12,2.69h0A1.57,1.57,0,0,0,10.14,1.16Z">
+            </path>
           </svg>
-          <span id="details-form-button-text"> Pay USD 14.99 </span>
+          <span id="details-form-button-text"> Pay USD 0 </span>
         </button>
       </div>
     </div>

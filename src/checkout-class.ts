@@ -5,6 +5,8 @@ import Card from "./modules/Card";
 import Transfer from "./modules/Transfer";
 import Ussd from "./modules/Ussd";
 import { tabOptions } from "./data";
+import { getRate } from "./api";
+import { formatNumber } from "./utils/number-format";
 
 class CheckoutForm {
   modalContainer: HTMLDivElement;
@@ -40,12 +42,8 @@ class CheckoutForm {
 
   attachInputListeners() {
     // Add event listeners
-    const changeMethod = document.body.querySelector(
-      "#change-method"
-    ) as HTMLButtonElement;
-    const close = document.body.querySelectorAll(
-      ".close-btn"
-    ) as NodeListOf<HTMLButtonElement>;
+    const changeMethod = document.body.querySelector("#change-method") as HTMLButtonElement;
+    const close = document.body.querySelectorAll(".close-btn") as NodeListOf<HTMLButtonElement>;
     const mobContainer = document.querySelector("#mob-container");
     const mobTabHeader = document.querySelector("#mob-tab-co");
     const mobCurrentMethodHeader = document.querySelector("#mob-tab-c");
@@ -61,11 +59,7 @@ class CheckoutForm {
         }
         this.setup();
         // remove payment option header text
-        if (
-          mobTabHeader &&
-          mobCurrentMethodHeader &&
-          mobCurrentMethodHeader.parentNode
-        ) {
+        if (mobTabHeader && mobCurrentMethodHeader && mobCurrentMethodHeader.parentNode) {
           mobTabHeader.removeChild(mobCurrentMethodHeader);
         }
       });
@@ -98,7 +92,6 @@ class CheckoutForm {
               if (e.currentTarget.dataset.tab) {
                 const tabIndex = parseInt(e.currentTarget.dataset.tab);
                 this.switchTab(tabIndex);
-
               }
             }
           });
@@ -111,11 +104,7 @@ class CheckoutForm {
             if (e.currentTarget instanceof HTMLElement) {
               if (e.currentTarget.dataset.tab) {
                 const tabIndex = parseInt(e.currentTarget.dataset.tab);
-                this.updatePaymentMethodView(
-                  this.merchantKey,
-                  this.email,
-                  this.amount
-                );
+                this.updatePaymentMethodView(this.merchantKey, this.email, this.amount);
                 this.setCurrentPaymentMethod(tabIndex);
                 mobContainer.removeChild(innerMobContainer);
 
@@ -155,11 +144,7 @@ class CheckoutForm {
     this.setCurrentPaymentMethod(this.currentPaymentMethod);
   }
 
-  private updatePaymentMethodView(
-    merchantKey: string,
-    email: string,
-    amount: number
-  ) {
+  private updatePaymentMethodView(merchantKey: string, email: string, amount: number) {
     switch (this.currentPaymentMethod) {
       case 0:
         return (this.card = new Card(
@@ -171,13 +156,7 @@ class CheckoutForm {
           () => this.switchTab(1)
         ));
       case 1:
-        return (this.transfer = new Transfer(
-          this.modalContainer,
-          () => this.closeModal(),
-          merchantKey,
-          email,
-          amount
-        ));
+        return (this.transfer = new Transfer(this.modalContainer, () => this.closeModal(), merchantKey, email, amount));
       case 2:
         return (this.ussd = new Ussd());
       default:
@@ -192,7 +171,7 @@ class CheckoutForm {
     }
   }
 
- private renderPaymentMethodContent() {
+  private renderPaymentMethodContent() {
     const renderContent = () => {
       switch (this.currentPaymentMethod) {
         case 0:
@@ -210,7 +189,7 @@ class CheckoutForm {
     return renderContent();
   }
 
- private setCurrentPaymentMethod(index: number) {
+  private setCurrentPaymentMethod(index: number) {
     this.currentPaymentMethod = index;
 
     const tabs = document.querySelectorAll(".tab-button");
@@ -247,6 +226,8 @@ class CheckoutForm {
     const mobileActionButtons = document.getElementById("mob-action-btns");
     const merchantEmail = document.getElementById("merchant-email");
     const mobContainer = document.querySelector("#mob-container");
+    console.log("dslnajdsbajslkn");
+    this.displayRate();
 
     if (merchantEmail) {
       merchantEmail.innerHTML = this.email;
@@ -374,6 +355,30 @@ class CheckoutForm {
               `
         )
         .join("")}`;
+  }
+
+  private displayRate() {
+    const paymentRateDisplayElement = document.getElementById("payment-rate-display");
+    const spanPaymentText = document.getElementById("container-payment-text");
+    const divPaymentChipText = document.getElementById("header-chip-amount");
+    getRate(this.merchantKey, { from: "NGN", to: "USD" })
+      .then((value) => {
+        if (paymentRateDisplayElement) {
+          paymentRateDisplayElement.innerHTML = `1 NGN = ${value.rate} USD`;
+        }
+        if (spanPaymentText) {
+          spanPaymentText.innerHTML = `NGN ${formatNumber(this.amount || 0, 2)}`; // USD 14.99
+        }
+        if (divPaymentChipText) {
+          divPaymentChipText.innerHTML = `NGN ${formatNumber((this.amount || 0) * (value.rate || 1), 2)}`; // NGN 22,244.86
+        }
+      })
+      .catch((err) => {
+        console.error({ err });
+      })
+      .finally(() => {
+        console.log("reached rate limit");
+      });
   }
 
   private cleanup() {

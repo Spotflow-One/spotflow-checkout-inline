@@ -4,6 +4,8 @@ import {
   AuthorizeCardPaymentRequestPayload,
   ValidateCardPaymentRequestPayload,
   PaymentRequestPayload,
+  GetPaymentRateParams,
+  Rate,
 } from "./types/types";
 
 class FetchError extends Error {
@@ -213,3 +215,34 @@ export const verifyPayment = async (
     throw error; // Re-throw the error after logging it
   }
 };
+
+export async function getRate(token: string, payload: GetPaymentRateParams): Promise<Rate> {
+  try {
+    const headers = getHeaders(token);
+
+    const response = await fetch(`${baseurl}/payments/rates?to=${payload.to}&from=${payload.from}`, {
+      method: "GET",
+      headers: headers,
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      if (errorData.message) {
+        throw new FetchError(errorData.message, response.status);
+      } else {
+        throw new FetchError("Network response was not ok", response.status);
+      }
+    }
+
+    return await response.json();
+  } catch (error) {
+    if (error instanceof FetchError) {
+      console.error(`FetchError: ${error.message} (status: ${error.status})`);
+    } else if (error instanceof AuthorizationError) {
+      console.error(`AuthorizationError: ${error.message}`);
+    } else {
+      console.error(`Unexpected error: ${error}`);
+    }
+    throw error; // Re-throw the error after logging it
+  }
+}
