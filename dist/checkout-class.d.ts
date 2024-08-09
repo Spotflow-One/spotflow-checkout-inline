@@ -24,6 +24,7 @@ declare class CheckoutForm {
     setup(): void;
     private mobileContainerContent;
     private viewMobileOptions;
+    private displayRate;
     private cleanup;
     closeModal(): void;
 }

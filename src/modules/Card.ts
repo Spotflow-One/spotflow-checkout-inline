@@ -4,12 +4,7 @@ import cardOtpForm from "../views/card/cardOtpValidation.html?raw";
 import paymentWarning from "../views/shared/paymentWarning.html?raw";
 import paymentSuccess from "../views/shared/paymentSuccess.html?raw";
 import loadingComp from "../views/shared/loader.html?raw";
-import {
-  authorizeCardPayment,
-  createCardPayment,
-  validateCardPayment,
-  verifyPayment,
-} from "../api";
+import { authorizeCardPayment, createCardPayment, validateCardPayment, verifyPayment } from "../api";
 import {
   showToast,
   generatePaymentReference,
@@ -22,6 +17,7 @@ import {
 import loaderGif from "../assets/loader.gif";
 import { cardTypes } from "../data";
 import { PaymentResponseData } from "../types/types";
+import { formatNumber } from "../utils/number-format";
 
 class Card {
   private cardDetailsValues: { number: string; expiry: string; cvv: string };
@@ -33,6 +29,7 @@ class Card {
   private email: string;
   private token: string;
   private amount: number;
+  private currency?: string;
   private _currentStep: number;
   private activeRef: string;
   private creditCardTypes: {
@@ -48,7 +45,6 @@ class Card {
     email: string,
     amount: number,
     switchTab: (val: number) => void
-   
   ) {
     this.container = container;
     this.closeModal = closeModal;
@@ -66,8 +62,9 @@ class Card {
     this.activeRef = "";
     this.contents = document.querySelectorAll(".content");
     this.creditCardTypes = [...cardTypes];
-    this.switchTab = switchTab
+    this.switchTab = switchTab;
     this.renderCardContent();
+
     if (this.currentStep === 1) {
       this.displayCardTypes();
     }
@@ -77,15 +74,10 @@ class Card {
 
   private displayCardTypes() {
     requestAnimationFrame(() => {
-      const cardTypesContainer = this.container.querySelector(
-        "#card-types"
-      ) as HTMLElement;
+      const cardTypesContainer = this.container.querySelector("#card-types") as HTMLElement;
 
       // If the card type is unknown, display all card types
-      if (
-        this.creditCardTypes.length === 1 &&
-        this.creditCardTypes[0].name === "Unknown"
-      ) {
+      if (this.creditCardTypes.length === 1 && this.creditCardTypes[0].name === "Unknown") {
         cardTypes.forEach((type) => {
           const cardType = document.createElement("div");
           cardType.classList.add("card-type");
@@ -121,59 +113,32 @@ class Card {
 
   attachInputListeners() {
     // Add event listeners to the card input fields
-    const cardNumberInput = this.container.querySelector(
-      'input[name="number"]'
-    ) as HTMLInputElement;
-    const cardExpiryInput = this.container.querySelector(
-      'input[name="expiry"]'
-    ) as HTMLInputElement;
-    const cardCvvInput = this.container.querySelector(
-      'input[name="cvv"]'
-    ) as HTMLInputElement;
-    const button = this.container.querySelector(
-      ".details-form-button"
-    ) as HTMLButtonElement;
+    const cardNumberInput = this.container.querySelector('input[name="number"]') as HTMLInputElement;
+    const cardExpiryInput = this.container.querySelector('input[name="expiry"]') as HTMLInputElement;
+    const cardCvvInput = this.container.querySelector('input[name="cvv"]') as HTMLInputElement;
+    const button = this.container.querySelector(".details-form-button") as HTMLButtonElement;
     const formCard = document.querySelector("#checkoutcard");
 
-    const pinInputs = Array.from(
-      this.container.querySelectorAll(".pin-input")
-    ) as HTMLInputElement[];
+    const pinInputs = Array.from(this.container.querySelectorAll(".pin-input")) as HTMLInputElement[];
 
-    const otpInput = this.container.querySelector(
-      ".otp-input"
-    ) as HTMLInputElement;
-    const otpButton = this.container.querySelector(
-      ".otp-button"
-    ) as HTMLButtonElement;
-    const closeBtn = this.container.querySelector(
-      ".success-button"
-    ) as HTMLButtonElement;
-    const goToCardDetails = this.container.querySelector(
-      "#go-to-card"
-    ) as HTMLButtonElement;
+    const otpInput = this.container.querySelector(".otp-input") as HTMLInputElement;
+    const otpButton = this.container.querySelector(".otp-button") as HTMLButtonElement;
+    const closeBtn = this.container.querySelector(".success-button") as HTMLButtonElement;
+    const goToCardDetails = this.container.querySelector("#go-to-card") as HTMLButtonElement;
 
-    const goToTransfer = document.querySelector(
-      "#go-to-transfer"
-    ) as HTMLButtonElement;
+    const goToTransfer = document.querySelector("#go-to-transfer") as HTMLButtonElement;
 
-    
     // CARD DETAIL EVENTS //
     if (cardNumberInput) {
-      cardNumberInput.addEventListener("input", (e) =>
-        this.handleInputChange(e, button)
-      );
+      cardNumberInput.addEventListener("input", (e) => this.handleInputChange(e, button));
     }
 
     if (cardExpiryInput) {
-      cardExpiryInput.addEventListener("input", (e) =>
-        this.handleInputChange(e, button)
-      );
+      cardExpiryInput.addEventListener("input", (e) => this.handleInputChange(e, button));
     }
 
     if (cardCvvInput) {
-      cardCvvInput.addEventListener("input", (e) =>
-        this.handleInputChange(e, button)
-      );
+      cardCvvInput.addEventListener("input", (e) => this.handleInputChange(e, button));
     }
 
     if (formCard) {
@@ -182,19 +147,13 @@ class Card {
 
     // CARD PIN EVENTS //
     pinInputs.forEach((input, index) => {
-      input.addEventListener("input", (event) =>
-        this.handlePinInputChange(event, index, pinInputs)
-      );
-      input.addEventListener("paste", (event) =>
-        this.handlePinPaste(event, pinInputs)
-      );
+      input.addEventListener("input", (event) => this.handlePinInputChange(event, index, pinInputs));
+      input.addEventListener("paste", (event) => this.handlePinPaste(event, pinInputs));
     });
 
     // CARD OTP EVENTS //
     if (otpInput) {
-      otpInput.addEventListener("input", (e) =>
-        this.handleOtpInput(e, otpButton)
-      );
+      otpInput.addEventListener("input", (e) => this.handleOtpInput(e, otpButton));
     }
     if (otpButton) {
       otpButton.addEventListener("click", (e) => this.submitOtp(e));
@@ -202,7 +161,6 @@ class Card {
     if (closeBtn) {
       closeBtn.addEventListener("click", () => this.closeModal());
     }
-
 
     // PAYMENT ERROR EVENTS //
     if (goToCardDetails) {
@@ -213,7 +171,7 @@ class Card {
 
     if (goToTransfer) {
       goToTransfer.addEventListener("click", () => {
-        this.switchTab(1)
+        this.switchTab(1);
       });
     }
   }
@@ -238,11 +196,7 @@ class Card {
     };
     target.value = formattedValue;
 
-    if (
-      this.cardDetailsValues.number &&
-      this.cardDetailsValues.expiry &&
-      this.cardDetailsValues.cvv
-    ) {
+    if (this.cardDetailsValues.number && this.cardDetailsValues.expiry && this.cardDetailsValues.cvv) {
       if (button) {
         button.removeAttribute("disabled");
       }
@@ -289,11 +243,7 @@ class Card {
       }, 500);
     }
   }
-  handlePinInputChange(
-    event: Event,
-    index: number,
-    pinInputs: HTMLInputElement[]
-  ) {
+  handlePinInputChange(event: Event, index: number, pinInputs: HTMLInputElement[]) {
     this.cardPin = "";
     const target = event.target as HTMLInputElement;
     const value = target.value;
@@ -425,15 +375,13 @@ class Card {
         showToast(error.message, "error");
         this.currentStep = 4;
         this.setPaymentError("Payment failed");
-      })
+      });
   }
 
   async handleSubmit(e: Event) {
     e.preventDefault();
     const spin = this.container.querySelector(".spinner");
-    const buttonText = this.container.querySelector(
-      "#details-form-button-text"
-    );
+    const buttonText = this.container.querySelector("#details-form-button-text");
 
     const payload = {
       amount: this.amount,
@@ -475,10 +423,7 @@ class Card {
           this.activeRef = data.reference;
           this.currentStep = 2;
         } else if (data.status === "pending_validation") {
-          if (
-            data.authorization.mode === "3DS" &&
-            data.authorization.redirectUrl
-          ) {
+          if (data.authorization.mode === "3DS" && data.authorization.redirectUrl) {
             this.activeRef = data.reference;
             this.redirectTo3DS(data.authorization.redirectUrl);
           }
@@ -519,16 +464,11 @@ class Card {
         }
       }, 2000);
     } else {
-      alert(
-        "Please enable popups for this site to complete the authentication."
-      );
+      alert("Please enable popups for this site to complete the authentication.");
     }
   }
 
-  async verifyPayment(
-    onSuccess: (data: PaymentResponseData) => void,
-    onError: (error: Error) => void
-  ) {
+  async verifyPayment(onSuccess: (data: PaymentResponseData) => void, onError: (error: Error) => void) {
     try {
       const responseData = await verifyPayment(this.token, this.activeRef);
       if (responseData.status === "failed") {
@@ -566,9 +506,7 @@ class Card {
 
   private filterCreditCardType(val: string) {
     if (val) {
-      this.creditCardTypes = cardTypes.filter(
-        (type) => type.name === getCardType(val)
-      );
+      this.creditCardTypes = cardTypes.filter((type) => type.name === getCardType(val));
 
       if (this.creditCardTypes.length >= 1) {
         this.displayCardTypes();
@@ -586,6 +524,19 @@ class Card {
     if (this.contents[0]) {
       this.contents[0].innerHTML = this.getCardStepContent();
       this.attachInputListeners();
+      this.displayButtonText();
+    }
+  }
+
+  private displayButtonText(_val?: string) {
+    const buttonText = this.container.querySelector("#details-form-button-text") as HTMLSpanElement;
+    console.log({ amount: this.amount, buttonText });
+    if (buttonText) {
+      if (_val) {
+        buttonText.textContent = _val;
+      } else {
+        buttonText.textContent = `Pay ${this.currency || "USD"} ${formatNumber(this.amount || 0)}`;
+      }
     }
   }
 }

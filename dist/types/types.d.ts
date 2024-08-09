@@ -61,6 +61,10 @@ export interface Customer {
     email: string;
     phoneNumber: string;
 }
+export type GetPaymentRateParams = {
+    to: string;
+    from: string;
+};
 export interface Rate {
     from: string;
     to: string;

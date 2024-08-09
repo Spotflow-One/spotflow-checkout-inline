@@ -10,6 +10,7 @@ declare class Card {
     private email;
     private token;
     private amount;
+    private currency?;
     private _currentStep;
     private activeRef;
     private creditCardTypes;
@@ -33,5 +34,6 @@ declare class Card {
     private getCardStepContent;
     private filterCreditCardType;
     renderCardContent(): void;
+    private displayButtonText;
 }
 export default Card;

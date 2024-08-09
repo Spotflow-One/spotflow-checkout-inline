@@ -67,6 +67,12 @@ export interface Customer {
   email: string;
   phoneNumber: string;
 }
+
+export type GetPaymentRateParams = {
+  to: string; // ISO 4217 currency code (e.g., EUR, USD)
+  from: string; // ISO 4217 currency code (e.g., EUR
+};
+
 export interface Rate {
   from: string;
   to: string;

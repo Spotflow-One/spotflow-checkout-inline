@@ -1,17 +1,17 @@
-import './index.css';var D = Object.defineProperty;
-var J = (r, e, t) => e in r ? D(r, e, { enumerable: !0, configurable: !0, writable: !0, value: t }) : r[e] = t;
-var o = (r, e, t) => J(r, typeof e != "symbol" ? e + "" : e, t);
-const K = `<div id="checkout-modal">
+import './index.css';var J = Object.defineProperty;
+var K = (i, e, t) => e in i ? J(i, e, { enumerable: !0, configurable: !0, writable: !0, value: t }) : i[e] = t;
+var o = (i, e, t) => K(i, typeof e != "symbol" ? e + "" : e, t);
+const O = `<div id="checkout-modal">
   <div role="dialog" class="relative z-10" aria-labelledby="modal-title" aria-modal="true">
     <div class="fixed inset-0 bg-[#fafaff] bg-opacity-100 transition-opacity" aria-hidden="true"></div>
-  
+
     <div id="toast-container"></div>
-  
+
     <div class="fixed inset-0 z-10 w-screen overflow-y-auto">
       <div class="relative flex min-h-full items-end justify-center text-center sm:items-center p-0">
         <div
           class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 w-full sm:w-4/5 md:w-[90%] lg:w-[900px] min-h-screen sm:min-h-[70%] flex">
-  
+
           <aside class="px-2 py-4 md:flex justify-center w-[250px] bg-[#f4f4ff] overflow-auto hidden">
             <div class="w-full py-8">
               <div class="container-center">
@@ -19,7 +19,7 @@ const K = `<div id="checkout-modal">
               </div>
               <h5 class="text-xl font-semibold text-common pt-10 pb-4 text-center">PAYMENT OPTIONS</h5>
               <div class="payment-options">
-  
+
                 <!-- Tab options -->
               </div>
             </div>
@@ -29,11 +29,11 @@ const K = `<div id="checkout-modal">
               <img src="" alt="Nba Logo" id="merchantLogoMob" class="md:hidden" />
             </div>
             <div id="mob-tab-co">
-  
+
             </div>
-            <button
+            <button type="button"
               class="hidden top-0 right-0 text-lg fixed hover:bg-primary hover:text-white h-6 w-6 md:flex justify-center items-end rounded-full close-btn">x</button>
-  
+
             <div class="box-container relative max-sm:py-4 max-sm:px-4">
               <!-- header -->
               <div class="header-container">
@@ -43,7 +43,7 @@ const K = `<div id="checkout-modal">
                 </div>
                 <div class="container-between pt-[9.6px] pb-[6.4px]">
                   <div class="align-center">
-                    <p class="text-sm mr-1">USD 1 = NGN 1,483.98</p>
+                    <p class="text-sm mr-1" id="payment-rate-display">USD 1 = NGN 1</p>
                     <div class="group relative flex flex-col items-center cursor-pointer">
                       <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path
@@ -56,7 +56,7 @@ const K = `<div id="checkout-modal">
                           d="M10 5C10 7.76142 7.76142 10 5 10C2.23858 10 1.95703e-07 7.76142 4.37114e-07 5C6.78525e-07 2.23858 2.23858 -6.78525e-07 5 -4.37114e-07C7.76142 -1.95703e-07 10 2.23858 10 5ZM5 9C7.20914 9 9 7.20914 9 5C9 2.79086 7.20914 1 5 1C2.79086 0.999999 1 2.79086 1 5C1 7.20914 2.79086 9 5 9Z"
                           fill="#CCCCE8" />
                       </svg>
-  
+
                       <div class="tooltip">
                         <div class="tooltip-textbox">
                           <p class="tooltip-title">
@@ -75,15 +75,15 @@ const K = `<div id="checkout-modal">
                   </div>
                   <div>
                     <p class="text-sm"> Pay
-                      <span> USD 14.99</span>
+                      <span id="container-payment-text"> USD 0</span>
                     </p>
                   </div>
-  
+
                 </div>
-  
+
                 <div class="flex justify-end">
-                  <div class="header-chip">
-                    NGN 22,244.86
+                  <div id="header-chip-amount" class="header-chip">
+                    NGN 1
                   </div>
                 </div>
               </div>
@@ -94,17 +94,17 @@ const K = `<div id="checkout-modal">
                 <div class="content" data-content="1"></div>
                 <div class="content" data-content="2"></div>
               </div>
-  
+
               <div id="mob-container" class="md:hidden">
-  
-              
+
+
               </div>
               <!-- footer -->
               <div class="container-between gap-2 mt-20 mb-8 md:hidden" id="mob-action-btns">
-                <button class="button-outline px-3 w-auto" id="change-method">
+                <button type="button" class="button-outline px-3 w-auto" id="change-method">
                   <span class="text-[10px] mr-1">x</span> Change Payment Method
                 </button>
-                <button class="button-outline px-6 w-auto close-btn">
+                <button type="button" class="button-outline px-6 w-auto close-btn">
                   <span class="text-[10px] mr-1">x</span> Cancel Payment
                 </button>
               </div>
@@ -114,7 +114,7 @@ const K = `<div id="checkout-modal">
                     d="M4.884 0.68L1.384 2.235C1.024 2.395 0.789001 2.755 0.789001 3.15V5.5C0.789001 8.275 2.709 10.87 5.289 11.5C7.869 10.87 9.789 8.275 9.789 5.5V3.15C9.789 2.755 9.554 2.395 9.194 2.235L5.694 0.68C5.439 0.565 5.139 0.565 4.884 0.68ZM5.289 5.995H8.789C8.524 8.055 7.149 9.89 5.289 10.465V6H1.789V3.15L5.289 1.595V5.995Z"
                     fill="#6D6A73" />
                 </svg>
-  
+
                 <p class="text-[10px] text-grey-100">
                   PCI DSS Certified
                 </p>
@@ -122,29 +122,20 @@ const K = `<div id="checkout-modal">
             </div>
           </div>
         </div>
-  
+
       </div>
     </div>
   </div>
 </div>
-`, M = "data:image/png;base64,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", x = `<form id="checkoutcard">
+`, f = "data:image/png;base64,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", x = `<form id="checkoutcard">
   <div class="box-container">
     <h5 class="content-heading">Enter your card details to pay</h5>
     <div class="mt-8">
       <div class="relative mx-4 md:mx-6 mb-4">
-        <span
-          class="absolute text-xs left-0 top-1 text-grey-100 pt-1 pb-1 px-3 tracking-[0.5px]"
-          >CARD NUMBER</span
-        >
+        <span class="absolute text-xs left-0 top-1 text-grey-100 pt-1 pb-1 px-3 tracking-[0.5px]">CARD NUMBER</span>
         <div>
-          <input
-            class="details-input-container"
-            type="tel"
-            id="card-number"
-            name="number"
-            placeholder="0000 0000 0000 0000"
-            required
-          />
+          <input class="details-input-container" type="tel" id="card-number" name="number"
+            placeholder="0000 0000 0000 0000" required />
         </div>
         <div class="absolute right-3 top-1/2 -translate-y-2/4 max-sm:hidden">
           <div id="card-types" class="align-center gap-2">
@@ -154,36 +145,17 @@ const K = `<div id="checkout-modal">
 
       <div class="grid grid-cols-2 gap-4 my-4 mx-4 md:mx-6">
         <div class="relative w-full">
-          <span
-            class="absolute text-xs left-0 top-1 text-grey-100 pt-1 pb-1 px-3 tracking-[0.5px]"
-            >CARD EXPIRY</span
-          >
+          <span class="absolute text-xs left-0 top-1 text-grey-100 pt-1 pb-1 px-3 tracking-[0.5px]">CARD EXPIRY</span>
           <div>
-            <input
-              class="details-input-container"
-              type="tel"
-              id="card-expiry"
-              name="expiry"
-              placeholder="MM / YY"
-              required
-            />
+            <input class="details-input-container" type="tel" id="card-expiry" name="expiry" placeholder="MM / YY"
+              required />
           </div>
         </div>
 
         <div class="relative w-full">
-          <span
-            class="absolute text-xs left-0 top-1 text-grey-100 pt-1 pb-1 px-3 tracking-[0.5px]"
-            >CVV</span
-          >
+          <span class="absolute text-xs left-0 top-1 text-grey-100 pt-1 pb-1 px-3 tracking-[0.5px]">CVV</span>
           <div>
-            <input
-              class="details-input-container"
-              type="tel"
-              id="card-cvv"
-              name="cvv"
-              placeholder="123"
-              required
-            />
+            <input class="details-input-container" type="tel" id="card-cvv" name="cvv" placeholder="123" required />
           </div>
         </div>
       </div>
@@ -192,16 +164,16 @@ const K = `<div id="checkout-modal">
         <button type="submit" disabled="true" class="details-form-button">
           <svg class="spinner hidden" id="spinner" viewBox="0 0 24 24">
             <path
-              d="M10.14,1.16a11,11,0,0,0-9,8.92A1.59,1.59,0,0,0,2.46,12,1.52,1.52,0,0,0,4.11,10.7a8,8,0,0,1,6.66-6.61A1.42,1.42,0,0,0,12,2.69h0A1.57,1.57,0,0,0,10.14,1.16Z"
-            ></path>
+              d="M10.14,1.16a11,11,0,0,0-9,8.92A1.59,1.59,0,0,0,2.46,12,1.52,1.52,0,0,0,4.11,10.7a8,8,0,0,1,6.66-6.61A1.42,1.42,0,0,0,12,2.69h0A1.57,1.57,0,0,0,10.14,1.16Z">
+            </path>
           </svg>
-          <span id="details-form-button-text"> Pay USD 14.99 </span>
+          <span id="details-form-button-text"> Pay USD 0 </span>
         </button>
       </div>
     </div>
   </div>
 </form>
-`, O = `<div id="checkoutcardpin">
+`, N = `<div id="checkoutcardpin">
   <div class="box-container md:w-4/5 mx-auto py-8 md:py-16">
     <div class="container-center h-[20vh] hidden" id="loader">
       <img src="" alt="loader gif" />
@@ -264,7 +236,7 @@ const K = `<div id="checkout-modal">
     </div>
   </div>
 </div>
-`, I = `<div id="paymentWarning">
+`, k = `<div id="paymentWarning">
   <div class="box-container">
     <div class="text-center mt-7">
       <svg
@@ -288,7 +260,7 @@ const K = `<div id="checkout-modal">
     </div>
   </div>
 </div>
-`, H = `<div id="paymentSuccess">
+`, v = `<div id="paymentSuccess">
     <div class="box-container">
         <div class="text-center mt-7"></div>
         <svg class="mx-auto" width="100" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -313,129 +285,145 @@ const K = `<div id="checkout-modal">
 
 </div>
 </div>
-</div>`, N = `<div class="box-container">
+</div>`, q = `<div class="box-container">
   <div class="container-center h-[40vh] hidden" id="loader">
     <img src="" alt="loader gif" />
   </div>
 </div>
 `;
-class p extends Error {
+class h extends Error {
   constructor(e, t) {
     super(e), this.status = t, this.name = "FetchError";
   }
 }
-class g extends Error {
+class u extends Error {
   constructor(e) {
     super(e), this.name = "AuthorizationError";
   }
 }
-const y = (r) => {
-  if (!r)
-    throw new g("Missing authorization token");
+const E = (i) => {
+  if (!i)
+    throw new u("Missing authorization token");
   const e = new Headers();
-  return e.append("Content-Type", "application/json"), e.append("Authorization", `Bearer ${r}`), e;
-}, L = "https://dev-api.spotflow.one/api/v1", q = async (r, e) => {
+  return e.append("Content-Type", "application/json"), e.append("Authorization", `Bearer ${i}`), e;
+}, y = "https://dev-api.spotflow.one/api/v1", P = async (i, e) => {
   try {
-    const t = y(r), n = await fetch(`${L}/payments`, {
+    const t = E(i), n = await fetch(`${y}/payments`, {
       method: "POST",
       headers: t,
       body: JSON.stringify(e)
     });
     if (!n.ok) {
       const s = await n.json();
-      throw s.message ? new p(s.message, n.status) : new p("Network response was not ok", n.status);
+      throw s.message ? new h(s.message, n.status) : new h("Network response was not ok", n.status);
     }
     return await n.json();
   } catch (t) {
-    throw t instanceof p ? console.error(`FetchError: ${t.message} (status: ${t.status})`) : t instanceof g ? console.error(`AuthorizationError: ${t.message}`) : console.error(`Unexpected error: ${t}`), t;
+    throw t instanceof h ? console.error(`FetchError: ${t.message} (status: ${t.status})`) : t instanceof u ? console.error(`AuthorizationError: ${t.message}`) : console.error(`Unexpected error: ${t}`), t;
   }
-}, P = async (r, e) => {
+}, Y = async (i, e) => {
   try {
-    const t = y(r), n = await fetch(`${L}/payments/authorize`, {
+    const t = E(i), n = await fetch(`${y}/payments/authorize`, {
       method: "POST",
       headers: t,
       body: JSON.stringify(e)
     });
     if (!n.ok) {
       const s = await n.json();
-      throw s.message ? new p(s.message, n.status) : new p("Network response was not ok", n.status);
+      throw s.message ? new h(s.message, n.status) : new h("Network response was not ok", n.status);
     }
     return await n.json();
   } catch (t) {
-    throw t instanceof p ? console.error(`FetchError: ${t.message} (status: ${t.status})`) : t instanceof g ? console.error(`AuthorizationError: ${t.message}`) : console.error(`Unexpected error: ${t}`), t;
+    throw t instanceof h ? console.error(`FetchError: ${t.message} (status: ${t.status})`) : t instanceof u ? console.error(`AuthorizationError: ${t.message}`) : console.error(`Unexpected error: ${t}`), t;
   }
-}, Y = async (r, e) => {
+}, z = async (i, e) => {
   try {
-    const t = y(r), n = await fetch(`${L}/payments/validate`, {
+    const t = E(i), n = await fetch(`${y}/payments/validate`, {
       method: "POST",
       headers: t,
       body: JSON.stringify(e)
     });
     if (!n.ok) {
       const s = await n.json();
-      throw s.message ? new p(s.message, n.status) : new p("Network response was not ok", n.status);
+      throw s.message ? new h(s.message, n.status) : new h("Network response was not ok", n.status);
     }
     return await n.json();
   } catch (t) {
-    throw t instanceof p ? console.error(`FetchError: ${t.message} (status: ${t.status})`) : t instanceof g ? console.error(`AuthorizationError: ${t.message}`) : console.error(`Unexpected error: ${t}`), t;
+    throw t instanceof h ? console.error(`FetchError: ${t.message} (status: ${t.status})`) : t instanceof u ? console.error(`AuthorizationError: ${t.message}`) : console.error(`Unexpected error: ${t}`), t;
   }
-}, z = async (r, e) => {
+}, V = async (i, e) => {
   try {
-    const t = y(r), n = await fetch(`${L}/payments`, {
+    const t = E(i), n = await fetch(`${y}/payments`, {
       method: "POST",
       headers: t,
       body: JSON.stringify(e)
     });
     if (!n.ok) {
       const s = await n.json();
-      throw s.message ? new p(s.message, n.status) : new p("Network response was not ok", n.status);
+      throw s.message ? new h(s.message, n.status) : new h("Network response was not ok", n.status);
     }
     return await n.json();
   } catch (t) {
-    throw t instanceof p ? console.error(`FetchError: ${t.message} (status: ${t.status})`) : t instanceof g ? console.error(`AuthorizationError: ${t.message}`) : console.error(`Unexpected error: ${t}`), t;
+    throw t instanceof h ? console.error(`FetchError: ${t.message} (status: ${t.status})`) : t instanceof u ? console.error(`AuthorizationError: ${t.message}`) : console.error(`Unexpected error: ${t}`), t;
   }
-}, k = async (r, e, t) => {
+}, T = async (i, e, t) => {
   try {
-    const n = y(r), A = await fetch(`${L}/payments/verify?reference=${e}`, {
+    const n = E(i), A = await fetch(`${y}/payments/verify?reference=${e}`, {
       method: "GET",
       headers: n,
       signal: t
     });
     if (!A.ok) {
-      const i = await A.json();
-      throw i.message ? new p(i.message, A.status) : new p("Network response was not ok", A.status);
+      const r = await A.json();
+      throw r.message ? new h(r.message, A.status) : new h("Network response was not ok", A.status);
     }
     return await A.json();
   } catch (n) {
-    throw n instanceof p ? console.error(`FetchError: ${n.message} (status: ${n.status})`) : n instanceof g ? console.error(`AuthorizationError: ${n.message}`) : console.error(`Unexpected error: ${n}`), n;
+    throw n instanceof h ? console.error(`FetchError: ${n.message} (status: ${n.status})`) : n instanceof u ? console.error(`AuthorizationError: ${n.message}`) : console.error(`Unexpected error: ${n}`), n;
   }
-}, T = () => {
-  const r = Date.now().toString(36), e = "xxxx-xxxx-xxx-xxxx".replace(/[x]/g, () => Math.floor(Math.random() * 16).toString(16));
-  return `SPF-${r}-${e}`.toUpperCase();
-}, S = (r = "") => r.replace(/\D+/g, ""), V = (r) => {
-  if (!r)
-    return r;
-  const e = S(r);
+};
+async function W(i, e) {
+  try {
+    const t = E(i), n = await fetch(`${y}/payments/rates?to=${e.to}&from=${e.from}`, {
+      method: "GET",
+      headers: t
+    });
+    if (!n.ok) {
+      const A = await n.json();
+      throw A.message ? new h(A.message, n.status) : new h("Network response was not ok", n.status);
+    }
+    return await n.json();
+  } catch (t) {
+    throw t instanceof h ? console.error(`FetchError: ${t.message} (status: ${t.status})`) : t instanceof u ? console.error(`AuthorizationError: ${t.message}`) : console.error(`Unexpected error: ${t}`), t;
+  }
+}
+const F = () => {
+  const i = Date.now().toString(36), e = "xxxx-xxxx-xxx-xxxx".replace(/[x]/g, () => Math.floor(Math.random() * 16).toString(16));
+  return `SPF-${i}-${e}`.toUpperCase();
+}, S = (i = "") => i.replace(/\D+/g, ""), j = (i) => {
+  if (!i)
+    return i;
+  const e = S(i);
   return `${e.slice(0, 4)} ${e.slice(
     4,
     8
   )} ${e.slice(8, 12)} ${e.slice(12, 16)}`.trim();
-}, W = (r) => S(r).slice(0, 3), j = (r) => {
-  const e = S(r);
+}, X = (i) => S(i).slice(0, 3), $ = (i) => {
+  const e = S(i);
   return e.length >= 3 ? `${e.slice(0, 2)} / ${e.slice(2, 4)}` : e;
-}, X = (r) => {
-  if (!r)
-    return r;
-  const e = S(r);
+}, _ = (i) => {
+  if (!i)
+    return i;
+  const e = S(i);
   return `${e.slice(0, 4)}${e.slice(
     4,
     8
   )}${e.slice(8, 12)}${e.slice(12, 16)}`.trim();
-}, B = (r) => {
-  const e = Math.floor(r / 60), t = r % 60;
+}, B = (i) => {
+  const e = Math.floor(i / 60), t = i % 60;
   return `${String(e).padStart(2, "0")}:${String(t).padStart(2, "0")}`;
-}, $ = (r) => {
-  r = r.replace(/\D/g, "");
+}, t1 = (i) => {
+  i = i.replace(/\D/g, "");
   const e = {
     Visa: /^4/,
     MasterCard: /^5[1-5]|^2(2[2-9]|[3-6]|7[01])/,
@@ -445,27 +433,27 @@ const y = (r) => {
     Verve: /^506099|^5061[0-8]|^50619|^6500[02]|^5078[6-9]|^65003[1-3]/
   };
   for (const [t, n] of Object.entries(e))
-    if (n.test(r))
+    if (n.test(i))
       return t;
   return "Unknown";
-}, _ = (r, e) => {
+}, e1 = (i, e) => {
   const t = document.createElement("div");
   t.classList.add("toast", e);
   const n = document.createElement("span");
-  n.textContent = r, t.appendChild(n);
+  n.textContent = i, t.appendChild(n);
   const A = document.createElement("span");
-  return A.textContent = "×", A.classList.add("close-btn"), A.onclick = () => F(t), t.appendChild(A), t;
-}, h = (r, e, t = 3e3) => {
+  return A.textContent = "×", A.classList.add("close-btn"), A.onclick = () => G(t), t.appendChild(A), t;
+}, p = (i, e, t = 3e3) => {
   const n = document.getElementById("toast-container");
   if (n) {
-    const A = _(r, e);
-    n.appendChild(A), A.offsetHeight, A.classList.add("show"), setTimeout(() => F(A), t);
+    const A = e1(i, e);
+    n.appendChild(A), A.offsetHeight, A.classList.add("show"), setTimeout(() => G(A), t);
   }
-}, F = (r) => {
-  r.classList.remove("show"), r.addEventListener("transitionend", () => {
-    r.parentElement && r.parentElement.removeChild(r);
+}, G = (i) => {
+  i.classList.remove("show"), i.addEventListener("transitionend", () => {
+    i.parentElement && i.parentElement.removeChild(i);
   });
-}, G = "data:image/gif;base64,R0lGODlhQABAANUAAAQCBISGhMTGxERCROTm5KSmpCQiJGRiZNTW1LS2tPT29BQSFJSWlFRSVDQyNHR2dMzOzOzu7KyurGxqbNze3Ly+vFxaXAwKDIyOjCwqLPz+/BweHKSipDw6PMzKzExKTOzq7KyqrCQmJGRmZNza3Ly6vPz6/BQWFJyanFRWVDQ2NHx+fNTS1PTy9LSytGxubOTi5MTCxFxeXAwODJSSlP///wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH/C05FVFNDQVBFMi4wAwEAAAAh+QQIBgAAACwAAAAAQABAAAAG/sCacEgsGo/IpHLJbDqf0Kh0Sq1ar9isdsvteikPiHfcAGxa424AAFilua0NG/behtipulbTYcf0WRBsDiaAWCNsKIZXBDMAJ2iLVRhsLpJHFA0BCkomBymRezAInE0PbBshGpIgHgIeFE4QcmwdYnotCAK7HqFMLStsbCMgaQoUvB4whVEwKcIzGMxaJgSuHjGkVjEOwgdcyLssEVkKKCcAFlwkryDTWREJvlgm7pf3+Pn6+/yLFAkAAwZkUYcAhYMIEc4TEuGCsIfC/owhgIFGxYsWK5Yi0hAiRIleKGIYSRLjRiL/BAq8lQYECRgvY5KgsLCfzZs4c+oE1MJF+80qCiD8pGLiXDouGFIcqPCuCjdvXBg0SNHgAQIrzqBJ42LChQyqKTAUi6IgmLARBNK0QAHWQoGTS2YJswWIwoqpKUbEMoVK1SINAiZM5eCEhCa4RTxZGFpEwYQHTRu7wJB2CyUAlpqU2LBB0SUQjk6QKyIA5JAIDjZkGLsIEQDPRAQBYDmkAOcHkmQ7QFyCTQIjJgZwvgpIwwA2FY4k8H3EA+cGq/TcAZBHOfMjEzhnfqOAFh3rAH4fgWFgQwfEXNa0SbI8fBIMG07QqFPmDPvrR1qo2DCiDokwSrQnHhIsBPDdPgLuBN6ACg5BwQUz7NUgR6xNaOGFNwUBACH5BAgGAAAALAAAAABAAEAAhQQCBISChMTCxERCRKSipOTi5GRmZCQiJFRSVLSytPTy9JSWlNTS1BQSFHR2dIyKjExKTKyqrOzq7DQyNFxaXLy6vPz6/Nza3AwKDMzOzHRydJyenBweHHx+fDw6PISGhMTGxERGRKSmpOTm5GxqbFRWVLS2tPT29JyanNTW1BQWFHx6fIyOjExOTKyurOzu7FxeXLy+vPz+/Nze3AwODDw+PP///wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAb+QJtwSCwaj8ikcslsOp/QqHRKbVpO1axU4XIptODmKBIZhc/JcRlNnTkySolozZYiAJwvUm2uRz8AAB1pZH1+TwocgQV7ESKGh04RgSWNLpCRTDI1gQJHfJlQGYETFkagoU8GgShGL44vqU8jNAAqekQSsbJPLIEJvEkzCB9YSRYGJbhhMgoSpk0OgRwRMsE2CgUFM7tMGYqBNXCpFiPaBSPQTQodgYEGEpEWEuczCtZRBSXuNCzqYRZeaJsxQgI+KgImuDPAhh66Eca0nEChAgAFNi8IKvgH5oWJZWBknDh4raTJkyhTqjw5w4TLly8ZhHoxoqZNmyCFvMDgrqf+O0+HJJAZSjSCC442dvr0CdSPHBdFhx490hImzHGRaN68mXOl169gw4o9qSBB1yonUkQESNEiGwIaVoAgWSXhQjYiNJDQwOJCFn38/LGxEMOBXg0buj050W4hJjQK8mqYbAJpkm/uxMkasWCvhg6Mok2LYPmQjAwdJrtwcoHYWiPIKJw1wvhDaSEnKmyIh8YXAGBNBHiYIMKkhFoqFAsB0XSIghA1BihPtQpAqyKjAGAdkmCChw/Xsk94baNCIBNGZMDw4CEFLxkDAsU4YuL8kQzDSdA9NAlAJfr2HdEBexWkcgI4oRlRHwDofVLDBAiQxwYggiSxYINHoMDeBqEv3JGHhQEecUILHjgQygVvKHGhEikskGBKK44FIIMyUoUBDTPUeMQLvOno448yBgEAIfkECAYAAAAsAAAAAEAAQACFBAIEhIaExMbEREJE5ObkpKakZGJkHB4c1NbUtLa09Pb0lJaUDA4MVFJUdHZ0zM7M7O7srK6sNDI03N7cvL68XFpcjI6MbGpsJCYk/P78nJ6cFBYUDAoMzMrM7OrsrKqsZGZkJCIk3NrcvLq8/Pr8nJqcFBIUVFZUfH581NLU9PL0tLK05OLkxMLEXF5clJKU////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABv5AmHBILBqPyKRyyWw6n9CodEptqlTVrNRTcXm04Obj1HiEz8lH42RGTyeONjLVKLunDcABixzb71EBAAAoaWtygE4qB4MsfWSIiU0fgyePf5JOGQODLUdqbJlQD4MSJEZ+kaJLIIMlRhNrE6tPBAwAG3xECCK0UBaDK75JsQEKSiQGJ7rDRQ6DBx8ZzVMPjIMDqtRMKiiDgyBf21AsJ98MFqfjTy0S3wbrUAolGwAV8VEQCcz4/f7/AAMKBDQhgcGDB1OIUgGhoUOHx4xA4PCt4jdPiSAI6LCxI0eO6ohMtGgRIyAVAlK2UClgZYeQRAoiRKgNjQIVHhjqhHBloP7Pn0CDCuW2gp8WBRMiniFBz56bBBZKpJgGpt07NyMsaC3gqEq5c+nckOiwQKuFfVIUePsGgoAkBSNeaH0hAOYSa98GdKBF4IMFuSXcNnmmpwBVWiRElNBqcomIBsaQGahgFImCFwvsFiEhYAUEN8AACGvSgczoZh5ubfhcpMPeIgqUuaicqRWAV0UQHDigsAiFOrh9kQIgQekQCrspGCHh4MSJWbQ2DVJupMXuEUcQrEFxOBMlAJaOIN/QmIiFOgJWKbjW1QjyA9SNcDlxwTggQYSSvMeO5MOaCKLksYd+B5CXhAIgNGCBKCLEocQIu5VXhAgFCIaPdQYOBcN7EhD+xEIIGLQ3FE8almjiOkEAACH5BAgGAAAALAAAAABAAEAAhQQCBISChMTCxERCROTi5KSipCQiJGRmZNTS1PTy9LSytBQSFJSWlHR2dMzKzFRSVOzq7Nza3Pz6/Ly6vAwKDIyOjKyqrDQyNBweHJyenHx+fFxaXISGhMTGxOTm5HRydNTW1PT29LS2tBQWFJyanHx6fMzOzFRWVOzu7Nze3Pz+/Ly+vAwODKyurDw6PP///wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAb+wJdwSCwaj8ikcslsOp/QqHRKbaIg1aw0xaKktOCmCAAQhc/JcRlNTTVMygnZzJY+AJhEel6Xcsgae2t9UAkYZARIanSETxZkJ4p8jU8qLmQCR4uUUCZkFxJGm5xPB2QkRp4AcKROHiwAI3pFApmtTxVkCrdJKQ8cIUoSByezvEYNZBgWKsdTJodkLqzOhRpkZAdY1VAEJ9gsFaHcTwIX2AfkUCEkIwAb6lEoIsbx9vf4+fr7hCki/wABIuAUoqDBg+OKoKCArSE2W31CEJhIsSKBZgoZOmwIsY5EixVTYCziL2BAaoQkHFw5kp/LlzBjykySQEE9MBI8BEMjod3tOzYdLLQQGcYcOjYOLCidsI2KN3Di2EgA0UKphQ47111D56FRCBNWWyBIyAQatmmtUKwIi8JJMjzMeKnwJxSlkgi/sh4ZtuFmkhAFLJA1EgJEB79ZcgHY1QTEhw8rqkGANaJtEQR2X4Qo8aEBYkqmAKAqEuGCiwhGOjwucEzVBb1COrhw0cGIBA6PE7VSMYBMZCMOTNc2kuIxg8GEHgGIdEQ2bSQZHmf2GE13auFIIDzWgJzNHwCBkDgfrukxI0J38iSRfYE8YQ0fMnCK8EbJeCUEWjRV1wH7zBf3/eeBCwN09d8LCVh24IIM8hIEACH5BAgGAAAALAAAAABAAEAAhQQCBISGhMTGxERCROTm5KSmpCQiJGRmZNTW1LS2tPT29BQSFJSWlFRSVDQyNHR2dMzOzOzu7KyurNze3Ly+vFxaXAwKDIyOjCwqLGxubPz+/BweHJyenDw6PMzKzExKTOzq7KyqrCQmJGxqbNza3Ly6vPz6/BQWFJyanFRWVDQ2NHx+fNTS1PTy9LSytOTi5MTCxFxeXAwODJSSlP///wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAb+QJpwSCwaj8ikcslsOp/QqHRKbUZA1ax0IrNMtOBmAgBIhM/JcRlNnTwgyhLZnIywWmxjA7DBI9V0RyYuBQJ5RQFkK2lzSSwhIQiHRC0bZC9/jUctEgUJJpNEIWQpmWtHApCYoUMaHWQwR4BHIJAUGqxEEGQOoEWzRSYlBRIRuUUHZChGuwBwRROQz8dDBDIAJ35EMLFFCoQSCtRFF2QuTgQhEiRsEw0B4kkmBynaSyYCHrhoD2QbIfvGTYFgiUyHaQKjtFhBhswBLAmlvEjRUMYFXxGhwHDQ8EBGKQpQnABQ4eOUCAnsmVzJsqXLlzBXTkhAs2ZNFjGFRLDQsGf+w24wd/r0CRTmTJs2EeZcyrSp06dQhbRwoVKLiQgYw5gQSZINgnwEAmbZ2LGdgHwQqkKZWPEiGxMEPMA4SyIeFAUMOxIIZYLE2Xwvsi4h2PAgtRZfz6Z10o8PwIQgPJxdxYTEO7uCHozArMREghKCi2h4UZcNig0bSjghceGCUmogRGzAUBWBpGAMLjBQy+oB6gJGJqRo8KUIiwszVAtEgPpDaAgNUrzWUKA1xGMaGqD2cMTD8Nc0XrR+fMwFao9HWEQHT8PFjAvscinosMEA5SIe1iNp8R5FaDYzoHZBEtBJl4QArXHHygEbOMCZLvohsdUF57DyQgA4ERghEiAcwGBMSxB8F5UQBbK3FAgVxHBdVC3wNuKLMB4TBAAh+QQIBgAAACwAAAAAQABAAIUEAgSEhoTExsREQkSkpqTk5uRkYmQkIiTU1tRUUlS0trSUlpT09vR0cnQUEhSMjozMzsxMSkysrqzs7uw0MjTc3txcWly8vrx8enwMCgxsamykoqT8/vwcHhw8OjyMiozMysxERkSsqqzs6uxkZmTc2txUVlS8urycmpz8+vx0dnQUFhSUkpTU0tRMTky0srT08vTk4uRcXlzEwsR8fnwMDgw8Pjz///8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAG/sCbcEgsGo/IpHLJbDqf0Kh0Sm1ORtWstFLLVLTgpgIAUITPyXEZTa2oIMoT2ZysEApsYwLQgaXnSQwaCQ95RQFkNH9rSCIJCRKGRDAdZDFIanRGIyYmGgySRCJkJpiARw8JJgKhRBw2ZDNHmUcIqjQprUQQZBS5RbRFKSomFiW6RSRkKEa8AHBFF4/MyEQFNQArfkUzskUMBiYy29VDD2QvTiAmCeloFQkBoEkp4eRLDA8Lv2cqZB0iOJSrAqESGRvQBkqBQYMMGRJYFEqJYcJhjQf8JD6ZQcGhAY1SGKBYAcACyCkTFNw7ybKly5cwY7KsoKCmTZstZAqZkMGh/k+H3mLy/PkzaEyaN28m1Mm0qdOnUKMOgfFipRYODASiSTGyJJsRMQrA0KqFo0c2E2JUCDuPCkWLGNmkmFAght0RGZ0waOiQBB5Jc9dWEJtXSUGHCKulKFB3cGEk/viIeByKgd0YE5yUiNf2SIoANDorSSEABNkjHK5QpkLAgwejSgqIEIFA44QQFCJYrfBFmAQREkQj++A6UpECDTT8JVJh9lJkCDxQkHFaCIIGDWoLOzE7czUOGlw/t64h+5ERBCRcqC7phHRFtbBrNyJg9iVdDBJ4sLG8yHUN830zmwKrhbEBBR4skMR15iHRAgG06aKCBy4IN8R/ARbBwQsiKbDSSgELZOiffEpMAIFVGiFQnohOMchiUxOooIJ3Ut0Ag4U15qhjNUEAACH5BAgGAAAALAAAAABAAEAAhQQCBISGhMTGxERCROTm5KSmpCQiJGRiZNTW1LS2tPT29BQSFFRSVDQyNHR2dJSSlMzOzOzu7KyurGxqbNze3Ly+vFxaXAwKDCwqLPz+/BweHDw6PJyanIyOjMzKzExKTOzq7KyqrCQmJGRmZNza3Ly6vPz6/BQWFFRWVDQ2NHx+fJSWlNTS1PTy9LSytGxubOTi5MTCxFxeXAwODP///wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAb+QJpwSCwaj8ikcslsOp/QqHRKbUZA1ayUMrtQtOBmAgBIhM/JcRlNpTggyhLZnIQ4vuwiA6BppedJLRoADHlFAWQqf2tIKmQBhkSCZDBIanRGMGQaCpFEIWQoloBHKGQhnkQZG2QxR5dHMWQbGalEEGQNJkawRSYNZHC2RCNkHEa4AMJEHGQjw0UEMwAnfkUxrkURJwAzWNBEHWQuTi5kHWwUDAGdSSYHKNZMLSgju2gOmyG14FQQg7OW9YvSwhEZACO+DYwCwxSZGR3uLYQSAxiZAxOlKODAzULGKRESyPtIsqTJkyhTlqSQoKVLlyxUColw4aDNg9lS0rx5M2f3SpYvXwqUSbSo0aNIkwppUaJd0gwFMGh4odTDAA1YHSCFMQKrBgwcnMpU0MGAVwcKibJI4ZVBTKQBsG5wIfEojAMPRhoxseKBWCUmSFCo288FCgZDk4AQIIDAxBYyGBz4SwOGY18eBHigbGvF4QpGCHTokFYIAcZ4wFGwwMABPyIUHnRIPSQDC8Z6PWVQwQAFgiMUOjwgcaSF5rfDBPRGdwTGaNpESMQQUNqQiQkMLFQXQmJ0peKaPbyOJKF3gSTOO3xvznh9pA4MRnAWEnu2u8zEUxEo4N5Id/uBUDDfQPVBd1Rw6im11AMPRKCgEAoM+OCEFEYSBAAh+QQIBgAAACwAAAAAQABAAIUEAgSEgoTEwsREQkTk4uSkoqRkZmQkIiTU0tRUUlT08vS0srSUlpQUEhR0dnSMiozMysxMSkzs6uysqqw0MjTc2txcWlz8+vy8urwMCgx0cnScnpwcHhx8fnw8OjyEhoTExsRERkTk5uSkpqRsamzU1tRUVlT09vS0trScmpwUFhR8enyMjozMzsxMTkzs7uysrqzc3txcXlz8/vy8vrwMDgw8Pjz///8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAG/sCbcEgsGo/IpHLJbDqf0Kh0Sm2+JNWsNFbLxLTgJgoAQIXPyXEZTY05WkoM2ZxsOb7sYgLAUaTnSQocAAl5RR9kHX9rSB1kH4ZEgmQESGp0RgRkHCeRRBNkJpaARyZkE55EMzZkAkeXRwJkNjOpRC1kFBdGsEUXFGRwtkQGZClGuADCRClkBsNFIjUAKn5FAq5FLyoANVjQRCxkC04LZCxsMQkfnUkXBibWTAomBrvuJSDySw6bE7XgLhBYMGHCsiUtBs066OkFjQkjYCx48USBIzIADHwzdKJFwQkwELSDQsAUmRos7p25UALGRxAjpwgA5owNhI8YRIQ5kYKb/gU2IEDGAHjmBYp9YC6IiAmuqdOnUKNKnbokBoqrWLEioHrkRQaMYDFm4zrEa9iwY8kKsZo1K0O1cOPKnUu3bhYF+uyqWhDCgyK9N1rI8EDBAyS7IjoQ9hBihEq5PG0QtvGBYt0KLhaTKAGYQWEXNIjaJeCgAFNfIwo8VnLhiuimNDRo2NrkBAEClp0qcKBhxWkJG4fMuE1g9bAJJDSAMPKiYO4hCmKICD5MBAkHD17fEFFQZ5EZIm6fjjSDgQYSeKJB9O5LOnVPLc4XQMIdBvsiEsQPuxDg+nMi3E1wHxEXxECACMaxgYFsmBjB3QgDSnLbf3lsQEIHCQpRX4TCJ932HhsSoFBJEgFyOMQJL2To1IMmzrUhYNDBAANSel0wHow45uhUEAAh+QQIBgAAACwAAAAAQABAAIUEAgSEhoTExsREQkSkpqTk5uRkYmQcHhzU1tS0trSUlpT09vQMDgxUUlR0dnTMzsysrqzs7uw0MjTc3ty8vrycnpxcWlyMjoxsamwkJiT8/vwUFhQMCgzMysysqqzs6uxkZmQkIiTc2ty8urycmpz8+vwUEhRUVlR8fnzU0tS0srT08vTk4uTEwsSkoqRcXlyUkpT///8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAG/sCYcEgsGo/IpHLJbDqf0Kh0Sm1GPtWsdMLgTLTgZgIASITPyXEZTZ04HsoR2Zx8OL7sYgNwWKXnSSsHAA15RQFkKH9rSChkAYZEgmQsSGp0RixkBwuRRB5kJ5aARydkHp5EGgNkLUeXRy1kAyWpRA9kErVFsEUlEmRwtkQgZCRGuADCRCRkIMNFBQwAG35FLa5FERsADFjQRBdkKk4qZBdsEw0BnUklBifWTCsnILtICxAXBU4Omx4awMUoIQDDiQYunDwYNGtZqgkoDtbD02SFIzIAQHwzFIGERAse2kFhYYoMgwv3wpRQ8aLBwQsbp7QARsYAGwUuGzgQEWYB+AluFthcOGGAQkowERLI6/lgqcCnUKNKnUq16hAWFLJq1YrAqpEIGQ6IHUu2g1ciYMmS3XDA7NmrI+LKHdFiRIq3ePPq3cu3L5UFHUT61TACHgy/QhA4ONhAgd8PQ12+UHH07QIPFlyeIOEU7wQQOVFU8uviIAYBlfUWuAAh9ZASIxK41vvgwgWKfhfAuEBCsJAVEfKOsH23yAoBAnxThXzBRUBtHQQE96rBwwUYo7W16DDdKgLb5I5EQN6daokKMGCUlySgQ8ypHWwLSBKhhXSvKngrH3Kcu9f6/NAnQAvr9bXCdgXyNd59iAkBWGANvrZfhBRWCE0QACH5BAgGAAAALAAAAABAAEAAhQQCBISChMTCxERCROTi5KSipCQiJGRmZNTS1PTy9LSytBQSFJSWlHR2dMzKzFRSVOzq7Nza3Pz6/Ly6vAwKDIyOjKyqrDQyNBweHJyenHx+fFxaXISGhMTGxOTm5HRydNTW1PT29LS2tBQWFJyanHx6fMzOzFRWVOzu7Nze3Pz+/Ly+vAwODKyurDw6PP///wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAb+wJdwSCwaj8ikcslsOp/QqHRKbaIg1aw0xaKktOCmCAAQhc/JcRlNTTVMygnZnDQ1vuziA4BJpOdJCRgAD3lFHGQaf2tIGmQchkSCZARIanRGBGQYIZFEFmQnloBHJ2QWnkQqLmQCR5dHAmQuKqlEJmQXEkawRRIXZHC2RAdkJEa4AMJEJGQHw0UeLAAjfkUCrkUoIwAsWNBEFWQKTgpkFWwpDxydSRIHJ9ZMCScHu4EcD3hMDZsWteAkWBgEoIETEwQBuFiWysQAMnwYLkngCOKBb4Y8FIOoQd4TAqbIsKhw70yICgsgntg3RQAwZ2w2AriwIkwIEtw2sDE1gkH+yTAoRHgEk0ABCnBIkypdyrSp0yceOkidOjWCLRQesmrVOlRIAhdgw4a9sNATBAto06pt8VMIigEuyMqNC1YimrNq87I9EpUqVaupsG7d2vWp4cOIEytGHAJE28VDVHQo8aEAZCMpKnzYbPmy2wKbD5RY8RixBBGhP1g46pmAhs0fGFTyLETBZg0mSi+GkEFEOyQqHHTQDTkCWg+0iYRoYWFvkRC/EZtAC1g5AQLRn6JAKwKgdeyIVaxAi/F79qYE0HZAEoJAivNLT6OF/6K9B/pJQaC1O6Q9eMMdNOedEf7hh1QCJrCGhAQp/JecEAU+2N91BiomgXsDPqhChhIGdujhUkEAACH5BAgGAAAALAAAAABAAEAAhQQCBISGhMTGxERCROTm5KSmpCQiJGRmZNTW1PT29LS2tBQSFJSWlFRSVDQyNHR2dMzOzOzu7Nze3Ly+vFxaXAwKDIyOjLSytCwqLGxubPz+/BweHJyenDw6PMzKzExKTOzq7KyqrCQmJGxqbNza3Pz6/Ly6vBQWFJyanFRWVDQ2NHx+fNTS1PTy9OTi5MTCxFxeXAwODJSSlP///wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAb+wJlwSCwaj8ikcslsOp/QqHRKbUZA1axUEqtItOCmAgBQhM/JcRlNlTwgShPZnIQ8vuxiA7BppedJLRsADXlFAWQrf2tIK2QBhkSCZC5IanRGLmQbCZFEIWQploBHKWQhnkQaHWQvR5dHL2QdGqlEEGQOJUawRSUOZHC2RAdkKEa4AMJEKGQHw0UEMQAnfkUvrkURJwAxWNBEFmQXThdkFmwuBwydSSUHKdZMLSkHu4EBDXhMARsbHRdqgSsRYhCAB05YqPC3oQECaBAGkOGzbJ4FAwwffDMEotjEFfKeqGOIAUW7MyUsTAu1b4qHARnZeATgYEKYEgUcbBjBhgLYNQb3zkQwcTJMiwsRwCldyrSp06dQn4CAQLVq1ZaGJFjdulEShRQNwIoN69ATCbJjxVIIKaQFDLRwUzyMhCAu2rVHCFBlAYGFB74ssOZx8bdvYb9doypezLixY8cJJAR9XEQDCxQWMFEe4qKAhc8mNg85+tmCDA+THZcQIOOzDBNsHRPA/DkEAdFDXnzmQCL15ggXUCspIaE37mgCBCQ9LmS1B+HMZ5AQ8OJ29BbJWfjejECAh+XMQSQnEX2GBg/ei+J2kbxS+enQoydwEbu8/fv48+vfTzkIACH5BAgGAAAALAAAAABAAEAAhQQCBISGhMTGxERCROTm5KSmpGRmZCQiJNTW1FRSVLS2tPT29BQSFJSWlHR2dMzOzExKTOzu7KyurDQyNNze3FxaXLy+vAwKDIyOjHRydPz+/BweHKSipHx+fDw6PIyKjMzKzERGROzq7KyqrGxqbNza3FRWVLy6vPz6/BQWFJyanHx6fNTS1ExOTPTy9LSytOTi5FxeXMTCxAwODDw+PP///wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAb+wJpwSCwaj8ikcslsOp/QqHRKbUZE1ayUMrtQtOCmAgBQhM/JcRlNpTgeyhPZnHw4vuxiArBxpedJLhsACXlFAWQdf2tIHWQBhkSCZDBIanRGMGQbC5FEI2QmloBHJmQjnkQaNGQyR5dHMmQ0GqlED2QTKEawRSgTZHC2RAZkKka4AMJEKmQGw0UEMwApfkUyrkURKQAzWNBEGGQvTi9kGGwwDhydSSgGJtZMLiYGu4EBCXhMDR4TCRbuQdMwYhAAB04QtPDgjwQCaA8GkOGzjMkCFTQYeggQwZOIYhM7yHtCoMMEhiEKCAyzAAODiSb2TXkQw99GNiABTLAQRoP+BAgeFKGpQK3BSjAuZLQ74+JFR3BQo0qdSrWqVScREGjdupWALRYKwooVK3PIAgcZ0qpVS6IsGgET40688FQSWhIZ8OpN6/aMLLlx6R4RwbWw11QPxirue7Wx48eQIztGAeOoFhQELGfRUELCCAFsQBR4QUGzFBEnRqgGEXpEgREnvlFZIEB1AQkIaqHRgMCzagFLn6Bgodr1A9NgFjxwPUICC+RGIrxwLcFC3VQRZNh26oTFbQUwdENDQUGB6opKXAhAAB3FFfFhUCAQMBIpDBjBJRMhDyOz/iMR3Hfdf0JQRgEB8BFYAwH95UfgAvfJpmANGtxHQYIEuiDghEQTiHAghgS6Bx2HJJZo4okopohiEAAh+QQIBgAAACwAAAAAQABAAIUEAgSEhoTExsREQkTk5uSsqqxkYmQcHhzU1tT09vSUlpS8vrwMDgxUUlR0dnTMzszs7uy0srTc3txcWlyMjoxsamw0MjT8/vykoqQUFhQMCgzMyszs6uysrqxkZmQkIiTc2tz8+vycmpzEwsQUEhRUVlR8fnzU0tT08vS0trTk4uRcXlyUkpT///8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAG/sCWcEgsGo/IpHLJbDqf0Kh0Sm1CONWsVMLQSLTgZgoASIXPyXEZTZU4Hkq1OflwfNnFBuCASpPnRygHAA14RQFkJn5rSCZkAYZEgmQqSHJIKmQHCZFEBWQlln9IJWQFnUQXA2QjR5dGI2QDIahED2QWtEWvRCEWZHC1RB5kIka3AMFEImQewkUEDAAZfUUjrUUQGQAMWM9EFGQRThFkFGwEFB26SAkGJZxNKCUe7IEBDXdMGA0lFQIXvrUIUWAQAAdOJHjo18CEPlQPVmlSxiRBgQkl+omA0IkDMTIATFSDwoFCxhIrItgDk4CFNFAPpSBwwFABm48ALCwIc2GB14EGLNhMmKZgpRYUD+KdQRGBo8CnUKNKnUq1qhEUErJq1eqt04MUYMOGjSmkJQUWZ9OipUCgUyyQcMlocErELIW7eO+yqBRJQNy4cwNJUAGCsGEQXSN9FSuWrNXHkCNLniw1BASjWRI8GMmTgwABINiwaGBgAWYpSAVsAM1GwUkHCDKD+KxaRUA0ISKsYEghsZMQKmhvAKEUDwrXGScUKL4k9eoTnDtJMHHSg+MjEj5v8F0rhIAK/TD8Lny6VoIObCmrX8++vfv38OPLn0+/vv37+PPrNxIEACH5BAgGAAAALAAAAABAAEAAhQQCBISChMTCxERCROTi5KSipCQiJGRmZNTS1PTy9LSytJSSlHR2dBQSFDQyNFRSVMzKzOzq7KyqrGxubNza3Pz6/Ly6vJyanAwKDIyOjCwqLHx+fBweHDw6PFxaXISGhMTGxExKTOTm5KSmpCQmJGxqbNTW1PT29LS2tJSWlHx6fBQWFDQ2NFRWVMzOzOzu7KyurHRydNze3Pz+/Ly+vJyenAwODP///wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAb+wJtwSCwaj8ikcslsOp/QqHRKbb4i1axUZsPItOAmCgBAhc/JcRlNJXwQSrU56WJ82cUDh3VKk+dHCRwAD3hFCxwcGUkKf0kbZB+GRCcdKyQESHJIBGQcfZNDCoklmo5HLWQSoUQzD4kQR41rRgJkHTOsRAiJIRVGm0UVDmQuukUMiQVGCMVGF2QHx0URGhwOL7UgRi8rADZY00QXiRZOs4toETUWoEgVMSXuSwktB79JCR8Pd0wKEzECuMglroKEQQAYOCGwIQbAFJmOuRhABgAHY04qoGAAcIKEBKFElKgIYAPIKC8KdFRBA9+ZExkaVGzRbwqFDB1XoTlQ0QH+jTAzQKiIsQyNBwArUrgMcwLBPDAJFGQTR7Wq1atYs2p1kkCE169fp4ZCgKKsWbM1h1SAIaGt27fhDIEgSRcABrFDTrB9+3YEXja26la8Gwis4b94XJxdnHar48eQI0uOPOMEwTNREWeZkYAAAc1Vjq64sLTKCRGeP7PhScaBgCwVIqSWkeAy0ww2ZkaEwlmGZxkvbLMRwZrMhqdKKqQmIKL0JBcdKl508oKADBHIWc04SEZhk9jB2VQAAUF4EX38HItoa2JykrUSYGR3f0NGW4z0hVloC9p9hBEw0GBefiC0tVt+ebWFgnP5ITCCBO0hSIRGEmwjIREvuHDShRwJdujhhyCGmFUQACH5BAgGAAAALAAAAABAAEAAhQQCBISGhMTGxERCRKSmpOTm5GRiZCQiJJSWlNTW1FRSVLS2tPT29BQSFHR2dIyOjMzOzExKTKyurOzu7DQyNJyenNze3FxaXLy+vAwKDGxqbPz+/BweHHx+fDw6PIyKjMzKzERGRKyqrOzq7GRmZJyanNza3FRWVLy6vPz6/BQWFHx6fJSSlNTS1ExOTLSytPTy9KSipOTi5FxeXMTCxAwODDw+PP///wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAb+wJtwSCwaj8ikcslsOp/QqHRKbU5G1azUUstYtODmAgBYhM/JcRlNLbBMSrU5CXF82cUVxcVIk+dHMBwACnhFFR4eJX5rSB1kAYZEDAoeNgVIckgyZBx9kkMoHhQdmX9IJ2QioEQbJIkQR5pGNGQ2G6xEJqMzuEWzRCkUZLG5RAGJEkYtxEYlZCTGRRMhHhEwtAJGEyoANVjSRAQUHtpNL2QPbBMvIClKKQEdn0wwJyTvSTABCndMNA8eVDCRT9oGEYMAOHBSoETAByIwGYMwgAwADsWapBDA4iEKenhGkLAIoAO2KDBePOjIAkLBMAweNLB4wt8UGTE8shlJhgLdhjAbWjgEFOYCABUIXoJhQHDdgpPhokqdSrWq1atNGEzYypUrSEMtFogdO9bmkBQgBKRdq5aGAKh4apGcm2GCkY0CBLjdq/YtKLlzLdY9wgDGCBgTDBtOnAsC2cdmsUqeTLmy5ct4UtrFjMSoihJKOd/gCYACDdGTHtSgKQP1EJEk57kWAsGGRYyzbxxMuBArAxZJlTDgF3kqBAUnXuQWAsOAghlwXWNAvmj5BgfIi3NOcEJBB1+5H3Q3l3vEhRMaQosWoUCBsuUMSJz4sFyIBQIS6+vfz7+///9ZBAEAIfkECAYAAAAsAAAAAEAAQACFBAIEhIaExMbEREJE5ObkpKakZGJkHB4c1NbUtLa09Pb0DA4MlJKUVFJUdHZ0zM7M7O7srK6s3N7cvL68XFpcbGpsNDI0/P78FBYUnJqcDAoMjI6MzMrM7OrsrKqsZGZkJCIk3NrcvLq8/Pr8FBIUlJaUVFZUfH581NLU9PL0tLK05OLkxMLEXF5c////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABv5Al3BILBqPyKRyyWw6n9CodEptQjrVrFSy0Ei04GYCAEiEz8lxGU0lFL5psjn5cMDZxE3jo0iK5EkpBwANeEURDSYeSSqASCdkAYZEIxUNFFhHanNGK2QHfZNDAiYNG0ibSCZki6JDFyelCJqORSxkAyOuRBIUDQ4XRqlFIxZkD7tFJaUTRijHRhlkH8lFKS0NBqFELCxGEBgAC5nVQyqlyE2NAKdoKQIIukkjJQzbSykmH/JIKQENd5Y88OAhwYpg5UZ4GATAgRMIKggWmACh2oMBZAAcSNdkxIMIBD08uMemw4eMAE6kkKJAQMgIIfiFUbCBREYTAaV0SCCRY/GYk2QsNANzQUKECBzYUACAoYRMMCNWPNUCIUHFclizat3KtatXJyMUiB07diqbBwnSqlWbU8iFFXDjyl1BEo0AlHgBaLhKCa4EAnP/1j1zK2/GvUfCkiVrFg3atWvbfp1MubLly5jZpFDBN7ORpRgyNMYMFIAFb56J0Fxwc0VqIiZRnhiM+WLGja+HjCjA0OHXFBT2KfEHcPK6dpc7kBsCTtzyyRAIdhYiDQA1ywQIEjBSDFrl7B62Gymc67t2VazMh0ci4RPtrODFH4EEQNLk+EkUDCp0/zwdO5Thl9sQAg7oQgpHrWSgEGEt6OCDXQUBACH5BAgGAAAALAAAAABAAEAAhQQCBISChMTCxERCROTi5KSipGRmZBweHNTS1PTy9JSWlLSytAwODFRSVHR2dMzKzOzq7DQyNNza3Pz6/Ly6vFxaXIyOjCQmJJyenBQWFHx+fAwKDISGhMTGxOTm5KyqrHRydCQiJNTW1PT29JyanLS2tBQSFFRWVHx6fMzOzOzu7Nze3Pz+/Ly+vFxeXP///wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAb+wJdwSCwaj8ikcslsOp/QqHRKbapU1ayUcLkQtOBm63Bohc/J8YGCpkIW3zSZnUw5Vm0jBqSZyDMCSQkHAA15RRQgICVyB4FIKAAAHIdEIwGKWEdjgEgrGwAHI5VEKYoYSAJkj0YNkh+kRBMWihJHFAedRgKSA36xQx6KFr9EamZFExGSKcBFBYodRghkCEYkkgbORQkOICijRQ8PRioZAAwQ20UtitZNC5IWbSMSBCxKEwUYxUsqFQbCIRnBoQGeJgQ6dHigbt0LFh9CSHLgJMEDhR1EJNiWYoCkUM2cTCBwUeGKfm08GPgIQMPGKPUWCnhwr80sEx9PHKSSIAXexp1hVkqKgEzLBAgXbaGpACCDApRGIUDNoqKEJodYs2rdyrWr169EEJQYS5YsULAvOrBcC2DDVbS82H50i7ZU2btn6+rdy7ev378vEix4C/gF0wwkpvIVCiACq78jLDDIGQcwBMYtBf7t+PFASMATPhACQNFrAoCKhSQomDdrPADz9ooQYSTBuXR6V5wweC2b3hS7Pw9Rxqwu8AbCh8T1hRZBgxPJh5x4hTbF8+hCCEgSBfY4diEaJFH6ah16khGEDH11jlyJndZZvRceUv47XwgVXDScH/gl//8AahUEACH5BAgGAAAALAAAAABAAEAAhQQCBISGhMTGxERCROTm5KSmpCQiJNTW1LS2tGRmZPT29BQSFJSWlMzOzFRSVOzu7KyurNze3Ly+vAwKDIyOjDQyNHR2dPz+/BweHJyenFxaXMzKzOzq7KyqrNza3Ly6vPz6/BQWFJyanNTS1FRWVPTy9LSytOTi5MTCxAwODJSSlDw6PHx+fP///wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAb+wJZwSCwaj8ikcslsOp/QqHRKbZYe1ayUsBoQtOCmYLUShM9JQaWMpj5QHOWYnWxYIm2jiSJSpFcVZkgKGAAOeUUCFBSCRxtrjUYsAAABiEQgGSoqWEdzkUQnlBh+l0MeiyZIanRGJJQdppgdiyeeZKBCKJQrF7JEBCoUBSBGY4FGIBWUDb9FH4sjRh5kB0YZlAnORQrCfUYNzUUlIQApcdtEDYt4TSaUFG0gHA++SSAfCMVNDxoJpYMCOGjH5MGJEwRKpBNyoYMBShacgDh4kMC+Xw0GUAKAQVyTCwYjEDjx4GIeAgk2AmChMMq8ExEO1pNHYcFGEgSnKBgps03+SkoVJIS5UGJkpzMaAIRgYBLMBQX2zpQwcXSh1atYs2rdyrXrkBEIwooVm9NrCwEq0wKYUNXrLrUb2ZpVN7Zu2bl48+rdy7dvi6lt/SYNIaIp358AKqDwK0QBhRQ3bTHmgHglwL4NVmzsyLhFw0IAIqK5sEGAYSQl/J0eUkLg3SweOnT44g4eVgUQOkAwjCLXg3Lnrm6QfbcBMyMisll90KHAh6hDEFBCkGwZAI+/LkiQja6IdADUjbztte2E7FxCvod3BcsZCAS6WxpRjyTCBI6XER1oLg0JfSSTVPKLAB2YsFoL/x1RQiGHyFJCA4ERkeARdnjg1YR+YdiXfSkMvMbXA911JuKIWgUBACH5BAgGAAAALAAAAABAAEAAhQQCBISGhMTGxERCROTm5KSmpGRiZBweHNTW1LS2tPT29AwODJSSlFRSVHR2dMzOzOzu7KyurNze3Ly+vFxaXGxqbDQyNPz+/BQWFJyanAwKDIyOjMzKzOzq7KyqrGRmZCQiJNza3Ly6vPz6/BQSFJSWlFRWVHx+fNTS1PTy9LSytOTi5MTCxFxeXP///wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAb+QJdwSCwaj8ikcslsOp/QqHRKbaZS1ay0Q2l1tODmw9R4hM/JR8NkRk9TD4gStW4jHw6J2yjwqEZpdUkpBwANe0UIHh4oaWR2RicAAAGIRCMJBREKd4JHKxoAB5yWQyuLAnePSCaTHqVEFxOLX0ZqbEcskwOAsEMQHgUTvURjZUYjFpOQvi4Pi3pFEmvRRBmTH81FChEeEcRDCCFGKSQAC7XaQyGLBE4qkxvqRSMCHOBKEBQGpEgKAQ2qzYtywQOISQ4GSnkwYJIoZgqVdPjgEMAJLBGZjNiwwKEJgRmVGHBoYULIJxQAYCiB76SSFCrkuJxJs6bNmzhpokjAs2feT5A0BVQcCkCDTJu6iDo0mvOBz6dAc0qdSrWqVXUwj15NiSFDS6kUJ1lgcVUBR48rrk6seKIfVYYOD0DMOaJAIQAJ0YwowcDtSwofvg5JATBqFRWrmsADIE9hihYN+BlhkaoIBAzn0qkrQcZkkQfLjFwDkG2eBAoNHFwwkmBSAmTKAMxFdOHEGgRHWgN4PXmXYDcC1jQ2IsI1K1fNRlRoQEEzEd28jUiYNMpXhDUFkkBPIomSrw0NPvh9btxfoUOwCBRIq738HQfjZm6/6mL+VQkaFhiWCsE5/f8AzhMEACH5BAgGAAAALAAAAABAAEAAhQQCBISGhMTGxERCROTm5CQiJKSmpGRmZNTW1LS2tPT29BQSFDQyNHR2dFRSVJSSlMzOzOzu7KyurGxubNze3Ly+vAwKDCwqLPz+/BweHDw6PFxaXIyOjMzKzExKTOzq7CQmJKyqrGxqbNza3Ly6vPz6/BQWFDQ2NHx+fFRWVJyanNTS1PTy9LSytHRydOTi5MTCxAwODP///wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAb+QJlwSCwaj8ikcslsOp/QqHRKbSpY1aw00mhEtOAmwuVChM/J8cSMnipe2LRrrVwFXm3jSNApyctJLCcZB3lFLwICeEgIE4BIHBkZD4ZEGB18CoxzbEYvBRkacZVCH4kjm3RHIpItpEUIiaNEjY9FHRkmDhivRCx8ELywnEYlAxkFK71FewIfnmSLRAaSLstFJXx9RhQURhEMGRfP10SIAl9NJJIq5UUYIyN+ViIN80gsAQ7e7lMYIRkAAGjQTwqEAQIBZIBQ8MmHAwkBoJjVMEkJDjESpuBXkQlEgQwqdHyyAYAJFZpGOmHRIp3KlzBjypxJ8+WKBDhz5uQoU0D+xJ8ALLiMCQNoRKE1IehcyrOm06dQo0pFUuLFvTAsh4KBJyGEgDYlT16t8oFEiLMd2nwEwABGFgUCzhqQgEDYGQUYNUp7UmLF2RAGIIxFQ2CtxJRNIrQALKGC1koQNCRc6GTF3AQv7C77F3DgSgEIBhNRcGADxUAbDogekm9fGw4CXTWRIJBDww8ZTTwW4LYICxMAYpBz97FdEQgCGRZRIbCQO+RsEQ8hITBBMQbJy2FACECkkQTVj1QQqEEzqRACUyABD8D6kRQCQyxT0HkvEfbuuVlQKN1QAIEoJIFfEigIFEAvDih02hAD4hOQA72M0IBy64WXBAQNoPJSg1MScSgVBRbE0FRUEQw31YkodhQEACH5BAgGAAAALAAAAABAAEAAhQQCBISGhMTGxERCRKSmpOTm5GRiZCQiJFRSVJSWlNTW1LS2tPT29BQSFHR2dIyOjExKTKyurOzu7DQyNFxaXNze3AwKDMzOzGxqbKSipLy+vPz+/BweHHx+fDw6PIyKjERGRKyqrOzq7GRmZFRWVJyanNza3Pz6/BQWFHx6fJSSlExOTLSytPTy9FxeXOTi5AwODNTS1MTCxDw+PP///wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAb+QJpwSCwaj8ikcslsOp/QqHRKbTIY1ay0pVJJtOBm5fGohM/JscqMnp4kJ+W4rDSpCm2j6FWIIysqH2xHJxAeDnlFEi8vX0gvH3RIJRMeGYlEGwWMfkZqg0UFMx4rWJhDLS8Vjp5koEQpHh4ap6GbpkWQa0cxlSMbtUQnjAXARXOvNCcusgrBRXsvLUYFgSJGER4TH89FJxWbxkR8Ri2GIKzdQi0VL7hLMtoE6kUbEnBODB0BnUcMAQiS0XOyIQQHAAAQDYxyYQBCABwuLHwiYsRDAB2mTWRy4gGMhyQEbjxi4OEEWiOdUACAIkG/lEtasEgHs6bNmzhz6kwZY4H+z58/RaYUcLEoAAs0a8owehHpzgtAowrdSbWq1atYhzC48A6MzKRZNmgwgEBFm5UoSrykosABAgQkErQpiXCCjCwiHpCA64LF2iwMPIJ8IYVBCApwSZTQmKiAxYcdusoZARdBB8LPLsx4GNFJhr0YBPzFVPBgQicFHkQYLYTBCAqMY1IYwZpGC4BTpTxAyMJJBIQPJor4iCKpgLtFWqAAAOPawMcljFxAKLFICYQjBk4HMEHyAoQLjJyYQF3dBocAUBb5DiC8EQ0IZ4irFQIhCSTs3RshgTDEMwamYWZEfn8gxIFkbQSAUAdJEIhEBwgFEAwCEMW2HnhJAAgAAsEhmOBAdfhhmMQFDphgk4NZoYhVBRbAkFtOEjiX1Yw0phQEACH5BAgGAAAALAAAAABAAEAAhQQCBISGhMTGxERCROTm5KSmpGRiZBweHPT29LS2tNTW1AwODJSSlFRSVHR2dOzu7KyurFxaXMzOzGxqbDQyNPz+/Ly+vNze3BQWFJyanAwKDIyOjOzq7KyqrGRmZCQiJPz6/BQSFJSWlFRWVHx+fPTy9LSytFxeXNTS1MTCxOTi5P///wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAb+wJVwSCwaj8ikcslsOp/QqHRKbYIQ1ay0BIGUtOAmodMhhM/JcRnNLqrNyUsB3oa+k4hJY1OP3pEdDQ0QfXZkdEUcIyMTWIVOf0YbIw0Cj0+RRAqUJBWXkIdGFQ4NERefTg9kD0YWDSMZqE8ciEIIBg0nX7JVEq8mvFkIDCIgSggBDafBUhUdBwAADsxREgPRAAcS1E4cHtgAJLvcSiAbC9gjy+RLBtgUFuxOEQAYxfJOJSas+P3+/wAD9itBoKBBg/wKoUjAsGHDdURAQCBDsWIHDoUEgNsIQEPCIQgmWqRY4CObFBzBeTxC8OBBk20kOJwJUaDNmzhz6kSib1zwGH0ws4DIgAFABDYj6mUwBiYFBWwG2HyLRiFFFhVJoy3YwPQMgnPpVEhBQAKch1povIEj4aiJBGjRBmz7ZA2bNicOoh0o0PUTiAJwpzW50CBA2yMgDETwqaREBA99jZRIVlPLhmjAmkCIxocZB3QYYAqwWqRE0QUYg02NVURCtLlEMkTzEMw1AAqHhSSIlsAIiKcAYF+qcA1APCO7AfRuFTdynw7RRiBJvtxI1g6fEMAVe4Q6kgt6c7cJEI1EEu9IygIIcKlBNsZE0B/RDqDBpQsOhCPnrUSCg8rUyKeTgDldoMECAN70QGo7NeggO0EAACH5BAgGAAAALAAAAABAAEAAhQQCBISChMTCxERCROTi5KSipGRmZCQiJPTy9NTS1LSytHR2dBQSFJSWlFRSVDQyNMzKzOzq7GxubPz6/Ly6vFxaXAwKDIyOjKyqrCwqLNze3Hx+fBweHJyenDw6PISGhMTGxExKTOTm5KSmpGxqbCQmJPT29NTW1LS2tHx6fBQWFJyanFRWVDQ2NMzOzOzu7HRydPz+/Ly+vFxeXAwODP///wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAb+wJpwSCwaj8ikcslsOp/QqHRKbU4m1azUBAGZtODmCwR5hc/JMciMbhMR5IiSoJC7oy/BOjnZSDp3eF1sRygwMBSBUGMQdkYvhxtYik5jAoRFBRIwLpRPCAJlRxowEg2TnkxqmEITF6UEqU5cAl9FIKUYsk8vCEYmKTALvrtVCaUyxVkTHRioRyYNBrHKUjEKHhwcH9VRJw7aHA8J3U4RC+EHF8TlShMrGeEk1O1LMOEDEPVOEhwZIzH2OUFAgZ3AgwgTKly4L4KLhxAhavCUAIXFixcnGkFQgYUDjyA/OjihCASAkyhTWmBVA8EMkSFBkgwkIKVNACuPiHiYwEX+Agg9E2hU5AKj0aEMkypdyrRpEgQKDIKBynLZChUAKrRhAUDFimdVBDxAaaCNAZQPBGQhwPUkjQtgtZi4QAMlC3pPTGxIaUCEoghnUW6w1cQFB5QeOqVy4QElB8VMFpzkgCHgrhgYDgNY4ESDgw9Si0wwUCE0Eo4G4r754AApmAsnFThRcPJCtwh1VbAEobbIC6w0HO0KvMKIi5OQh6w4WbbYcQAPCA+hcBKFkQljASSnFGPAyWRGUFQ/UhOAB8ueMJxkgUQ8AOtH2uryZEIzXiLu4RvRYAEAB+l3fHDSBknkl8ReAHBDiQP+mSaEgacd5oAnpGxXBIRIuLCAa+UTYNiUh0zxRwOHS70gnFMoplhOEAAh+QQIBgAAACwAAAAAQABAAIUEAgSEhoTExsREQkSkpqTk5uRkZmQkIiSUlpTU1tRUUlS0trT09vQUEhR0dnSMjozMzsxMSkysrqzs7uw0MjScnpzc3txcWly8vrwMCgz8/vwcHhx8fnw8OjyMiozMysxERkSsqqzs6uxsamycmpzc2txUVlS8urz8+vwUFhR8enyUkpTU0tRMTky0srT08vSkoqTk4uRcXlzEwsQMDgw8Pjz///8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAG/kCbcEgsGo/IpHLJbDqf0Kh0Sm1qUNWsFBWLYbVgJiNmYYTPyXHBjG4TxzE2UjSbuKVwuRGFeLjuUXlJAg8PH4BQgkcvKw8VX4hNikYuhSWRT5NEMYUhGphOmkIaMIUioE4oFnFGLA8rJ6iZekJ8r7SyURavh2gvAgmQYSgLJ8JGDDAOMU4QISELMZ+yKBgtHRQIThMuzwQYdqAlIxQdHS2XqRASzyEQuGcTHuYdNSTwSwwC7RIlx1ooCIDA1sFBgSwiFniD0CYAQRkMwWiwIEFCrzMcOkSQMO0Ml39ZXtTJRbKkyZMoU6o8YmGBy5cvWWCCALOmhSMTMgDYybPn/gxEAnoKBZAhHJGcQ30CTcqzKMuaMCMiognV5c2VWLNq3coV6wsXL9p8NTqMRAoAF9qYAJCCBEgpMyjwNNDGAE8KP6vEWLuTxoO3VBg8oMHTBLNAHHoaOAhIhF2eHPAdgbCBZw2pkSDU4LkBsxIHOzeEAOxGQ4jKABw4KaEggGQbKAxcCNvkxQUDpF8EUHD1zIOdf5pI2PnApAjCKcgKEZCXyIuzNE6RfEzCCISdnm2Q2Ek313UAFHCd2Llgj1wA2QFpGLATw5EF5I9g2FmjY6QQO00ggQ+g/BG+IYDCAGqHGcGff0ZYENprYASwEwdJHJhEYgAEgIkCAGxA23vxKiExIAAKYFKCA+kNIWESEDiQjkondmVghy4WYUEGNPQW41HS3ajjji4GAQAh+QQIBgAAACwAAAAAQABAAIUEAgSEhoTExsREQkTk5uSsqqxkYmQcHhzU1tT09vS8uryUlpQMDgxUUlR0dnTMzszs7uy0srQ0MjTc3txcWlyMjoxsamwkJiT8/vzEwsSkoqQUFhQMCgzMyszs6uysrqxkZmQkIiTc2tz8+vy8vrycmpwUEhRUVlR8fnzU0tT08vS0trTk4uRcXlyUkpT///8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAG/sCXcEgsGo/IpHLJbDqf0Kh0Sq1ar9isdsvtereQlOrbHUUKAjI3VSgg1NpEezWCZwXtiR3raZMwe1YYCm0QgVYibQ+HVSMfBR8JjFQEbW9bBBUfdVsjAh2ASQkfFQROGg0nFgKhe54WJw0aThMgqQ0oenYTKLEnILpNchS+JYZfKiW+FAWSUR4Vvi0RnFpmLbcuHlYIDrcLXAu+DpdXgwYnLlzRBgqtWQkdztYdY5P3+Pn6+/yBEysAAwZMAScFiYMIEbI4AoEDgIcQI2Yg0+GAxYsYLxwj0jCiRwATvwjASPJACHtF/gkUuEgNAgUZFMicmWFhv5s4c+rceU9F/gSUWXxuzDKixAYAFLicALChRDUrGSRANMAFBEQJIamwWPqQQYWnWBJUYADxhE0oCVBEBGHqiwerEFHMY/LgAMQBHfY8GADxQEsmDh4eaHYIQwG7ABw4EdEgwFwjIwxQAKpEBQUQYIuoCNAgWJYKDyM4+fCwwj0PZDcMFSIg6xAVRxlsYwS3hJEHD/8OKfEQBCPcACQ8fqHg4QrIUgHoVoOBLwASR1YYP0Li4YDMXgo8PIFEOoDjR7gWsJMA8dki3sEbmSB4OJcAD1EkSZ9ELYAAcBoAOECZCH0k5QHQABwiOLAcetMl8YADIvTzH08Ifgfhehww4NmEQkAwG4YcBHaYUxAAIfkECAYAAAAsAAAAAEAAQACFBAIEhIKExMLEREJE5OLkpKKkJCIkZGZk1NLU9PL0FBIUlJaUtLK0dHZ0zMrMVFJU7Ors3Nrc/Pr8vLq8DAoMjI6MNDI0HB4cnJ6cfH58XFpchIaExMbE5ObkrKqsdHJ01NbU9Pb0FBYUnJqctLa0fHp8zM7MVFZU7O7s3N7c/P78vL68DA4MPDo8////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABv5Al3BILBqPyKRyyWw6n9CodEqtWq/YrHbL7Xq3iVTo25WYOBEyl8DhENTakIPjUMGzkTbkjkW1EXxXKgh0CYFWEG1ph1QSbQ5jjFN+Dm9bKQ8bkVoSERF2SRITGHtNDQAAFx6gfGYBHx8MTiYXqAAtJnwdC7AfGZZNCRm2AAelXgkesAcfJJtPBCe2LBUSXBIrDb0YKFYCFrYHXAW9G4tXISMiABrjHw0crFkoJIZbISDPkvv8/f7/AOGkIEGwYEFAavK0WbiwwxEUFIhJBCCAjIkWFlpo3LjRHhGIE4lV/HJRY8aTGQd0MzLQoMFcCRnKdBiwps2bOHPuS8DAY+wWnis5qWPHRZqIEdawfAvH5YAtCyOpRJtWjUuICixsnQD2JMSwcDS9QHBqK4M+JbRs4eJz0dYFmExOpVp1SIWHWgAaOImQ6SwRCQc0+FSSQMOBpEgSbHiQgksFVLKaMEBVYR+ErCKCDuEQdQiKdSyOBSI7wogJVHCHjEAl7tBpABbOTkBFwogEcABSq1ExANWKIyRoHxGAqoU8Mh5QnUASHEDtI9IAeLgTAi9XIs2fs4x4we+WDagyJMme5OsGOA9SDcYuPHGtB3AiNNBdhHwSEw3O+bOvs377/kSkQAELjQFYBAqiGajggjUFAQAh+QQIBgAAACwAAAAAQABAAIUEAgSEhoTExsREQkTk5uSkpqQkIiRkZmTU1tS0trT09vQUEhSUlpRUUlQ0MjR0dnTMzszs7uysrqzc3ty8vrxcWlwMCgyMjowsKixsbmz8/vwcHhycnpw8OjzMysxMSkzs6uysqqwkJiRsamzc2ty8urz8+vwUFhScmpxUVlQ0NjR8fnzU0tT08vS0srTk4uTEwsRcXlwMDgyUkpT///8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAG/kCacEgsGo/IpHLJbDqf0Kh0Sq1ar9isdsvteluQCNYUMXmJgpDLXNW8XqDzEBEKsayRt1hOMyUKEgpUJi8TBBp8Qi91AlQgLwQtiUIaFHVxUQqFmJM0ESEFFGxOGgRvgp1CEHUTUC16qUMKEiESo0smBBMvt6kkdQROmi97WhMNAahIJgIevUkaIBGIScwuxUsPAAAbIdSdJiQoFxcwThAb2wAdEJ0gIeQzKMFOLSvqAAecXS0l5BczBCh78iKFOhkXnlkx4YHBPxeSqsBwoO4AlwT/CrzIogDFCQAVLspjobBKhAQRtSggMTCWy5cwY8qcSXPIhAQ4c+a8w2cC/oSfQIHuGxLBAr6jAMydQZCiQdOnThvESEnUKFJ1Sr0wjQq16dQjN3XqbMfnBQQWZ9OiHVqzrdu3cOPKbAGRi4IS2MZ4BMllxAYMBb5ZmViRy4MNiD80qlLwYEK7KDAg3jBiY6Z7Fel5AXEYsYELVJegU8euE4sGk1XwZKKNm7dYJlyoQBzACQlkLYuYOFAhdJIWFQ6UFNJixohWWy5sc+FEwrYLMEHIAHAiLw0BWYe0+CiDbaID21AYgbCNLBEU2yzGIg/AQe4S2xIYMUERgPlEGgZso3AkQfwjFGzTgWByhLBNCkj4B4B8RxgEQAiTKJAOAJYZoSCDRkxg1Aa5PXERwDYrJHFhEpjVxkcD3Pg2xIhItJBOA4mQ8MB9Fv6XBAQPkNAWi3LVuGCPYFkgA3JAFhGBd0UmqaRbQQAAIfkECAYAAAAsAAAAAEAAQACFBAIEhIaExMbEREJEpKak5ObkZGJkJCIk1NbUVFJUtLa0lJaU9Pb0dHJ0FBIUjI6MzM7MTEpMrK6s7O7sNDI03N7cXFpcvL68fHp8DAoMbGpspKKk/P78HB4cPDo8jIqMzMrMREZErKqs7OrsZGZk3NrcVFZUvLq8nJqc/Pr8dHZ0FBYUlJKU1NLUTE5MtLK09PL05OLkXF5cxMLEfH58DA4MPD48////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABv7Am3BILBqPyKRyyWw6n9CodEqtWq/YrHbL7XoLhIp3/EiQGOOuJGESpbkpTcIyem8FpsTDruXQ8gh8WRUWCSocglgLeReJVzAyCQZojlUveRCVRxUJAZRIKQssn1kpCAIwTioAAB0iiIkpMQoiIplNEB2sADa3dhMXtQQvE08wNLsAJHVjDBC1IhItKVIxJrs1D9RbphLQqFYzFLsGXCDQCsVYDCgrABZcAtEVsFoTCqncBaSa/f7/AAMKtFNBgcGDB1vYiYGgoUOH6opMyJCsIoAZaSo00NCgo8eOKvIRmWgxGcYxGjtyXMkx5CaEMH2NKfCwJrOBOHPq3MlTE/6MFyKzMJgRFEuKdu+40PAQQUK9cONYldsSgIIHDzJkVrvGKts2LSkIhLDqAUMBKQyQ7SJxdsyED1cp2EDBT0muXb0EIdBw1YOLEqpYufrKh4MCFx4oLHBSolNdIikMWCiaBIYFEoSNMNigIgaXB6xeOJHAao+mETUArIg4RMBJIjDc1biZiAQrFEYgsNJ6AwUrEpV0A6BQ9wQrBUZSROU9hsMAVo2MKDh+5AIrG0/TiGBlAsl0AMiPcHVjh4EuAJ6PfA9vpILgx1RZ0UiyPonaAHYStKI8pD4S8wAkYEcJKjDXH3VJQKACYAL511MRDj44RAUZ1CCGhBLRhuGGHAPiFAQAOw==", E = [
+}, U = "data:image/gif;base64,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", L = [
   {
     label: "Pay with Card",
     icon: `<svg width="23" height="19" viewBox="0 0 23 19" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -497,7 +485,7 @@ const y = (r) => {
 `,
     key: "ussd"
   }
-], t1 = [
+], n1 = [
   {
     name: "First City Monument Bank",
     code: "*329#"
@@ -506,7 +494,7 @@ const y = (r) => {
     name: "First Bank",
     code: "*268#"
   }
-], u = [
+], g = [
   {
     name: "MasterCard",
     icon: `<svg width="24" height="14" viewBox="0 0 24 14" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -577,9 +565,16 @@ const y = (r) => {
 </svg>
 `
   }
-];
-class f {
-  constructor(e, t, n, A, s, i) {
+], H = (i, e) => {
+  const t = new Intl.NumberFormat("ng-NG", {
+    style: "decimal",
+    maximumFractionDigits: e || 0,
+    minimumFractionDigits: e || 0
+  });
+  return isNaN(parseFloat(t.format(i))) ? "-" : t.format(i);
+};
+class R {
+  constructor(e, t, n, A, s, r) {
     o(this, "cardDetailsValues");
     o(this, "cardPin");
     o(this, "cardOtp");
@@ -589,6 +584,7 @@ class f {
     o(this, "email");
     o(this, "token");
     o(this, "amount");
+    o(this, "currency");
     o(this, "_currentStep");
     o(this, "activeRef");
     o(this, "creditCardTypes");
@@ -597,14 +593,12 @@ class f {
       number: "",
       expiry: "",
       cvv: ""
-    }, this.cardPin = "", this.cardOtp = "", this.activeRef = "", this.contents = document.querySelectorAll(".content"), this.creditCardTypes = [...u], this.switchTab = i, this.renderCardContent(), this.currentStep === 1 && this.displayCardTypes(), this.attachInputListeners();
+    }, this.cardPin = "", this.cardOtp = "", this.activeRef = "", this.contents = document.querySelectorAll(".content"), this.creditCardTypes = [...g], this.switchTab = r, this.renderCardContent(), this.currentStep === 1 && this.displayCardTypes(), this.attachInputListeners();
   }
   displayCardTypes() {
     requestAnimationFrame(() => {
-      const e = this.container.querySelector(
-        "#card-types"
-      );
-      this.creditCardTypes.length === 1 && this.creditCardTypes[0].name === "Unknown" ? u.forEach((t) => {
+      const e = this.container.querySelector("#card-types");
+      this.creditCardTypes.length === 1 && this.creditCardTypes[0].name === "Unknown" ? g.forEach((t) => {
         const n = document.createElement("div");
         n.classList.add("card-type"), n.innerHTML = t.icon, e.appendChild(n);
       }) : (e.innerHTML = "", this.creditCardTypes.forEach((t) => {
@@ -617,51 +611,13 @@ class f {
     return this._currentStep;
   }
   set currentStep(e) {
-    this._currentStep = e, this.renderCardContent(), e === 1 && (this.displayCardTypes(), this.creditCardTypes = [...u]);
+    this._currentStep = e, this.renderCardContent(), e === 1 && (this.displayCardTypes(), this.creditCardTypes = [...g]);
   }
   attachInputListeners() {
-    const e = this.container.querySelector(
-      'input[name="number"]'
-    ), t = this.container.querySelector(
-      'input[name="expiry"]'
-    ), n = this.container.querySelector(
-      'input[name="cvv"]'
-    ), A = this.container.querySelector(
-      ".details-form-button"
-    ), s = document.querySelector("#checkoutcard"), i = Array.from(
-      this.container.querySelectorAll(".pin-input")
-    ), c = this.container.querySelector(
-      ".otp-input"
-    ), a = this.container.querySelector(
-      ".otp-button"
-    ), l = this.container.querySelector(
-      ".success-button"
-    ), C = this.container.querySelector(
-      "#go-to-card"
-    ), m = document.querySelector(
-      "#go-to-transfer"
-    );
-    e && e.addEventListener(
-      "input",
-      (d) => this.handleInputChange(d, A)
-    ), t && t.addEventListener(
-      "input",
-      (d) => this.handleInputChange(d, A)
-    ), n && n.addEventListener(
-      "input",
-      (d) => this.handleInputChange(d, A)
-    ), s && s.addEventListener("submit", (d) => this.handleSubmit(d)), i.forEach((d, Q) => {
-      d.addEventListener(
-        "input",
-        (w) => this.handlePinInputChange(w, Q, i)
-      ), d.addEventListener(
-        "paste",
-        (w) => this.handlePinPaste(w, i)
-      );
-    }), c && c.addEventListener(
-      "input",
-      (d) => this.handleOtpInput(d, a)
-    ), a && a.addEventListener("click", (d) => this.submitOtp(d)), l && l.addEventListener("click", () => this.closeModal()), C && C.addEventListener("click", () => {
+    const e = this.container.querySelector('input[name="number"]'), t = this.container.querySelector('input[name="expiry"]'), n = this.container.querySelector('input[name="cvv"]'), A = this.container.querySelector(".details-form-button"), s = document.querySelector("#checkoutcard"), r = Array.from(this.container.querySelectorAll(".pin-input")), c = this.container.querySelector(".otp-input"), a = this.container.querySelector(".otp-button"), l = this.container.querySelector(".success-button"), C = this.container.querySelector("#go-to-card"), m = document.querySelector("#go-to-transfer");
+    e && e.addEventListener("input", (d) => this.handleInputChange(d, A)), t && t.addEventListener("input", (d) => this.handleInputChange(d, A)), n && n.addEventListener("input", (d) => this.handleInputChange(d, A)), s && s.addEventListener("submit", (d) => this.handleSubmit(d)), r.forEach((d, Q) => {
+      d.addEventListener("input", (w) => this.handlePinInputChange(w, Q, r)), d.addEventListener("paste", (w) => this.handlePinPaste(w, r));
+    }), c && c.addEventListener("input", (d) => this.handleOtpInput(d, a)), a && a.addEventListener("click", (d) => this.submitOtp(d)), l && l.addEventListener("click", () => this.closeModal()), C && C.addEventListener("click", () => {
       this.currentStep = 1;
     }), m && m.addEventListener("click", () => {
       this.switchTab(1);
@@ -669,11 +625,11 @@ class f {
   }
   handleInputChange(e, t) {
     const n = e.target, { name: A, value: s } = n;
-    let i = s;
-    A === "number" ? (i = V(s), this.filterCreditCardType(s)) : A === "expiry" ? i = j(s) : A === "cvv" && (i = W(s)), this.cardDetailsValues = {
+    let r = s;
+    A === "number" ? (r = j(s), this.filterCreditCardType(s)) : A === "expiry" ? r = $(s) : A === "cvv" && (r = X(s)), this.cardDetailsValues = {
       ...this.cardDetailsValues,
-      [A]: i
-    }, n.value = i, this.cardDetailsValues.number && this.cardDetailsValues.expiry && this.cardDetailsValues.cvv && t && t.removeAttribute("disabled");
+      [A]: r
+    }, n.value = r, this.cardDetailsValues.number && this.cardDetailsValues.expiry && this.cardDetailsValues.cvv && t && t.removeAttribute("disabled");
   }
   handlePinRequest() {
     if (this.cardPin.length === 4) {
@@ -684,21 +640,21 @@ class f {
         reference: this.activeRef
       };
       setTimeout(() => {
-        this.currentStep = 6, this.showLoader(), P(this.token, e).then((n) => {
-          n.status === "failed" ? (this.currentStep = 4, n.providerMessage ? (h(n.providerMessage, "error"), this.setPaymentError(n.providerMessage)) : (h("Payment failed", "error"), this.setPaymentError("Payment failed"))) : (h("Payment Authorized!", "success"), this.currentStep = 3);
+        this.currentStep = 6, this.showLoader(), Y(this.token, e).then((n) => {
+          n.status === "failed" ? (this.currentStep = 4, n.providerMessage ? (p(n.providerMessage, "error"), this.setPaymentError(n.providerMessage)) : (p("Payment failed", "error"), this.setPaymentError("Payment failed"))) : (p("Payment Authorized!", "success"), this.currentStep = 3);
         }).catch((n) => {
-          h(n.message, "error"), this.currentStep = 4, this.setPaymentError("Payment failed");
+          p(n.message, "error"), this.currentStep = 4, this.setPaymentError("Payment failed");
         });
       }, 500);
     }
   }
   handlePinInputChange(e, t, n) {
-    this.cardPin = "", e.target.value ? t < n.length - 1 && n[t + 1].focus() : t > 0 && n[t - 1].focus(), this.cardPin = n.map((i) => i.value).join(""), this.handlePinRequest();
+    this.cardPin = "", e.target.value ? t < n.length - 1 && n[t + 1].focus() : t > 0 && n[t - 1].focus(), this.cardPin = n.map((r) => r.value).join(""), this.handlePinRequest();
   }
   showLoader() {
     var t;
     const e = this.container.querySelector("#loader");
-    e && (e.classList.remove("hidden"), (t = e.querySelector("img")) == null || t.setAttribute("src", G));
+    e && (e.classList.remove("hidden"), (t = e.querySelector("img")) == null || t.setAttribute("src", U));
   }
   setPaymentError(e) {
     const t = this.container.querySelector("#payment-warning-text"), n = this.container.querySelector(".warning-list");
@@ -711,9 +667,9 @@ class f {
         text: "Try again with transfer",
         action: "go-to-transfer"
       }
-    ].forEach(({ action: s, text: i }) => {
+    ].forEach(({ action: s, text: r }) => {
       const c = document.createElement("button");
-      c.textContent = i, c.setAttribute("id", s), c.classList.add("warning-button");
+      c.textContent = r, c.setAttribute("id", s), c.classList.add("warning-button");
       const a = document.createElement("div");
       a.appendChild(c), n.appendChild(a);
     }), this.attachInputListeners();
@@ -722,15 +678,15 @@ class f {
     var s;
     e.preventDefault(), this.cardPin = "";
     const A = (((s = e.clipboardData) == null ? void 0 : s.getData("text").trim()) || "").split("");
-    t.forEach((i, c) => {
-      i.value = A[c] || "";
+    t.forEach((r, c) => {
+      r.value = A[c] || "";
     });
-    for (let i = 0; i < t.length; i++)
-      if (!t[i].value) {
-        t[i].focus();
+    for (let r = 0; r < t.length; r++)
+      if (!t[r].value) {
+        t[r].focus();
         break;
       }
-    this.cardPin = t.map((i) => i.value).join(""), this.handlePinRequest();
+    this.cardPin = t.map((r) => r.value).join(""), this.handlePinRequest();
   }
   handleOtpInput(e, t) {
     const n = e.target, { value: A } = n;
@@ -744,36 +700,34 @@ class f {
       },
       reference: this.activeRef
     };
-    this.currentStep = 6, this.showLoader(), Y(this.token, t).then((A) => {
-      A.status === "failed" ? (this.currentStep = 4, A.providerMessage ? (h(A.providerMessage, "error"), this.setPaymentError(A.providerMessage)) : (h("Payment failed", "error"), this.setPaymentError("Payment failed"))) : A.status === "successful" && (this.currentStep = 5);
+    this.currentStep = 6, this.showLoader(), z(this.token, t).then((A) => {
+      A.status === "failed" ? (this.currentStep = 4, A.providerMessage ? (p(A.providerMessage, "error"), this.setPaymentError(A.providerMessage)) : (p("Payment failed", "error"), this.setPaymentError("Payment failed"))) : A.status === "successful" && (this.currentStep = 5);
     }).catch((A) => {
-      h(A.message, "error"), this.currentStep = 4, this.setPaymentError("Payment failed");
+      p(A.message, "error"), this.currentStep = 4, this.setPaymentError("Payment failed");
     });
   }
   async handleSubmit(e) {
-    var i, c;
+    var r, c;
     e.preventDefault();
-    const t = this.container.querySelector(".spinner"), n = this.container.querySelector(
-      "#details-form-button-text"
-    ), A = {
+    const t = this.container.querySelector(".spinner"), n = this.container.querySelector("#details-form-button-text"), A = {
       amount: this.amount,
       channel: "card",
       currency: "USD",
       customer: {
         email: this.email
       },
-      reference: T(),
+      reference: F(),
       card: {
-        pan: X(this.cardDetailsValues.number),
+        pan: _(this.cardDetailsValues.number),
         cvv: this.cardDetailsValues.cvv,
-        expiryMonth: (i = this.cardDetailsValues) == null ? void 0 : i.expiry.split("/")[0].trim(),
+        expiryMonth: (r = this.cardDetailsValues) == null ? void 0 : r.expiry.split("/")[0].trim(),
         expiryYear: (c = this.cardDetailsValues) == null ? void 0 : c.expiry.split("/")[1].trim()
       }
     };
-    t && n && (t.classList.remove("hidden"), n.classList.add("hidden")), q(this.token, A).then((a) => {
-      a.status === "failed" ? (this.currentStep = 4, a.providerMessage ? (h(a.providerMessage, "error"), this.setPaymentError(a.providerMessage)) : (h("Payment failed", "error"), this.setPaymentError("Payment failed"))) : a.status === "pending_authorization" ? (h("Payment Created!", "success"), this.activeRef = a.reference, this.currentStep = 2) : a.status === "pending_validation" && a.authorization.mode === "3DS" && a.authorization.redirectUrl && (this.activeRef = a.reference, this.redirectTo3DS(a.authorization.redirectUrl));
+    t && n && (t.classList.remove("hidden"), n.classList.add("hidden")), P(this.token, A).then((a) => {
+      a.status === "failed" ? (this.currentStep = 4, a.providerMessage ? (p(a.providerMessage, "error"), this.setPaymentError(a.providerMessage)) : (p("Payment failed", "error"), this.setPaymentError("Payment failed"))) : a.status === "pending_authorization" ? (p("Payment Created!", "success"), this.activeRef = a.reference, this.currentStep = 2) : a.status === "pending_validation" && a.authorization.mode === "3DS" && a.authorization.redirectUrl && (this.activeRef = a.reference, this.redirectTo3DS(a.authorization.redirectUrl));
     }).catch((a) => {
-      h(a.message, "error"), this.currentStep = 4, this.setPaymentError("Payment failed");
+      p(a.message, "error"), this.currentStep = 4, this.setPaymentError("Payment failed");
     }).finally(() => {
       t && n && (t.classList.add("hidden"), n.classList.remove("hidden"));
     });
@@ -788,18 +742,16 @@ class f {
             this.currentStep = 5;
           },
           (A) => {
-            h(A.message, "error"), this.currentStep = 4;
+            p(A.message, "error"), this.currentStep = 4;
           }
         ));
       }, 2e3);
     } else
-      alert(
-        "Please enable popups for this site to complete the authentication."
-      );
+      alert("Please enable popups for this site to complete the authentication.");
   }
   async verifyPayment(e, t) {
     try {
-      const n = await k(this.token, this.activeRef);
+      const n = await T(this.token, this.activeRef);
       n.status === "failed" ? this.currentStep = 4 : e(n);
     } catch (n) {
       console.error(n), t(new Error("failed"));
@@ -810,29 +762,31 @@ class f {
       case 1:
         return x;
       case 2:
-        return O;
+        return N;
       case 3:
         return Z;
       case 4:
-        return I;
+        return k;
       case 5:
-        return H;
+        return v;
       case 6:
-        return N;
+        return q;
       default:
         return x;
     }
   }
   filterCreditCardType(e) {
-    e ? (this.creditCardTypes = u.filter(
-      (t) => t.name === $(e)
-    ), this.creditCardTypes.length >= 1 ? this.displayCardTypes() : (this.creditCardTypes = [...u], this.displayCardTypes())) : (this.creditCardTypes = [...u], this.displayCardTypes());
+    e ? (this.creditCardTypes = g.filter((t) => t.name === t1(e)), this.creditCardTypes.length >= 1 ? this.displayCardTypes() : (this.creditCardTypes = [...g], this.displayCardTypes())) : (this.creditCardTypes = [...g], this.displayCardTypes());
   }
   renderCardContent() {
-    this.contents[0] && (this.contents[0].innerHTML = this.getCardStepContent(), this.attachInputListeners());
+    this.contents[0] && (this.contents[0].innerHTML = this.getCardStepContent(), this.attachInputListeners(), this.displayButtonText());
+  }
+  displayButtonText(e) {
+    const t = this.container.querySelector("#details-form-button-text");
+    console.log({ amount: this.amount, buttonText: t }), t && (e ? t.textContent = e : t.textContent = `Pay ${this.currency || "USD"} ${H(this.amount || 0)}`);
   }
 }
-const R = `<div>
+const b = `<div>
   <div class="box-container">
     <div class="container-center h-[40vh] hidden" id="loader">
       <img src="" alt="loader gif" />
@@ -1013,7 +967,7 @@ const R = `<div>
     </div>
   </div>
 </div>
-`, e1 = `<div id="paymentWarning">
+`, A1 = `<div id="paymentWarning">
     <div class="box-container">
         <div class="text-center mt-7">
             <svg class="mx-auto" width="48" height="46" viewBox="0 0 48 46" fill="none"
@@ -1039,7 +993,7 @@ const R = `<div>
             </div>
         </div>
     </div>
-</div>`, n1 = `<div id="trasferConfirmationOne">
+</div>`, s1 = `<div id="trasferConfirmationOne">
     <div class="box-container">
         <div class="text-center mt-7 w-4/5 md:w-3/5 mx-auto">
             <h5 class="text-center text-grey-400 w-4/5 mx-auto mt-4 mb-7 flex">
@@ -1058,7 +1012,7 @@ const R = `<div>
             </div>
         </div>
     </div>
-    </div>`, A1 = `<div id="trasferConfirmationOne">
+    </div>`, i1 = `<div id="trasferConfirmationOne">
   <div class="box-container">
     <div class="text-center mt-7 w-4/5 md:w-3/5 mx-auto">
       <h5 class="text-center text-grey-400 w-4/5 mx-auto mt-4 mb-7 flex">
@@ -1086,7 +1040,7 @@ const R = `<div>
     </div>
   </div>
 </div>
-`, s1 = `<div id="trasferConfirmationProgress">
+`, r1 = `<div id="trasferConfirmationProgress">
   <div class="box-container">
     <div class="text-center mt-7 w-11/12 md:w-4/5 mx-auto">
       <h5
@@ -1136,7 +1090,7 @@ const R = `<div>
   </div>
 </div>
 `;
-class i1 {
+class a1 {
   constructor(e, t, n, A, s) {
     o(this, "container");
     o(this, "contents");
@@ -1160,13 +1114,13 @@ class i1 {
     this._currentStep = e, this.renderTransferContent(), e === 1 && this.createTransfer(), e === 5 && this.startTimer("check");
   }
   attachInputListeners() {
-    const e = this.container.querySelector("#transfer-acn"), t = this.container.querySelector("#copy-acn"), n = this.container.querySelector("#acn-tooltip"), A = this.container.querySelector("#transfer-amount"), s = this.container.querySelector("#copy-amount"), i = this.container.querySelector("#amount-tooltip"), c = this.container.querySelector("#transfer-try-again"), a = this.container.querySelector("#transfer-sent"), l = this.container.querySelector(".transfer-button"), C = this.container.querySelector("#show-acn"), m = this.container.querySelector("#ctd-timer"), d = this.container.querySelector(
+    const e = this.container.querySelector("#transfer-acn"), t = this.container.querySelector("#copy-acn"), n = this.container.querySelector("#acn-tooltip"), A = this.container.querySelector("#transfer-amount"), s = this.container.querySelector("#copy-amount"), r = this.container.querySelector("#amount-tooltip"), c = this.container.querySelector("#transfer-try-again"), a = this.container.querySelector("#transfer-sent"), l = this.container.querySelector(".transfer-button"), C = this.container.querySelector("#show-acn"), m = this.container.querySelector("#ctd-timer"), d = this.container.querySelector(
       ".success-button"
     ), Q = this.container.querySelector("#confirm-one"), w = this.container.querySelector(".transfer-close");
     if (t && e && t.addEventListener("click", () => {
       n && this.copyToClipboard(e.innerHTML, n);
     }), s && A && s.addEventListener("click", () => {
-      i && this.copyToClipboard(A.innerHTML.split(" ")[1], i);
+      r && this.copyToClipboard(A.innerHTML.split(" ")[1], r);
     }), l && l.addEventListener("click", () => {
       this.abortController && (this.abortController.abort(), this.currentStep = 5);
     }), c && c.addEventListener("click", () => {
@@ -1177,16 +1131,16 @@ class i1 {
       this.stopProgressBar(), this.currentStep = 1;
     }), this.currentStep === 5) {
       this.initialTime = 300, this.timeLeft = this.initialTime, m && (m.innerHTML = B(this.initialTime));
-      const U = 3e4;
+      const D = 3e4;
       this.abortController = new AbortController(), setTimeout(() => {
         this.verifyTransfer(
           this.token,
-          U,
+          D,
           () => {
             this.currentStep = 6;
           },
-          (v) => {
-            console.error("Polling failed:", v), h(v.message, "error");
+          (M) => {
+            console.error("Polling failed:", M), p(M.message, "error");
           }
         );
       }, 5e3), this.startTimer("check");
@@ -1199,7 +1153,7 @@ class i1 {
     requestAnimationFrame(() => {
       var s;
       const e = this.container.querySelector("#loader"), t = this.container.querySelector("#details-content");
-      e && t && (e.classList.remove("hidden"), (s = e.querySelector("img")) == null || s.setAttribute("src", G), t.classList.add("hidden"));
+      e && t && (e.classList.remove("hidden"), (s = e.querySelector("img")) == null || s.setAttribute("src", U), t.classList.add("hidden"));
       const n = {
         amount: this.amount,
         channel: "bank_transfer",
@@ -1207,13 +1161,13 @@ class i1 {
         customer: {
           email: this.email
         },
-        reference: T()
+        reference: F()
       };
-      z(this.token, n).then((i) => {
-        if (i.status === "failed")
-          i.providerMessage ? h(i.providerMessage, "error") : h("Payment failed", "error"), this.currentStep = 2;
+      V(this.token, n).then((r) => {
+        if (r.status === "failed")
+          r.providerMessage ? p(r.providerMessage, "error") : p("Payment failed", "error"), this.currentStep = 2;
         else {
-          e && t && (e.classList.add("hidden"), t.classList.remove("hidden")), this.activeRef = i.reference, this.paymentResponse = i, this.updateTransferDetailsContent();
+          e && t && (e.classList.add("hidden"), t.classList.remove("hidden")), this.activeRef = r.reference, this.paymentResponse = r, this.updateTransferDetailsContent();
           const c = 3e4;
           setTimeout(() => {
             this.verifyTransfer(
@@ -1223,18 +1177,18 @@ class i1 {
                 this.currentStep = 6;
               },
               (a) => {
-                console.error("Polling failed:", a), h(a.message, "error");
+                console.error("Polling failed:", a), p(a.message, "error");
               }
             );
           }, c);
         }
-      }).catch((i) => {
-        h(i.message, "error");
+      }).catch((r) => {
+        p(r.message, "error");
       });
     });
   }
   async verifyTransfer(e, t, n, A) {
-    let s = 0, i = t, c = !0, a;
+    let s = 0, r = t, c = !0, a;
     this.abortController && (a = this.abortController.signal);
     const l = async () => {
       if (this.timeLeft <= 0) {
@@ -1243,14 +1197,14 @@ class i1 {
       }
       s += 1;
       try {
-        const C = await k(
+        const C = await T(
           e,
           this.activeRef,
           a
         );
-        C.status === "failed" ? c && (i = t * (s + 1), setTimeout(l, i)) : (c = !1, n(C));
+        C.status === "failed" ? c && (r = t * (s + 1), setTimeout(l, r)) : (c = !1, n(C));
       } catch {
-        c && (i = t * (s + 1), setTimeout(l, i));
+        c && (r = t * (s + 1), setTimeout(l, r));
       }
     };
     l();
@@ -1258,28 +1212,28 @@ class i1 {
   getTransferStepContent() {
     switch (this.currentStep) {
       case 1:
-        return R;
+        return b;
       case 2:
-        return e1;
-      case 3:
-        return n1;
-      case 4:
         return A1;
-      case 5:
+      case 3:
         return s1;
+      case 4:
+        return i1;
+      case 5:
+        return r1;
       case 6:
-        return H;
+        return v;
       default:
-        return R;
+        return b;
     }
   }
   updateTransferDetailsContent() {
     var s;
     const e = this.container.querySelectorAll(".transfer-curr-amount"), t = this.container.querySelector("#transfer-bank"), n = this.container.querySelector("#transfer-acn"), A = this.container.querySelector("#time-left");
     this.paymentResponse && (e.length && e.forEach(
-      (i) => {
+      (r) => {
         var c, a;
-        return i.innerHTML = `${(c = this.paymentResponse) == null ? void 0 : c.currency} ${(a = this.paymentResponse) == null ? void 0 : a.amount}`;
+        return r.innerHTML = `${(c = this.paymentResponse) == null ? void 0 : c.currency} ${(a = this.paymentResponse) == null ? void 0 : a.amount}`;
       }
     ), t && this.paymentResponse.bankDetails && (t.innerHTML = (s = this.paymentResponse.bankDetails) == null ? void 0 : s.bankName), n && this.paymentResponse.bankDetails && (n.innerHTML = this.paymentResponse.bankDetails.accountNumber), A && (A.innerHTML = B(this.initialTime)), this.startTimer("poll"));
   }
@@ -1293,8 +1247,8 @@ class i1 {
     }, 1e3);
   }
   updateProgressTimerContent() {
-    const t = 2 * Math.PI * 40, A = (this.initialTime - this.timeLeft) / this.initialTime * 100 / 100 * t, s = this.container.querySelector(".circle-progress"), i = this.container.querySelector("#time-left");
-    s && (s.setAttribute("stroke-dasharray", `${t}`), s.setAttribute("stroke-dashoffset", `${A}`)), i && (i.innerHTML = B(this.timeLeft));
+    const t = 2 * Math.PI * 40, A = (this.initialTime - this.timeLeft) / this.initialTime * 100 / 100 * t, s = this.container.querySelector(".circle-progress"), r = this.container.querySelector("#time-left");
+    s && (s.setAttribute("stroke-dasharray", `${t}`), s.setAttribute("stroke-dashoffset", `${A}`)), r && (r.innerHTML = B(this.timeLeft));
   }
   stopTimer() {
     this.timerId !== null && (clearInterval(this.timerId), this.timerId = null);
@@ -1325,7 +1279,7 @@ class i1 {
     this.abortController && this.abortController.abort();
   }
 }
-const b = `<div id="ussdBanks">
+const I = `<div id="ussdBanks">
   <div class="box-container">
     <div class="text-center my-6">
       <svg
@@ -1361,7 +1315,7 @@ const b = `<div id="ussdBanks">
     </div>
   </div>
 </div>
-`, r1 = `<div id="viewCode">
+`, o1 = `<div id="viewCode">
   <div class="box-container">
     <div class="text-center pb-5 mt-4 mb-6">
       <svg
@@ -1425,13 +1379,13 @@ const b = `<div id="ussdBanks">
   </div>
 </div>
 `;
-class a1 {
+class c1 {
   constructor() {
     // private container: HTMLElement;
     o(this, "contents");
     o(this, "banks");
     o(this, "_currentStep");
-    this.contents = document.querySelectorAll(".content"), this.banks = t1, this._currentStep = 1, this.renderUssdContent();
+    this.contents = document.querySelectorAll(".content"), this.banks = n1, this._currentStep = 1, this.renderUssdContent();
   }
   get currentStep() {
     return this._currentStep;
@@ -1442,15 +1396,15 @@ class a1 {
   getUssdStepContent() {
     switch (this.currentStep) {
       case 1:
-        return b;
-      case 2:
-        return r1;
-      case 3:
         return I;
+      case 2:
+        return o1;
+      case 3:
+        return k;
       case 4:
-        return H;
+        return v;
       default:
-        return b;
+        return I;
     }
   }
   renderUssdContent() {
@@ -1477,7 +1431,7 @@ class a1 {
     !t.contains(e.target) && !n.contains(e.target) && (n.style.display = "none");
   }
 }
-class c1 {
+class C1 {
   constructor(e, t, n) {
     o(this, "modalContainer");
     o(this, "currentPaymentMethod");
@@ -1490,35 +1444,27 @@ class c1 {
     o(this, "email");
     o(this, "amount");
     o(this, "isMobile", !1);
-    if (this.modalContainer = document.createElement("div"), this.modalContainer.innerHTML = K, document.body.appendChild(this.modalContainer), this.isMobile = window.matchMedia("(max-width: 767px)").matches, this.currentPaymentMethod = this.isMobile ? 3 : 0, this.currentStep = 1, this.container = document.querySelectorAll(".content")[0], this.merchantKey = e, this.email = t, this.amount = n, this.attachInputListeners(), this.switchTab = this.switchTab.bind(this), e === "" || t === "")
+    if (this.modalContainer = document.createElement("div"), this.modalContainer.innerHTML = O, document.body.appendChild(this.modalContainer), this.isMobile = window.matchMedia("(max-width: 767px)").matches, this.currentPaymentMethod = this.isMobile ? 3 : 0, this.currentStep = 1, this.container = document.querySelectorAll(".content")[0], this.merchantKey = e, this.email = t, this.amount = n, this.attachInputListeners(), this.switchTab = this.switchTab.bind(this), e === "" || t === "")
       throw this.closeModal(), new Error("Merchant key or email is required");
   }
   attachInputListeners() {
-    const e = document.body.querySelector(
-      "#change-method"
-    ), t = document.body.querySelectorAll(
-      ".close-btn"
-    ), n = document.querySelector("#mob-container"), A = document.querySelector("#mob-tab-co"), s = document.querySelector("#mob-tab-c");
+    const e = document.body.querySelector("#change-method"), t = document.body.querySelectorAll(".close-btn"), n = document.querySelector("#mob-container"), A = document.querySelector("#mob-tab-co"), s = document.querySelector("#mob-tab-c");
     e && (this.cleanup(), e.addEventListener("click", () => {
       this.currentPaymentMethod = 3, this.attachInputListeners(), n && (n.innerHTML = this.mobileContainerContent()), this.setup(), A && s && s.parentNode && A.removeChild(s);
-    })), t.length > 0 && t.forEach((i) => {
-      i.addEventListener("click", () => {
+    })), t.length > 0 && t.forEach((r) => {
+      r.addEventListener("click", () => {
         this.cleanup(), this.closeModal();
       });
     });
   }
   displayTabLayout() {
-    const e = document.querySelectorAll(".tab-button"), t = document.querySelectorAll(".mob-tab-button"), n = document.querySelector(".box-container-method"), A = document.querySelector("#mob-container"), s = document.querySelector("#inner-mob-container"), i = document.querySelector("#mob-tab-co");
+    const e = document.querySelectorAll(".tab-button"), t = document.querySelectorAll(".mob-tab-button"), n = document.querySelector(".box-container-method"), A = document.querySelector("#mob-container"), s = document.querySelector("#inner-mob-container"), r = document.querySelector("#mob-tab-co");
     this.isMobile ? t && n && A && s && t.forEach((c) => {
       c.addEventListener("click", (a) => {
         if (a.currentTarget instanceof HTMLElement && a.currentTarget.dataset.tab) {
           const l = parseInt(a.currentTarget.dataset.tab);
-          this.updatePaymentMethodView(
-            this.merchantKey,
-            this.email,
-            this.amount
-          ), this.setCurrentPaymentMethod(l), A.removeChild(s), this.cleanup(), E.forEach((C, m) => {
-            this.currentPaymentMethod === m && i && (i.innerHTML = `
+          this.updatePaymentMethodView(this.merchantKey, this.email, this.amount), this.setCurrentPaymentMethod(l), A.removeChild(s), this.cleanup(), L.forEach((C, m) => {
+            this.currentPaymentMethod === m && r && (r.innerHTML = `
                           <div id="mob-tab-c" class="w-full pt-2 px-5 md:hidden">
                             <div>
                               <button class="pt-3 px-2 grow align-center text-grey-600 tex-sm font-semibold" data-tab="${m}">
@@ -1545,7 +1491,7 @@ class c1 {
   updatePaymentMethodView(e, t, n) {
     switch (this.currentPaymentMethod) {
       case 0:
-        return this.card = new f(
+        return this.card = new R(
           this.modalContainer,
           () => this.closeModal(),
           e,
@@ -1554,17 +1500,11 @@ class c1 {
           () => this.switchTab(1)
         );
       case 1:
-        return this.transfer = new i1(
-          this.modalContainer,
-          () => this.closeModal(),
-          e,
-          t,
-          n
-        );
+        return this.transfer = new a1(this.modalContainer, () => this.closeModal(), e, t, n);
       case 2:
-        return this.ussd = new a1();
+        return this.ussd = new c1();
       default:
-        return this.card = new f(
+        return this.card = new R(
           this.modalContainer,
           () => this.closeModal(),
           e,
@@ -1602,22 +1542,22 @@ class c1 {
   }
   setup() {
     const e = document.getElementById("merchantLogo"), t = document.getElementById("merchantLogoMob"), n = document.getElementById("mob-action-btns"), A = document.getElementById("merchant-email"), s = document.querySelector("#mob-container");
-    if (A && (A.innerHTML = this.email), this.isMobile) {
-      t && t.setAttribute("src", M), s && (s.innerHTML = this.mobileContainerContent());
-      let i = document.querySelector(".mob-options");
-      i && this.viewMobileOptions(i);
+    if (console.log("dslnajdsbajslkn"), this.displayRate(), A && (A.innerHTML = "this.email"), this.isMobile) {
+      t && t.setAttribute("src", f), s && (s.innerHTML = this.mobileContainerContent());
+      let r = document.querySelector(".mob-options");
+      r && this.viewMobileOptions(r);
       const c = document.querySelectorAll(".mob-tab-button");
-      E.forEach((a, l) => {
+      L.forEach((a, l) => {
         const C = c[l];
         C && (C.dataset.tab = l.toString(), C.addEventListener("click", () => {
           this.setCurrentPaymentMethod(l);
         }));
       }), n && this.currentPaymentMethod === 3 && (n.classList.add("hidden"), n.classList.remove("md:hidden"));
     } else {
-      e && e.setAttribute("src", M);
-      let i = document.querySelector(".payment-options");
-      i && (i.innerHTML = `<div> 
-        ${E.map(
+      e && e.setAttribute("src", f);
+      let r = document.querySelector(".payment-options");
+      r && (r.innerHTML = `<div> 
+        ${L.map(
         (a, l) => `
               <div class="tab">   
                 <button class="tab-button group" data-tab="${l}"> 
@@ -1631,7 +1571,7 @@ class c1 {
       ).join("")}
         </div>`);
       const c = document.querySelectorAll(".tab-button");
-      E.forEach((a, l) => {
+      L.forEach((a, l) => {
         const C = c[l];
         if (C) {
           const m = C.querySelector(".tab-button-icon"), d = C.querySelector(".tab-button-label");
@@ -1666,7 +1606,7 @@ class c1 {
   }
   viewMobileOptions(e) {
     e.innerHTML = `
-      ${E.map(
+      ${L.map(
       (t, n) => `
                 <div class="tab">
                   <button class="mob-tab-button py-3 px-2 grow align-center text-grey-600 tex-sm font-semibold" data-tab="${n}">
@@ -1679,6 +1619,15 @@ class c1 {
               `
     ).join("")}`;
   }
+  displayRate() {
+    console.log("reached rate limit"), alert("reached rate limit");
+    const e = document.getElementById("payment-rate-display"), t = document.getElementById("container-payment-text"), n = document.getElementById("header-chip-amount");
+    W(this.merchantKey, { from: "NGN", to: "USD" }).then((A) => {
+      e && (e.innerHTML = `1 NGN = ${A.rate} USD`), t && (t.innerHTML = `NGN ${H(this.amount || 0, 2)}`), n && (n.innerHTML = `NGN ${H((this.amount || 0) * (A.rate || 1), 2)}`);
+    }).finally(() => {
+      console.log("reached rate limit");
+    });
+  }
   cleanup() {
     this.transfer && this.transfer.destroyTimer();
   }
@@ -1687,5 +1636,5 @@ class c1 {
   }
 }
 export {
-  c1 as CheckoutForm
+  C1 as CheckoutForm
 };
